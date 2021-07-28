@@ -1,4 +1,4 @@
-package petrangola.models;
+package petrangola.models.player;
 
 public interface PlayerDetail {
   

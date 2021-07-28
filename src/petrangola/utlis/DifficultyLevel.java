@@ -1,4 +1,4 @@
-package petrangola.enums;
+package petrangola.utlis;
 
 public enum DifficultyLevel {
   EASY,
