@@ -1,15 +1,13 @@
 package petrangola.models;
 
-import petrangola.models.player.Player;
-
-import java.util.List;
 import java.util.Optional;
+import petrangola.models.player.Player;
 
 public interface Cards {
   
-  List<Card> getCombination();
+  Combination getCombination();
   
-  void setCombination(List<Card> cards);
+  void setCombination(Combination combination);
   
   boolean isCommunity();
   
@@ -17,4 +15,5 @@ public interface Cards {
   
   Optional<Player> getPlayer();
   
+  Optional<Board> getBoard();
 }
