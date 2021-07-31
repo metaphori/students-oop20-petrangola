@@ -1,5 +1,5 @@
 package petrangola.models.player;
 
-public interface Player {
+public interface Player extends Exchangeable {
   String getUsername();
 }

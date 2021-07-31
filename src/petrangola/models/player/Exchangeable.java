@@ -1,5 +1,6 @@
 package petrangola.models.player;
 
+import java.util.List;
 import petrangola.models.Cards;
 
 public interface Exchangeable {
@@ -8,6 +9,7 @@ public interface Exchangeable {
    * Exchanges board and player cards by taking k card from each deck
    * @param boardCards
    * @param playerCards
+   * @return
    */
-  void exchange(final Cards boardCards, final Cards playerCards);
+  List<Cards> exchange(final Cards boardCards, final Cards playerCards);
 }

@@ -1,11 +1,12 @@
 package petrangola.models.player.npc;
 
+import java.util.List;
+import java.util.Random;
 import petrangola.models.Cards;
-import petrangola.models.player.Exchangeable;
 import petrangola.utlis.Delimiter;
 import petrangola.utlis.DifficultyLevel;
 
-public class NPCImpl implements NPC, Exchangeable {
+public class NPCImpl implements NPC {
   private static final String NPC_NAME = "NPC_NAME";
   private final DifficultyLevel difficultyLevel;
   private final int id;
@@ -28,13 +29,18 @@ public class NPCImpl implements NPC, Exchangeable {
   }
   
   @Override
-  public Cards exchange(final Cards boardCards, final Cards playerCards) {
+  public List<Cards> exchange(final Cards boardCards, final Cards playerCards) {
     final double drawback = getDrawback();
+    final Random random = new Random();
+    ChoiceStrategy choiceStrategy;
+  
+    if (random.nextInt(100) < drawback) {
+      choiceStrategy = new RandomChoice();
+    } else {
+      choiceStrategy = new BestChoice();
+    }
     
-    // probability?
-    // random if easy
-    // choosen wisely if good
-    return null;
+    return choiceStrategy.chooseCards(List.of(boardCards, playerCards));
   }
   
   private double getDrawback() {
