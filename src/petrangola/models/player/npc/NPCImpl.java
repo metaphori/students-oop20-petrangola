@@ -29,6 +29,11 @@ public class NPCImpl implements NPC {
   }
   
   @Override
+  public boolean isNPC() {
+    return true;
+  }
+  
+  @Override
   public List<Cards> exchange(final Cards boardCards, final Cards playerCards) {
     final double drawback = getDrawback();
     final Random random = new Random();
