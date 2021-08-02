@@ -1,6 +1,8 @@
 package petrangola.models.player;
 
-public interface Player extends Exchangeable {
+import petrangola.models.game.GameObject;
+
+public interface Player extends Exchangeable, GameObject {
   
   String getUsername();
   
