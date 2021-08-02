@@ -1,6 +1,6 @@
 package petrangola.models.player;
 
-import petrangola.models.Cards;
+import petrangola.models.cards.Cards;
 
 import java.util.List;
 

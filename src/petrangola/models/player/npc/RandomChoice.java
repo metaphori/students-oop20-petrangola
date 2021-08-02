@@ -2,8 +2,8 @@ package petrangola.models.player.npc;
 
 import java.util.List;
 import java.util.Random;
-import petrangola.models.Card;
-import petrangola.models.Cards;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Cards;
 
 public class RandomChoice extends AbstractChoiceStrategy {
   @Override

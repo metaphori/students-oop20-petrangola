@@ -2,7 +2,7 @@ package petrangola.models.player.npc;
 
 import java.util.List;
 import java.util.Random;
-import petrangola.models.Cards;
+import petrangola.models.cards.Cards;
 import petrangola.utlis.Delimiter;
 import petrangola.utlis.DifficultyLevel;
 

@@ -2,10 +2,10 @@ package petrangola.models.player.npc;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import petrangola.models.Card;
-import petrangola.models.Cards;
-import petrangola.models.Combination;
-import petrangola.models.CombinationImpl;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Cards;
+import petrangola.models.cards.Combination;
+import petrangola.models.cards.CombinationImpl;
 
 public class BestChoice extends AbstractChoiceStrategy {
   @Override

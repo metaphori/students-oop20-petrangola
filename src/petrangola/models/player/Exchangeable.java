@@ -1,7 +1,7 @@
 package petrangola.models.player;
 
 import java.util.List;
-import petrangola.models.Cards;
+import petrangola.models.cards.Cards;
 
 public interface Exchangeable {
   

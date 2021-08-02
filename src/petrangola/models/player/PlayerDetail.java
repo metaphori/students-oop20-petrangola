@@ -1,10 +1,14 @@
 package petrangola.models.player;
 
+import petrangola.models.cards.Card;
+
 public interface PlayerDetail  {
   
-  String getHighCard();
+  Card getHighCard();
   
   int getPlayerLives();
+  
+  void takeLife();
   
   int getTurnNumber();
   
