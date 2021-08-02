@@ -1,4 +1,4 @@
-package petrangola.models;
+package petrangola.models.cards;
 
 import petrangola.utlis.Delimiter;
 import petrangola.utlis.Name;

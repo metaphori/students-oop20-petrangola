@@ -1,4 +1,4 @@
-package petrangola.models;
+package petrangola.models.cards;
 
 /**
  * The single Card model

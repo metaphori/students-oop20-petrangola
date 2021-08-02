@@ -1,5 +1,7 @@
-package petrangola.models;
+package petrangola.models.game;
 
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Dealer;
 import petrangola.models.player.Player;
 
 import java.util.List;
@@ -9,7 +11,7 @@ public interface Game {
     *
     * @return
     */
-   List<Player> getPlayers();
+   List<GameObject> getPlayers();
    
    /**
     *
@@ -25,9 +27,21 @@ public interface Game {
    
    /**
     *
+    * @param round
+    */
+   void setRound(int round);
+   
+   /**
+    *
     * @return the number associated to the player that is currently playing
     */
    int getCurrentTurnNumber();
+   
+   /**
+    *
+    * @param currentTurnNumber
+    */
+   void setCurrentTurnNumber(int currentTurnNumber);
    
    /**
     *
@@ -37,21 +51,45 @@ public interface Game {
    
    /**
     *
+    * @param knockerCount
+    */
+   void setKnockerCount(int knockerCount);
+   
+   /**
+    *
     * @return the last one that
     */
    String getLastKnocker();
    
    /**
     *
+    * @param lastKnocker
+    */
+   void setLastKnocker(String lastKnocker);
+   
+   /**
+    *
     * @return the username of the player that is giving cards to other players
     */
-   String getDealer();
+   Dealer getDealer();
+   
+   /**
+    *
+     * @param dealer
+    */
+   void setDealer(Dealer dealer);
    
    /**
     *
     * @return the username of the winner
     */
    String getWinner();
+   
+   /**
+    *
+     * @param winner
+    */
+   void setWinner(String winner);
    
    /**
     *
