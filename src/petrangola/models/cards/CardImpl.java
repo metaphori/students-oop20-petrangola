@@ -8,12 +8,17 @@ import petrangola.utlis.Suit;
  * {@inheritDoc}
  */
 public class CardImpl implements Card {
-  private final int value;
-  private final String suit;
+  private final Name name;
+  private final Suit suit;
   
   public CardImpl(final Name name, final Suit suit) {
-    this.value = name.getValue();
-    this.suit = suit.toString().toLowerCase();
+    this.name = name;
+    this.suit = suit;
+  }
+  
+  @Override
+  public Name getName() {
+    return this.name;
   }
   
   /**
@@ -21,7 +26,7 @@ public class CardImpl implements Card {
    */
   @Override
   public String getFullName() {
-    return getSuit()
+    return getSuit().toString().toLowerCase()
                  .concat(Delimiter.UNDERSCORE.toString())
                  .concat(String.valueOf(getValue()));
   }
@@ -30,7 +35,7 @@ public class CardImpl implements Card {
    * {@inheritDoc}
    */
   @Override
-  public String getSuit() {
+  public Suit getSuit() {
     return this.suit;
   }
   
@@ -39,6 +44,6 @@ public class CardImpl implements Card {
    */
   @Override
   public int getValue() {
-    return this.value;
+    return getName().getValue();
   }
 }

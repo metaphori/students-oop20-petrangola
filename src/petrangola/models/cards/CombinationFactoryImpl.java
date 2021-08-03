@@ -1,9 +1,8 @@
 package petrangola.models.cards;
 
-import petrangola.utlis.DeckConstants;
-
 import java.util.ArrayList;
 import java.util.List;
+import petrangola.utlis.DeckConstants;
 
 public class CombinationFactoryImpl implements CombinationFactory {
   @Override
@@ -17,7 +16,7 @@ public class CombinationFactoryImpl implements CombinationFactory {
       final Card card2 = cardList.get(i - 1);
       final Card card3 = cardList.get(i - 2);
       
-      combinations.add(new CombinationImpl(List.of(card1,card2,card3)));
+      combinations.add(new CombinationBuilderImpl().setCards(List.of(card1,card2,card3)).build());
     }
     
     return combinations;

@@ -2,12 +2,11 @@ package petrangola.models.player.npc;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import petrangola.models.cards.Card;
-import petrangola.models.cards.Cards;
-import petrangola.models.cards.Combination;
-import petrangola.models.cards.CombinationImpl;
+import petrangola.models.cards.*;
 
 public class BestChoice extends AbstractChoiceStrategy {
+  private final CombinationBuilder combinationBuilder = new CombinationBuilderImpl();
+  
   @Override
   public List<Cards> chooseCards(List<Cards> cardsList) {
     final List<Card> cardList = cardsList.stream()
@@ -20,10 +19,10 @@ public class BestChoice extends AbstractChoiceStrategy {
     final Cards playerCards = getPlayerCards(cardsList);
     
     final Combination maxCombination = getMaxCombination(cardList);
-    final Combination complement = new CombinationImpl(cardList
-                                                             .stream()
-                                                             .filter(card -> maxCombination.getCards().equals(card))
-                                                             .collect(Collectors.toList()));
+    final Combination complement = combinationBuilder.setCards(cardList
+                                                                     .stream()
+                                                                     .filter(card -> maxCombination.getCards().equals(card))
+                                                                     .collect(Collectors.toList())).build();
     
     playerCards.setCombination(maxCombination);
     boardCards.setCombination(complement);
@@ -31,33 +30,12 @@ public class BestChoice extends AbstractChoiceStrategy {
     return List.of(boardCards, playerCards);
   }
   
-  /*private List<Card> listOfAllCard(Cards... cardsModels) {
-    List<Card> cardList = new ArrayList<>();
-    
-    for (Cards cardsModel : cardsModels) {
-      cardList.addAll(cardsModel.getCombination().getCards());
-    }
-    
-    return cardList;
-  }*/
-  
   private Combination getMaxCombination(List<Card> cardList) {
-    return new CombinationImpl(cardList
-                                     .stream()
-                                     .collect(Collectors.groupingBy(Card::getSuit))
-                                     .values()
-                                     .stream()
-                                     .max(Comparator.comparingInt(list -> list.stream().mapToInt(Card::getValue).sum()))
-                                     .get());
+    return combinationBuilder.setCards(cardList.stream()
+                                             .collect(Collectors.groupingBy(Card::getSuit))
+                                             .values()
+                                             .stream()
+                                             .max(Comparator.comparingInt(list -> list.stream().mapToInt(Card::getValue).sum()))
+                                             .get()).build();
   }
-  
-  /*private List<List<Card>> partitioningList(List<Card> cardList, int partitionSize) {
-    return new ArrayList<>(
-          IntStream.range(0, cardList.size())
-                   .boxed()
-                   .collect(
-                         Collectors.groupingBy(index-> index / partitionSize, Collectors.mapping(cardList::get, Collectors.toList()))
-                   ).values()
-    );
-  }*/
 }

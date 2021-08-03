@@ -1,9 +1,18 @@
 package petrangola.models.cards;
 
+import petrangola.utlis.Name;
+import petrangola.utlis.Suit;
+
 /**
  * The single Card model
  */
 public interface Card {
+  
+  /**
+   *
+   * @return the name associated with the value
+   */
+  Name getName();
   
   /**
    *
@@ -15,7 +24,7 @@ public interface Card {
    *
    * @return the suit name
    */
-  String getSuit();
+  Suit getSuit();
   
   /**
    *
