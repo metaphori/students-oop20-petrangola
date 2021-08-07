@@ -5,7 +5,6 @@ import java.util.Map;
 import petrangola.models.game.GameObject;
 
 public interface CardsFactory {
-  
   /**
    *
    * @param map

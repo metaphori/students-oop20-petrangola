@@ -3,7 +3,6 @@ package petrangola.models.cards;
 import java.util.List;
 
 public interface CombinationFactory {
-  
   /**
    *
    * @param cardList

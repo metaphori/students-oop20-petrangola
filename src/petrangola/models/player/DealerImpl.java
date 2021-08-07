@@ -1,9 +1,8 @@
 package petrangola.models.player;
 
-import petrangola.models.cards.Card;
-import petrangola.models.cards.Cards;
-
 import java.util.List;
+import java.util.Objects;
+import petrangola.models.cards.Cards;
 
 public class DealerImpl implements Dealer {
   final Player player;
@@ -34,5 +33,18 @@ public class DealerImpl implements Dealer {
   
   private Player getPlayer() {
     return this.player;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DealerImpl)) return false;
+    DealerImpl dealer = (DealerImpl) o;
+    return getPlayer().equals(dealer.getPlayer());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getPlayer());
   }
 }

@@ -1,40 +1,73 @@
 package petrangola.models.game;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
+import petrangola.models.board.Board;
 import petrangola.models.cards.Cards;
 import petrangola.models.player.Dealer;
 import petrangola.models.player.Player;
-import petrangola.utlis.DifficultyLevel;
+import petrangola.models.player.PlayerDetail;
 
 public class GameImpl implements Game {
-  private final List<GameObject> players;
+  private List<PlayerDetail> playerDetails;
+  private List<Player> players;
+  private List<Cards> cards;
+  private Board board;
+  private Dealer dealer;
   private int round;
   private int currentTurnNumber;
   private int knockerCount;
   private String lastKnocker;
-  private Dealer dealer;
   private String winner;
+  private boolean onlyOneRound = false;
   
-  public GameImpl(final String username, final int npcSize, final DifficultyLevel difficultyLevel) {
-    this.players = new ArrayList<>(new GameFactoryImpl(username, npcSize, difficultyLevel).createGameObject());
-  }
+  public GameImpl() {}
   
   @Override
-  public List<GameObject> getPlayers() {
+  public List<Player> getPlayers() {
     return this.players;
   }
   
   @Override
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+  
+  @Override
+  public Board getBoard() {
+    return this.board;
+  }
+  
+  @Override
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+  
+  @Override
+  public List<PlayerDetail> getPlayerDetails() {
+    return this.playerDetails;
+  }
+  
+  @Override
+  public void setPlayerDetails(List<PlayerDetail> playerDetails) {
+    this.playerDetails = playerDetails;
+  }
+  
+  @Override
   public List<Cards> getCards() {
-    final List<Player> players = getPlayers()
+    /*final List<Player> players = getPlayers()
                                        .stream()
                                        .map(gameObject -> (Player) gameObject)
                                        .collect(Collectors.toList());
     
-    return getDealer().dealCards(players);
+    return getDealer().dealCards(players);*/
+    return this.cards;
+  }
+  
+  @Override
+  public void setCards(List<Cards> cards) {
+    this.cards = cards;
   }
   
   @Override
@@ -98,13 +131,23 @@ public class GameImpl implements Game {
   }
   
   @Override
-  public boolean isOnlyOneRound() {
-    final int size = getPlayers().size();
-    
-    if (size > 4) {
-      return getKnockerCount() == 3;
-    }
-    
-    return getKnockerCount() == getPlayers().size() - 1;
+  public void onlyOneRound() {
+    this.onlyOneRound = true;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof GameImpl)) return false;
+    GameImpl game = (GameImpl) o;
+    return getRound() == game.getRound() && getCurrentTurnNumber() == game.getCurrentTurnNumber() &&
+                 getKnockerCount() == game.getKnockerCount() && getPlayers().equals(game.getPlayers()) &&
+                 getLastKnocker().equals(game.getLastKnocker()) && getDealer().equals(game.getDealer()) &&
+                 getWinner().equals(game.getWinner());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getPlayers(), getRound(), getCurrentTurnNumber(), getKnockerCount(), getLastKnocker(), getDealer(), getWinner());
   }
 }

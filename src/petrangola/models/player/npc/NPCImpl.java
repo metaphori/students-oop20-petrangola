@@ -1,6 +1,7 @@
 package petrangola.models.player.npc;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import petrangola.models.cards.Cards;
 import petrangola.utlis.Delimiter;
@@ -68,4 +69,16 @@ public class NPCImpl implements NPC {
     return strategy.getDrawback();
   }
   
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof NPCImpl)) return false;
+    NPCImpl npc = (NPCImpl) o;
+    return id == npc.id && getDifficultyLevel() == npc.getDifficultyLevel();
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getDifficultyLevel(), id);
+  }
 }

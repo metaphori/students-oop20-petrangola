@@ -2,23 +2,30 @@ package petrangola.models.player;
 
 import petrangola.models.cards.Card;
 
+import java.util.Objects;
+
 public class PlayerDetailImpl implements PlayerDetail {
   private final static int INITIAL_LIVES = 3;
-  private final Card card;
   private final int turnNumber;
   private final Player player;
   
   private int playerLives = INITIAL_LIVES;
   
-  public PlayerDetailImpl(final Player player, final Card card, final int turnNumber) {
+  private Card highCard;
+  
+  public PlayerDetailImpl(final Player player, final int turnNumber) {
     this.player = player;
-    this.card = card;
     this.turnNumber = turnNumber;
   }
   
   @Override
   public Card getHighCard() {
-    return this.card;
+    return this.highCard;
+  }
+  
+  @Override
+  public void setHighCard(Card highCard) {
+    this.highCard = highCard;
   }
   
   @Override
@@ -39,5 +46,18 @@ public class PlayerDetailImpl implements PlayerDetail {
   @Override
   public Player getPlayer() {
     return this.player;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof PlayerDetailImpl)) return false;
+    PlayerDetailImpl that = (PlayerDetailImpl) o;
+    return getTurnNumber() == that.getTurnNumber() && getPlayerLives() == that.getPlayerLives() && getPlayer().equals(that.getPlayer()) && getHighCard().equals(that.getHighCard());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getTurnNumber(), getPlayer(), getPlayerLives(), getHighCard());
   }
 }

@@ -4,6 +4,8 @@ import petrangola.utlis.Delimiter;
 import petrangola.utlis.Name;
 import petrangola.utlis.Suit;
 
+import java.util.Objects;
+
 /**
  * {@inheritDoc}
  */
@@ -45,5 +47,18 @@ public class CardImpl implements Card {
   @Override
   public int getValue() {
     return getName().getValue();
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardImpl)) return false;
+    CardImpl card = (CardImpl) o;
+    return getName() == card.getName() && getSuit() == card.getSuit();
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getSuit());
   }
 }

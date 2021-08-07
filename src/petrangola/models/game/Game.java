@@ -1,8 +1,10 @@
 package petrangola.models.game;
 
+import petrangola.models.board.Board;
 import petrangola.models.cards.Cards;
 import petrangola.models.player.Dealer;
 import petrangola.models.player.Player;
+import petrangola.models.player.PlayerDetail;
 
 import java.util.List;
 
@@ -11,13 +13,36 @@ public interface Game {
     *
     * @return
     */
-   List<GameObject> getPlayers();
+   List<Player> getPlayers();
+   
+   void setPlayers(List<Player> players);
+   
+   /**
+    *
+    * @return
+    */
+   Board getBoard();
+   
+   /**
+    *
+    * @param board
+    */
+   void setBoard(Board board);
+   
+   List<PlayerDetail> getPlayerDetails();
+   
+   /**
+    *
+    */
+   void setPlayerDetails(List<PlayerDetail> playerDetails);
    
    /**
     *
     * @return
     */
    List<Cards> getCards();
+   
+   void setCards(List<Cards> cards);
    
    /**
     *
@@ -93,8 +118,8 @@ public interface Game {
    
    /**
     *
-    * @return true if the dealer has taken the board cards
+    * set to true if the dealer has taken the board cards
     */
-   boolean isOnlyOneRound();
+   void onlyOneRound();
    
 }

@@ -44,4 +44,5 @@ public interface ObservableModel {
   default void removePropertyChangeLister(PropertyChangeListener pcl) {
     getSupport().removePropertyChangeListener(pcl);
   }
+  
 }

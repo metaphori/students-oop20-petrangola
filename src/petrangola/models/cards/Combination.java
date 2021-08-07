@@ -5,7 +5,6 @@ import java.util.List;
 import petrangola.utlis.Pair;
 
 public interface Combination {
-  
   /**
    *
    * @return if the cards have the same name value

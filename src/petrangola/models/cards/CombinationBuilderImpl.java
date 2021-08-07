@@ -89,4 +89,17 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       }
     };
   }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CombinationBuilderImpl)) return false;
+    CombinationBuilderImpl that = (CombinationBuilderImpl) o;
+    return cards.equals(that.cards);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(cards);
+  }
 }

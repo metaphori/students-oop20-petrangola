@@ -7,7 +7,6 @@ import petrangola.utlis.Suit;
  * The single Card model
  */
 public interface Card {
-  
   /**
    *
    * @return the name associated with the value

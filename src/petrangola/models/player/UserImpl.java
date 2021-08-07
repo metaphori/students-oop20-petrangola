@@ -3,6 +3,7 @@ package petrangola.models.player;
 import petrangola.models.cards.Cards;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserImpl implements User {
   private final String username;
@@ -24,5 +25,18 @@ public class UserImpl implements User {
   @Override
   public boolean isNPC() {
     return false;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UserImpl)) return false;
+    UserImpl user = (UserImpl) o;
+    return getUsername().equals(user.getUsername());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getUsername());
   }
 }
