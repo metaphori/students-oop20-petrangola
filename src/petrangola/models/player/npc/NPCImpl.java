@@ -1,16 +1,21 @@
 package petrangola.models.player.npc;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import petrangola.models.cards.Cards;
 import petrangola.utlis.Delimiter;
 import petrangola.utlis.DifficultyLevel;
 
 public class NPCImpl implements NPC {
-  private static final String NPC_NAME = "NPC_NAME";
+  private static final String NPC_NAME = "NPC_";
   private final DifficultyLevel difficultyLevel;
   private final int id;
+  
+  private static final Map<DifficultyLevel, DrawbackStrategy> STRATEGY_MAP = new EnumMap<>(DifficultyLevel.class);
+  static {
+    STRATEGY_MAP.put(DifficultyLevel.EASY, new EasyDrawback());
+    STRATEGY_MAP.put(DifficultyLevel.INTERMEDIATE, new IntermediateDrawback());
+    STRATEGY_MAP.put(DifficultyLevel.ADVANCED, new AdvancedDrawback());
+  }
   
   public NPCImpl(final int id, final DifficultyLevel difficultyLevel) {
     this.id = id;
@@ -24,9 +29,7 @@ public class NPCImpl implements NPC {
   
   @Override
   public String getUsername() {
-    return NPC_NAME
-                 .concat(Delimiter.UNDERSCORE.toString())
-                 .concat(String.valueOf(this.id));
+    return NPC_NAME.concat(Delimiter.UNDERSCORE.toString()).concat(String.valueOf(this.id));
   }
   
   @Override
@@ -50,23 +53,11 @@ public class NPCImpl implements NPC {
   }
   
   private double getDrawback() {
-    DrawbackStrategy strategy;
-    
-    switch (getDifficultyLevel()) {
-      case EASY:
-        strategy = new EasyDrawback();
-        break;
-      case INTERMEDIATE:
-        strategy = new IntermediateDrawback();
-        break;
-      case ADVANCED:
-        strategy = new AdvancedDrawback();
-        break;
-      default:
-        throw new IllegalStateException();
+    if (!STRATEGY_MAP.containsKey(getDifficultyLevel())) {
+      throw new IllegalStateException("We don't that here");
     }
     
-    return strategy.getDrawback();
+    return STRATEGY_MAP.get(getDifficultyLevel()).getDrawback();
   }
   
   @Override
