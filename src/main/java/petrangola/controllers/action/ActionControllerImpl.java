@@ -1,16 +1,10 @@
 package main.java.petrangola.controllers.action;
 
-import main.java.petrangola.views.OptionView;
-import main.java.petrangola.views.game.GameView;
+import main.java.petrangola.views.option.OptionView;
 
 public class ActionControllerImpl implements ActionController {
   private OptionView optionView;
-  private GameView gameView;
   
-  @Override
-  public void init() {
-  
-  }
   
   @Override
   public void start() {
@@ -18,17 +12,7 @@ public class ActionControllerImpl implements ActionController {
   }
   
   @Override
-  public void play() {
-  
-  }
-  
-  @Override
-  public void goTo() {
-  
-  }
-  
-  @Override
-  public void goBack() {
+  public void quit() {
   
   }
 }

@@ -1,10 +1,6 @@
 package main.java.petrangola.controllers.player;
 
-public class DealerControllerImpl implements DealerController{
-  @Override
-  public void init() {
-  
-  }
+public class DealerControllerImpl implements DealerController {
   
   @Override
   public void setDealer() {

@@ -3,7 +3,6 @@ package main.java.petrangola.controllers.game;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.models.board.BoardImpl;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.CardFactoryImpl;
@@ -19,30 +18,19 @@ import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.utlis.Pair;
 
 public class GameControllerImpl implements GameController {
-  private final OptionController optionController;
-  private GameFactory gameFactory;
-  private PlayerFactory playerFactory;
-  private Game game;
+  private final GameFactory gameFactory;
+  private final PlayerFactory playerFactory;
+  private final Game game;
   
-  public GameControllerImpl(OptionController optionController) {
-    this.optionController = optionController;
-    
-    this.init();
-  }
-  
-  @Override
-  public void init() {
+  public GameControllerImpl() {
+    this.game = new GameImpl();
     this.gameFactory = new GameFactoryImpl();
     this.playerFactory = new PlayerFactoryImpl();
-    this.game = new GameImpl();
   }
   
   @Override
-  public void createPlayers() {
+  public void createPlayers(final String username, final DifficultyLevel level, final int size) {
     final List<Player> players = new ArrayList<>();
-    final String username = this.optionController.getUsername();
-    final DifficultyLevel level = this.optionController.geDifficulty();
-    final int size = this.optionController.getOpponentsSize();
     
     players.addAll(this.playerFactory.createNPC(size, level));
     players.add(this.playerFactory.createUser(username));
