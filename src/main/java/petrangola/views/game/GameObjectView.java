@@ -1,4 +1,4 @@
-package main.java.petrangola.views;
+package main.java.petrangola.views.game;
 
 public interface GameObjectView {
   /**
