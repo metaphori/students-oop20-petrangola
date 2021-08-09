@@ -1,8 +1,10 @@
 package main.java.petrangola.views;
 
 import main.java.petrangola.models.ObservableModel;
+import main.java.petrangola.views.components.ViewNode;
 
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public interface View extends PropertyChangeListener {
   /**
