@@ -1,19 +1,14 @@
 package main.java.petrangola.controllers.option;
 
+import main.java.petrangola.controllers.MenuController;
 import main.java.petrangola.utlis.DifficultyLevel;
 
-public interface OptionController {
+public interface OptionController extends MenuController {
   /**
    *
    * @param opponentsSize
    */
   void setOpponentsSize(int opponentsSize);
-  
-  /**
-   *
-   * @return
-   */
-  int getOpponentsSize();
   
   /**
    *
@@ -23,20 +18,12 @@ public interface OptionController {
   
   /**
    *
-   * @return
-   */
-  DifficultyLevel geDifficulty();
-  
-  /**
-   *
    * @param username
    */
   void setUsername(String username);
   
   /**
    *
-   * @return
    */
-  String getUsername();
-  
+  void play();
 }
