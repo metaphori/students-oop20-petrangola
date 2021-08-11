@@ -14,12 +14,13 @@ public interface ViewFactory {
   
   /**
    *
+   * @return
    */
   OptionView createOptionView();
   
   /**
    *
-   * @param primaryStage
+   * @return
    */
-  ActionView createActionView(Stage primaryStage);
+  ActionView createActionView();
 }

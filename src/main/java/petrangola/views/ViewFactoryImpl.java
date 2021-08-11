@@ -9,18 +9,28 @@ import main.java.petrangola.views.option.OptionView;
 import main.java.petrangola.views.option.OptionViewImpl;
 
 public class ViewFactoryImpl implements ViewFactory {
+  private static Stage STAGE;
+  
+  public ViewFactoryImpl(Stage stage) {
+    STAGE = stage;
+  }
+  
   @Override
   public GameView createGameView() {
-    return new GameViewImpl();
+    return new GameViewImpl(getStage());
   }
   
   @Override
   public OptionView createOptionView() {
-    return new OptionViewImpl();
+    return new OptionViewImpl(getStage());
   }
   
   @Override
-  public ActionView createActionView(Stage primaryStage) {
-    return new ActionViewImpl(primaryStage);
+  public ActionView createActionView() {
+    return new ActionViewImpl(getStage());
+  }
+  
+  public static Stage getStage() {
+    return STAGE;
   }
 }
