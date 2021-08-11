@@ -12,7 +12,7 @@ public class OptionControllerImpl implements OptionController {
   
   public OptionControllerImpl() {
     this.option = new OptionImpl();
-    this.viewFactory = new ViewFactoryImpl();
+    this.viewFactory = new ViewFactoryImpl(ViewFactoryImpl.getStage());
   }
   
   @Override
