@@ -5,7 +5,7 @@ import main.java.petrangola.services.ResourceServiceImpl;
 import java.io.File;
 
 public enum Background {
-  MENU("menu_image.png");
+  MENU("/menu_image.png"), MENU_2("/auth_image_dark.png"), GAME("/game_image.png");
   
   private final ResourceService service = new ResourceServiceImpl();
   
@@ -15,7 +15,6 @@ public enum Background {
   }
   
   public String getPath() {
-    System.out.println(this.service.getPath());
     return this.service.getPath();
   }
 }
