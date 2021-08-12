@@ -32,27 +32,12 @@ public class Pair<X, Y> {
     return result;
   }
   
-  @SuppressWarnings("rawtypes")
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Pair other = (Pair) obj;
-    if (x == null) {
-      if (other.x != null)
-        return false;
-    } else if (!x.equals(other.x))
-      return false;
-    if (y == null) {
-      if (other.y != null)
-        return false;
-    } else if (!y.equals(other.y))
-      return false;
-    return true;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Pair)) return false;
+    Pair<?, ?> pair = (Pair<?, ?>) o;
+    return getX().equals(pair.getX()) && getY().equals(pair.getY());
   }
   
   @Override
