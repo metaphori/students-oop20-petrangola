@@ -1,15 +1,19 @@
 package main.java.petrangola.views.action;
 
 
+import main.java.petrangola.controllers.action.ActionController;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.button.SimpleButton;
 
 public class StartButton extends AbstractButtonFX implements SimpleButton {
+  private final ActionController actionController;
   private final static String START = "Start";
   
-  public StartButton() {
+  public StartButton(ActionController actionController) {
     super(START);
+    
+    this.actionController = actionController;
   }
   
   @Override
@@ -57,10 +61,12 @@ public class StartButton extends AbstractButtonFX implements SimpleButton {
     });
   
     this.setMinWidth(ViewConstants.WIDTH.getLength() * 0.5);
+    this.setWidth(ViewConstants.WIDTH.getLength() * 0.6);
+    this.setMaxWidth(ViewConstants.WIDTH.getLength() * 0.7);
   }
   
   @Override
   public void setListeners() {
-  
+    this.setOnMouseClicked(mouseEvent -> this.actionController.start());
   }
 }

@@ -1,14 +1,17 @@
 package main.java.petrangola.views.action;
 
+import main.java.petrangola.controllers.action.ActionController;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.button.SimpleButton;
 
 public class QuitButton extends AbstractButtonFX implements SimpleButton {
+  private final ActionController actionController;
   private final static String QUIT = "Quit";
   
-  public QuitButton() {
+  public QuitButton(ActionController actionController) {
     super(QUIT);
+    this.actionController = actionController;
   }
   
   @Override
@@ -54,12 +57,14 @@ public class QuitButton extends AbstractButtonFX implements SimpleButton {
         this.setStyle(this.getStyle().concat(pressed));
       }
     });
-  
+    
     this.setMinWidth(ViewConstants.WIDTH.getLength() * 0.35);
+    this.setWidth(ViewConstants.WIDTH.getLength() * 0.4);
+    this.setMaxWidth(ViewConstants.WIDTH.getLength() * 0.5);
   }
   
   @Override
   public void setListeners() {
-  
+    this.setOnMouseClicked(mouseEvent -> this.actionController.quit());
   }
 }
