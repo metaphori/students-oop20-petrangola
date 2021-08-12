@@ -1,16 +1,17 @@
 package main.java.petrangola.models.player;
 
-import main.java.petrangola.models.cards.Card;
-
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
+import main.java.petrangola.models.cards.Card;
 
 public class PlayerDetailImpl implements PlayerDetail {
   private final static int INITIAL_LIVES = 3;
+  
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private final int turnNumber;
   private final Player player;
   
   private int playerLives = INITIAL_LIVES;
-  
   private Card highCard;
   
   public PlayerDetailImpl(final Player player, final int turnNumber) {
@@ -26,6 +27,7 @@ public class PlayerDetailImpl implements PlayerDetail {
   @Override
   public void setHighCard(Card highCard) {
     this.highCard = highCard;
+    firePropertyChange("highCard", null, highCard);
   }
   
   @Override
@@ -35,7 +37,9 @@ public class PlayerDetailImpl implements PlayerDetail {
   
   @Override
   public void takeLife() {
+    final int oldValue = this.playerLives;
     this.playerLives--;
+    firePropertyChange("playerLives", oldValue , playerLives);
   }
   
   @Override
@@ -59,5 +63,10 @@ public class PlayerDetailImpl implements PlayerDetail {
   @Override
   public int hashCode() {
     return Objects.hash(getTurnNumber(), getPlayer(), getPlayerLives(), getHighCard());
+  }
+  
+  @Override
+  public PropertyChangeSupport getSupport() {
+    return this.support;
   }
 }

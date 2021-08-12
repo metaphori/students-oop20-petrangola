@@ -1,8 +1,9 @@
 package main.java.petrangola.models.player;
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.cards.Card;
 
-public interface PlayerDetail  {
+public interface PlayerDetail extends ObservableModel {
   /**
    *
    * @return

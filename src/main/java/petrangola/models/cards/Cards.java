@@ -1,11 +1,11 @@
 package main.java.petrangola.models.cards;
 
 import java.util.Optional;
-
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.board.Board;
 import main.java.petrangola.models.player.Player;
 
-public interface Cards {
+public interface Cards extends ObservableModel {
   /**
    *
    * @return

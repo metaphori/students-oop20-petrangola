@@ -1,5 +1,6 @@
 package main.java.petrangola.models.game;
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.board.Board;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.player.Dealer;
@@ -8,7 +9,7 @@ import main.java.petrangola.models.player.PlayerDetail;
 
 import java.util.List;
 
-public interface Game {
+public interface Game extends ObservableModel {
    /**
     *
     * @return

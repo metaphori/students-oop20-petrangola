@@ -1,9 +1,7 @@
 package main.java.petrangola.models.option;
 
-import main.java.petrangola.models.Option;
-import main.java.petrangola.utlis.DifficultyLevel;
-
 import java.beans.PropertyChangeSupport;
+import main.java.petrangola.utlis.DifficultyLevel;
 
 public class OptionImpl implements Option {
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -20,29 +18,35 @@ public class OptionImpl implements Option {
   }
   
   public void setOpponentSize(int opponentSize) {
+    final int oldValue = this.opponentSize;
     this.opponentSize = opponentSize;
+    firePropertyChange("opponentSize", oldValue, opponentSize);
   }
   
   @Override
   public DifficultyLevel getDifficultyLevel() {
-    return null;
+    return this.difficultyLevel;
   }
   
   public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+    final DifficultyLevel oldValue = this.difficultyLevel;
     this.difficultyLevel = difficultyLevel;
+    firePropertyChange("difficultyLevel", oldValue, difficultyLevel);
   }
   
   @Override
   public String getUsername() {
-    return null;
+    return this.username;
   }
   
   public void setUsername(String username) {
+    String oldValue = this.username;
     this.username = username;
+    firePropertyChange("username", oldValue, username);
   }
   
   @Override
   public PropertyChangeSupport getSupport() {
-    return null;
+    return this.support;
   }
 }
