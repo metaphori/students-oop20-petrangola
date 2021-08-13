@@ -1,18 +1,21 @@
 package main.java.petrangola.views.components.textView;
 
 import javafx.scene.control.TextField;
+import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.views.option.commands.UsernameCommand;
 
 public class UsernameTextView extends TextField implements SimpleTextView<String> {
-  private final UsernameCommand command = new UsernameCommand(this);
+  private final UsernameCommand command;
   private String text;
   
-  public UsernameTextView() {
+  public UsernameTextView(final OptionController optionController) {
     this.setMinWidth(320);
     this.setWidth(380);
     this.setMaxWidth(480);
     this.setStyle("-fx-font-size: 14pt;");
     setListeners();
+    
+    this.command = new UsernameCommand(this, optionController);
   }
   
   @Override

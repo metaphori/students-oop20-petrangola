@@ -1,14 +1,15 @@
 package main.java.petrangola.views.components.slider;
 
 import javafx.util.StringConverter;
+import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.option.commands.DifficultyCommand;
 
 public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<DifficultyLevel> {
-  private final DifficultyCommand command = new DifficultyCommand(this);
+  private final DifficultyCommand command;
   private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
   
-  public DifficultySlider() {
+  public DifficultySlider(final OptionController optionController) {
     super(0, 2, 0);
   
     this.setMinWidth(320);
@@ -18,6 +19,8 @@ public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<D
   
     setLabels();
     setListeners();
+  
+    this.command = new DifficultyCommand(this, optionController);
   }
   
   @Override

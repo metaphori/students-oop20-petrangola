@@ -6,8 +6,8 @@ import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.button.SimpleButton;
 
 public class QuitButton extends AbstractButtonFX implements SimpleButton {
-  private final ActionController actionController;
   private final static String QUIT = "Quit";
+  private final ActionController actionController;
   
   public QuitButton(ActionController actionController) {
     super(QUIT);
@@ -61,6 +61,11 @@ public class QuitButton extends AbstractButtonFX implements SimpleButton {
     this.setMinWidth(ViewConstants.WIDTH.getLength() * 0.35);
     this.setWidth(ViewConstants.WIDTH.getLength() * 0.4);
     this.setMaxWidth(ViewConstants.WIDTH.getLength() * 0.5);
+  }
+  
+  @Override
+  public void setData(Object... data) {
+    // empty
   }
   
   @Override

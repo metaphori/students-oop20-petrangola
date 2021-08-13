@@ -6,21 +6,22 @@ import main.java.petrangola.utlis.DifficultyLevel;
 public class OptionImpl implements Option {
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   
-  private int opponentSize;
-  private DifficultyLevel difficultyLevel;
+  private int opponentsSize = 1;
+  private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
   private String username;
   
   public OptionImpl() {}
   
   @Override
   public int getOpponentsSize() {
-    return this.opponentSize;
+    return this.opponentsSize;
   }
   
-  public void setOpponentSize(int opponentSize) {
-    final int oldValue = this.opponentSize;
-    this.opponentSize = opponentSize;
-    firePropertyChange("opponentSize", oldValue, opponentSize);
+  @Override
+  public void setOpponentsSize(int opponentsSize) {
+    final int oldValue = this.opponentsSize;
+    this.opponentsSize = opponentsSize;
+    firePropertyChange("opponentsSize", oldValue, opponentsSize);
   }
   
   @Override
@@ -28,6 +29,7 @@ public class OptionImpl implements Option {
     return this.difficultyLevel;
   }
   
+  @Override
   public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
     final DifficultyLevel oldValue = this.difficultyLevel;
     this.difficultyLevel = difficultyLevel;
@@ -39,6 +41,7 @@ public class OptionImpl implements Option {
     return this.username;
   }
   
+  @Override
   public void setUsername(String username) {
     String oldValue = this.username;
     this.username = username;

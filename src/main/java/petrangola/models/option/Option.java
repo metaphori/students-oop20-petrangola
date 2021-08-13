@@ -21,4 +21,22 @@ public interface Option extends ObservableModel {
    * @return
    */
   String getUsername();
+  
+  /**
+   *
+   * @param opponentsSize
+   */
+  void setOpponentsSize(int opponentsSize);
+  
+  /**
+   *
+   * @param difficulty
+   */
+  void setDifficultyLevel(DifficultyLevel difficulty);
+  
+  /**
+   *
+   * @param username
+   */
+  void setUsername(String username);
 }

@@ -1,20 +1,27 @@
 package main.java.petrangola.views.option;
 
+import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.button.SimpleButton;
 
 public class PlayButton extends AbstractButtonFX implements SimpleButton {
   private final static String PLAY = "Play";
+  private final OptionController optionController;
+  private Object[] data;
   
-  public PlayButton() {
+  public PlayButton(OptionController optionController) {
     super(PLAY);
+    this.optionController = optionController;
+    this.setDisable(true);
+  }
+  
+  public void setData(Object... data) {
+    this.data = data;
   }
   
   @Override
   public void handleStyle() {
-    // TODO : ButtonBuilder
-    
     String normal = "-fx-padding: 8 15 15 15;\n" +
                           "      -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;\n" +
                           "      -fx-background-radius: 8;\n" +
@@ -64,6 +71,6 @@ public class PlayButton extends AbstractButtonFX implements SimpleButton {
   
   @Override
   public void setListeners() {
-  
+    this.setOnMouseClicked(mouseEvent -> this.optionController.play(data));
   }
 }

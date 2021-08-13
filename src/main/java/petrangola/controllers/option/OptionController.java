@@ -25,5 +25,5 @@ public interface OptionController extends MenuController {
   /**
    *
    */
-  void play();
+  void play(final Object... data);
 }

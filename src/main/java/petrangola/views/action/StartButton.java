@@ -7,12 +7,11 @@ import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.button.SimpleButton;
 
 public class StartButton extends AbstractButtonFX implements SimpleButton {
-  private final ActionController actionController;
   private final static String START = "Start";
+  private final ActionController actionController;
   
   public StartButton(ActionController actionController) {
     super(START);
-    
     this.actionController = actionController;
   }
   
@@ -63,6 +62,11 @@ public class StartButton extends AbstractButtonFX implements SimpleButton {
     this.setMinWidth(ViewConstants.WIDTH.getLength() * 0.5);
     this.setWidth(ViewConstants.WIDTH.getLength() * 0.6);
     this.setMaxWidth(ViewConstants.WIDTH.getLength() * 0.7);
+  }
+  
+  @Override
+  public void setData(Object... data) {
+    // empty
   }
   
   @Override

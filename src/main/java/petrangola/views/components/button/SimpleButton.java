@@ -9,4 +9,7 @@ public interface SimpleButton extends ViewNode {
    */
   void handleStyle();
   
+  void setData(Object... data);
+  
+  void setDisable(boolean b);
 }
