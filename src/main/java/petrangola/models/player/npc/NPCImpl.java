@@ -29,7 +29,7 @@ public class NPCImpl implements NPC {
   
   @Override
   public String getUsername() {
-    return NPC_NAME.concat(Delimiter.UNDERSCORE.toString()).concat(String.valueOf(this.id));
+    return NPC_NAME.concat(Delimiter.UNDERSCORE.getText()).concat(String.valueOf(this.id));
   }
   
   @Override

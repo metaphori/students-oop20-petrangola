@@ -9,8 +9,7 @@ public enum Delimiter {
     this.text = text;
   }
   
-  @Override
-  public String toString() {
-    return super.toString();
+  public String getText() {
+    return text;
   }
 }

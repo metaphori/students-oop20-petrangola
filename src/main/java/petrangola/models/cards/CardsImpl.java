@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class CardsImpl implements Cards {
-  private final PropertyChangeSupport support = new PropertyChangeSupport(this);;
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private final GameObject gameObject;
   private Combination combination;
   

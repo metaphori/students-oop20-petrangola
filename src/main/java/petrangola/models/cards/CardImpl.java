@@ -29,7 +29,7 @@ public class CardImpl implements Card {
   @Override
   public String getFullName() {
     return getSuit().toString().toLowerCase()
-                 .concat(Delimiter.UNDERSCORE.toString())
+                 .concat(Delimiter.UNDERSCORE.getText())
                  .concat(String.valueOf(getValue()));
   }
   

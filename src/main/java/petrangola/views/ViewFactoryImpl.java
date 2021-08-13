@@ -1,6 +1,7 @@
 package main.java.petrangola.views;
 
 import javafx.stage.Stage;
+import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.action.ActionViewImpl;
 import main.java.petrangola.views.action.ActionView;
 import main.java.petrangola.views.game.GameView;
@@ -16,8 +17,8 @@ public class ViewFactoryImpl implements ViewFactory {
   }
   
   @Override
-  public GameView createGameView() {
-    return new GameViewImpl(getStage());
+  public GameView createGameView(String username, DifficultyLevel difficultyLevel, int opponentsSize) {
+    return new GameViewImpl(getStage(), username, difficultyLevel, opponentsSize);
   }
   
   @Override

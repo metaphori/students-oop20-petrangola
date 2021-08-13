@@ -10,7 +10,7 @@ import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
 
 public class GameImpl implements Game {
-  private final PropertyChangeSupport support = new PropertyChangeSupport(this);;
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private List<PlayerDetail> playerDetails;
   private List<Player> players;
   private List<Cards> cards;
