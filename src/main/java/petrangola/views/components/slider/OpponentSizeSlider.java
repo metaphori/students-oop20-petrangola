@@ -1,6 +1,7 @@
 package main.java.petrangola.views.components.slider;
 
 import main.java.petrangola.controllers.option.OptionController;
+import main.java.petrangola.views.components.ViewNode;
 import main.java.petrangola.views.option.commands.OpponentsSizeCommand;
 
 public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider<Integer> {
@@ -8,16 +9,16 @@ public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider
   private int value = 1;
   
   public OpponentSizeSlider(final OptionController optionController) {
-    super(1,12,1);
+    super(1, 12, 1);
     
-    this.setMinWidth(320);
-    this.setWidth(480);
-    this.setMaxWidth(600);
-    this.setStyle("-fx-font-size: 14pt;");
+    super.get().setMinWidth(320);
+    // super.get().setWidth(480);
+    super.get().setMaxWidth(600);
+    super.get().setStyle("-fx-font-size: 14pt;");
     
     setListeners();
     
-    this.command =  new OpponentsSizeCommand(this, optionController);
+    this.command = new OpponentsSizeCommand(this, optionController);
   }
   
   @Override
@@ -32,7 +33,7 @@ public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider
   
   @Override
   public void setListeners() {
-    this.valueProperty().addListener((observable, oldValue, newValue) -> {
+    super.get().valueProperty().addListener((observable, oldValue, newValue) -> {
       setValueFromSlider(newValue.intValue());
       command.execute();
     });

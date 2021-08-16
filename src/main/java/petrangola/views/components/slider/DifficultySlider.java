@@ -11,34 +11,16 @@ public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<D
   
   public DifficultySlider(final OptionController optionController) {
     super(0, 2, 0);
-  
-    this.setMinWidth(320);
-    this.setWidth(480);
-    this.setMaxWidth(600);
-    this.setStyle("-fx-font-size: 15pt;");
-  
+    
+    super.get().setMinWidth(320);
+    // super.get().setWidth(480);
+    super.get().setMaxWidth(600);
+    super.get().setStyle("-fx-font-size: 15pt;");
+    
     setLabels();
     setListeners();
-  
+    
     this.command = new DifficultyCommand(this, optionController);
-  }
-  
-  @Override
-  public DifficultyLevel getValueFromSlider() {
-    return this.difficultyLevel;
-  }
-  
-  @Override
-  public void setValueFromSlider(DifficultyLevel value) {
-    this.difficultyLevel = value;
-  }
-  
-  @Override
-  public void setListeners() {
-    this.valueProperty().addListener((observableValue, number, t1) -> {
-      setValueFromSlider(DifficultyLevel.valueOf(getStringFromDouble(t1.doubleValue()).toUpperCase()));
-      this.command.execute();
-    });
   }
   
   private static String getStringFromDouble(Double aDouble) {
@@ -73,8 +55,27 @@ public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<D
     return value;
   }
   
+  @Override
+  public DifficultyLevel getValueFromSlider() {
+    return this.difficultyLevel;
+  }
+  
+  @Override
+  public void setValueFromSlider(DifficultyLevel value) {
+    this.difficultyLevel = value;
+  }
+  
+  
+  @Override
+  public void setListeners() {
+    super.get().valueProperty().addListener((observableValue, number, t1) -> {
+      setValueFromSlider(DifficultyLevel.valueOf(getStringFromDouble(t1.doubleValue()).toUpperCase()));
+      this.command.execute();
+    });
+  }
+  
   private void setLabels() {
-    this.setLabelFormatter(new StringConverter<>() {
+    super.get().setLabelFormatter(new StringConverter<>() {
       @Override
       public String toString(Double aDouble) {
         return getStringFromDouble(aDouble);
