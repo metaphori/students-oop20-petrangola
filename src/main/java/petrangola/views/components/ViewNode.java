@@ -1,9 +1,11 @@
 package main.java.petrangola.views.components;
 
-public interface ViewNode {
+import main.java.petrangola.views.components.position.Placeable;
+
+public interface ViewNode<E> extends Placeable {
   /**
    *
+   * @return
    */
-  void setListeners();
-
+  E get();
 }
