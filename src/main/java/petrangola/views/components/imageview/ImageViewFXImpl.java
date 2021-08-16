@@ -8,6 +8,10 @@ import main.java.petrangola.views.components.ViewNodeImpl;
 public class ImageViewFXImpl extends ViewNodeImpl<ImageView> implements ImageViewFX {
   private Parent<Pane> parent;
   
+  public ImageViewFXImpl(ImageView node) {
+    super(node);
+  }
+  
   @Override
   public Parent<Pane> getParent() {
     return this.parent;
