@@ -32,7 +32,9 @@ public class GameImpl implements Game {
   
   @Override
   public void setPlayers(List<Player> players) {
+    final List<Player> oldValue = this.players;
     this.players = players;
+    firePropertyChange("players", oldValue, players);
   }
   
   @Override
@@ -42,7 +44,9 @@ public class GameImpl implements Game {
   
   @Override
   public void setBoard(Board board) {
+    final Board oldValue = this.board;
     this.board = board;
+    firePropertyChange("board", oldValue, board);
   }
   
   @Override
@@ -52,7 +56,9 @@ public class GameImpl implements Game {
   
   @Override
   public void setPlayerDetails(List<PlayerDetail> playerDetails) {
+    final List<PlayerDetail> oldValue = this.playerDetails;
     this.playerDetails = playerDetails;
+    firePropertyChange("playerDetails", oldValue, playerDetails);
   }
   
   @Override

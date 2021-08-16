@@ -1,6 +1,8 @@
 package main.java.petrangola.views.game;
 
-public interface GameView {
+import main.java.petrangola.views.View;
+
+public interface GameView extends View {
   /**
    *
    */
@@ -10,4 +12,14 @@ public interface GameView {
    *
    */
   void showCurrentPlayerName();
+  
+  /**
+   *
+   */
+  void showKnocks();
+  
+  /**
+   *
+   */
+  void showRound();
 }
