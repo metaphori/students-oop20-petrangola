@@ -1,8 +1,13 @@
 package main.java.petrangola.models.player;
 
+import main.java.petrangola.models.board.Board;
+import main.java.petrangola.models.cards.*;
+import main.java.petrangola.models.game.GameObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import main.java.petrangola.models.cards.Cards;
 
 public class DealerImpl implements Dealer {
   final Player player;
@@ -12,8 +17,26 @@ public class DealerImpl implements Dealer {
   }
   
   @Override
-  public List<Cards> dealCards(List<Player> players) {
-    return null;
+  public List<Cards> dealCards(List<PlayerDetail> playerDetails, Board board) {
+    final CardFactory cardFactory = new CardFactoryImpl();
+    final CardsFactory cardsFactory = new CardsFactoryImpl();
+    final CombinationFactory combinationFactory = new CombinationFactoryImpl();
+    final Map<GameObject, Combination> cardsToDeal = new HashMap<>();
+    final List<Combination> combinations = combinationFactory.createCombinations(cardFactory.createDeck(), playerDetails.size());
+    
+    System.out.println(combinations);
+    for (int index = 0; index < playerDetails.size() - 1; index++) {
+      cardsToDeal.put(playerDetails.get(index).getPlayer(), combinations.get(index));
+    }
+    
+    cardsToDeal.put(board, combinations.get(combinations.size() - 1));
+    
+    return cardsFactory.createCards(cardsToDeal);
+  }
+  
+  @Override
+  public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
+    return getPlayer().firstExchange(boardCards, playerCards);
   }
   
   @Override
@@ -31,10 +54,6 @@ public class DealerImpl implements Dealer {
     return getPlayer().isNPC();
   }
   
-  private Player getPlayer() {
-    return this.player;
-  }
-  
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -46,5 +65,9 @@ public class DealerImpl implements Dealer {
   @Override
   public int hashCode() {
     return Objects.hash(getPlayer());
+  }
+  
+  private Player getPlayer() {
+    return this.player;
   }
 }

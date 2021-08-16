@@ -13,6 +13,11 @@ public class UserImpl implements User {
   }
   
   @Override
+  public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
+    return List.of(boardCards, playerCards);
+  }
+  
+  @Override
   public List<Cards> exchange(Cards boardCards, Cards playerCards) {
     return List.of(boardCards, playerCards);
   }
