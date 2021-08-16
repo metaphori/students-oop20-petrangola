@@ -49,8 +49,6 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    // propertyChange(evt, this);
-    
     if (checkDifficultyLevel() && checkUsername()) {
       this.playButton.setData(this.option);
       this.playButton.setDisable(false);

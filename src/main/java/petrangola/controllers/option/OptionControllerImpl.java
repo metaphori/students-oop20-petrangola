@@ -4,7 +4,6 @@ import main.java.petrangola.models.option.Option;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.ViewFactoryImpl;
-import java.util.List;
 
 
 public class OptionControllerImpl implements OptionController {

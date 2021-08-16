@@ -2,7 +2,6 @@ package main.java.petrangola.utlis;
 
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.services.ResourceServiceImpl;
-import java.io.File;
 
 public enum Background {
   MENU("/menu_image.png"), MENU_2("/auth_image_dark.png"), GAME("/game_image.png");

@@ -63,10 +63,7 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    // propertyChange(evt, this);
-    
     if (this.game.getPlayerDetails() != null) {
-      this.game.getPlayerDetails().forEach(System.out::println);
       this.game.getPlayerDetails().forEach(this::addListenerToModel);
     }
     

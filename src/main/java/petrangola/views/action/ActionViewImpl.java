@@ -11,7 +11,6 @@ import main.java.petrangola.controllers.action.ActionControllerImpl;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.components.AbstractComponentFX;
-import main.java.petrangola.views.components.button.SimpleButton;
 
 public class ActionViewImpl extends AbstractViewFX implements ActionView {
   private final ActionController actionController = new ActionControllerImpl();

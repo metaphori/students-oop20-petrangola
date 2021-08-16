@@ -1,7 +1,6 @@
 package main.java.petrangola.views.components.slider;
 
 import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.views.components.ViewNode;
 import main.java.petrangola.views.option.commands.OpponentsSizeCommand;
 
 public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider<Integer> {

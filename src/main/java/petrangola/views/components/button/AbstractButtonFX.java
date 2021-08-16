@@ -7,8 +7,6 @@ import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.style.StyleBuilder;
 import main.java.petrangola.views.components.style.StyleBuilderImpl;
 
-import java.util.List;
-
 public abstract class AbstractButtonFX extends AbstractComponentFX<Button> implements SimpleButton<Button> {
   private final StyleBuilder styleBuilder = new StyleBuilderImpl();
   private DTO data;

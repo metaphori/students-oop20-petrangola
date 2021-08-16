@@ -10,7 +10,6 @@ import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameFactory;
 import main.java.petrangola.models.game.GameFactoryImpl;
-import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.player.*;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.utlis.Pair;

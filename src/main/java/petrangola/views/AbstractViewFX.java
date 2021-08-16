@@ -7,8 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.AbstractComponentFX;
-import main.java.petrangola.views.components.ViewNode;
-import main.java.petrangola.views.components.button.SimpleButton;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

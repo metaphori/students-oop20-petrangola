@@ -2,7 +2,6 @@ package main.java.petrangola.views;
 
 import javafx.stage.Stage;
 import main.java.petrangola.models.option.Option;
-import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.action.ActionViewImpl;
 import main.java.petrangola.views.action.ActionView;
 import main.java.petrangola.views.game.GameView;
