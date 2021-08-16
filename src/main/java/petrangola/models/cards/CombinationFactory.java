@@ -6,9 +6,9 @@ public interface CombinationFactory {
   /**
    *
    * @param cardList
-   * @param playerSize
+   * @param playersSize
    * @return
    */
-  List<Combination> createCombination(final List<Card> cardList, final int playerSize);
+  List<Combination> createCombinations(final List<Card> cardList, final int playersSize);
   
 }

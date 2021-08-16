@@ -12,6 +12,8 @@ import java.util.Objects;
 public class CardImpl implements Card {
   private final Name name;
   private final Suit suit;
+  private boolean isCovered = false;
+  private boolean isHidden = false;
   
   public CardImpl(final Name name, final Suit suit) {
     this.name = name;
@@ -47,6 +49,16 @@ public class CardImpl implements Card {
   @Override
   public int getValue() {
     return getName().getValue();
+  }
+  
+  @Override
+  public void setHidden(boolean hidden) {
+    this.isHidden = hidden;
+  }
+  
+  @Override
+  public void setCovered(boolean covered) {
+    this.isCovered = covered;
   }
   
   @Override

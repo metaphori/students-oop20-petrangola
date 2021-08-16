@@ -31,4 +31,16 @@ public interface Card {
    */
   int getValue();
   
+  /**
+   *
+   * @param hidden
+   */
+  void setHidden(boolean hidden);
+  
+  /**
+   *
+   * @param covered
+   */
+  void setCovered(boolean covered);
+  
 }
