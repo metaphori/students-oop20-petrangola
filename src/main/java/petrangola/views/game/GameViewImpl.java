@@ -4,36 +4,19 @@ package main.java.petrangola.views.game;
 import javafx.stage.Stage;
 import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.game.GameControllerImpl;
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.option.Option;
-import main.java.petrangola.models.player.Dealer;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 public class GameViewImpl extends AbstractViewFX implements GameView {
   private final Game game = new GameImpl();
   private final GameController gameController = new GameControllerImpl(game);
-  // TODO: delete this fields and only update Views ( also in OptionViewImpl )
-  private List<PlayerDetail> playerDetails;
-  private List<Player> players;
-  private List<Cards> cards;
-  private Board board;
-  private Dealer dealer;
-  private int round;
-  private int currentTurnNumber;
-  private int knockerCount;
-  private String lastKnocker;
-  private String winner;
-  private boolean onlyOneRound = false;
+  
   
   public GameViewImpl(Stage stage, Option option) {
     super(stage, new LayoutBuilderImpl()
@@ -80,18 +63,19 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    propertyChange(evt, this);
+    // propertyChange(evt, this);
     
-    if (this.playerDetails != null) {
-      this.playerDetails.forEach(this::addListenerToModel);
+    if (this.game.getPlayerDetails() != null) {
+      this.game.getPlayerDetails().forEach(System.out::println);
+      this.game.getPlayerDetails().forEach(this::addListenerToModel);
     }
     
-    if (this.cards != null) {
-      this.cards.forEach(this::addListenerToModel);
+    if (this.game.getCards() != null) {
+      this.game.getCards().forEach(this::addListenerToModel);
     }
     
-    if (this.dealer != null) {
-      this.dealer.dealCards(this.playerDetails, this.board);
+    if (this.game.getDealer() != null) {
+      this.game.getDealer().dealCards(this.game.getPlayerDetails(), this.game.getBoard());
     }
   }
 }

@@ -17,17 +17,4 @@ public interface View extends PropertyChangeListener {
   default void addListenerToModel(ObservableModel model) {
     model.addPropertyChangeListener(this);
   }
-  
-  default void propertyChange(PropertyChangeEvent evt, View view) {
-    Arrays.stream(view.getClass().getDeclaredFields()).forEach(field -> {
-      if (field.getName().equals(evt.getPropertyName())) {
-        try {
-          field.setAccessible(true); // I really don't want to use this but it save me from duplication
-          field.set(this, evt.getNewValue());
-        } catch (IllegalAccessException e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
 }

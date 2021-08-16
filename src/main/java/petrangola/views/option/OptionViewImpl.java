@@ -11,7 +11,6 @@ import main.java.petrangola.controllers.option.OptionControllerImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.option.OptionImpl;
 import main.java.petrangola.utlis.Background;
-import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
@@ -20,20 +19,15 @@ import main.java.petrangola.views.components.slider.OpponentSizeSlider;
 import main.java.petrangola.views.components.textView.UsernameTextView;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 public class OptionViewImpl extends AbstractViewFX implements OptionView {
-  private final Option model = new OptionImpl();
-  private final OptionController optionController = new OptionControllerImpl(model);
+  private final Option option = new OptionImpl();
+  private final OptionController optionController = new OptionControllerImpl(option);
   
   private final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
   private final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
   private final AbstractComponentFX<TextField> userTextView = new UsernameTextView(optionController);
   private final AbstractButtonFX playButton = new PlayButton(optionController);
-  
-  private int opponentsSize = this.model.getOpponentsSize();
-  private DifficultyLevel difficultyLevel = this.model.getDifficultyLevel();
-  private String username;
   
   public OptionViewImpl(Stage stage) {
     super(stage, new VBox(24));
@@ -50,34 +44,28 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
     layout.setPadding(new Insets(24));
     layout.setAlignment(Pos.CENTER);
     
-    addListenerToModel(model);
+    addListenerToModel(option);
   }
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    propertyChange(evt, this);
+    // propertyChange(evt, this);
     
     if (checkDifficultyLevel() && checkUsername()) {
-      Option option = new OptionImpl();
-      
-      option.setUsername(this.username);
-      option.setDifficultyLevel(this.difficultyLevel);
-      option.setOpponentsSize(this.opponentsSize);
-      
-      this.playButton.setData(option);
+      this.playButton.setData(this.option);
       this.playButton.setDisable(false);
     }
   }
   
   private boolean checkUsername() {
-    if (this.username == null) {
+    if (this.option.getUsername() == null) {
       return false;
     }
     
-    return !this.username.trim().isBlank() || this.username.trim().length() > 2;
+    return !this.option.getUsername().trim().isBlank() || this.option.getUsername().trim().length() > 2;
   }
   
   private boolean checkDifficultyLevel() {
-    return this.difficultyLevel != null;
+    return this.option.getDifficultyLevel() != null;
   }
 }
