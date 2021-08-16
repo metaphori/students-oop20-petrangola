@@ -1,10 +1,9 @@
 package main.java.petrangola.views.option;
 
-import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.petrangola.controllers.option.OptionController;
@@ -14,24 +13,26 @@ import main.java.petrangola.models.option.OptionImpl;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.AbstractViewFX;
-import main.java.petrangola.views.components.button.SimpleButton;
+import main.java.petrangola.views.components.AbstractComponentFX;
+import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.slider.DifficultySlider;
 import main.java.petrangola.views.components.slider.OpponentSizeSlider;
-import main.java.petrangola.views.components.slider.SimpleSlider;
-import main.java.petrangola.views.components.textView.SimpleTextView;
 import main.java.petrangola.views.components.textView.UsernameTextView;
+
+import java.beans.PropertyChangeEvent;
+import java.util.List;
 
 public class OptionViewImpl extends AbstractViewFX implements OptionView {
   private final Option model = new OptionImpl();
   private final OptionController optionController = new OptionControllerImpl(model);
   
-  private final SimpleSlider<DifficultyLevel> difficultySlider = new DifficultySlider(optionController);
-  private final SimpleSlider<Integer> opponentSizeSlider = new OpponentSizeSlider(optionController);
-  private final SimpleTextView<String> userTextView = new UsernameTextView(optionController);
-  private final SimpleButton playButton =  new PlayButton(optionController);
+  private final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
+  private final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
+  private final AbstractComponentFX<TextField> userTextView = new UsernameTextView(optionController);
+  private final AbstractButtonFX playButton = new PlayButton(optionController);
   
-  private int opponentsSize;
-  private DifficultyLevel difficultyLevel;
+  private int opponentsSize = this.model.getOpponentsSize();
+  private DifficultyLevel difficultyLevel = this.model.getDifficultyLevel();
   private String username;
   
   public OptionViewImpl(Stage stage) {
@@ -39,9 +40,9 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
     
     final VBox layout = (VBox) getLayout();
     
-    loadChildren(OptionViewImpl.class.getDeclaredFields(), SimpleTextView.class, SimpleSlider.class, SimpleButton.class);
+    loadChildren(OptionViewImpl.class.getDeclaredFields());
     
-    layout.setStyle("-fx-background-image: url('"+ Background.MENU_2.getPath()+"');"+
+    layout.setStyle("-fx-background-image: url('" + Background.MENU_2.getPath() + "');" +
                           "-fx-background-repeat: no-repeat;" +
                           "-fx-background-size: cover;" +
                           "-fx-background-position: center center;");
@@ -54,19 +55,16 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    Arrays.stream(OptionViewImpl.class.getDeclaredFields()).forEach(field -> {
-      if (field.getName().equals(evt.getPropertyName())) {
-        try {
-          field.set(this, evt.getNewValue());
-        } catch (IllegalAccessException e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  
+    propertyChange(evt, this);
     
     if (checkDifficultyLevel() && checkUsername()) {
-      this.playButton.setData(this.username, this.difficultyLevel, this.opponentsSize);
+      Option option = new OptionImpl();
+      
+      option.setUsername(this.username);
+      option.setDifficultyLevel(this.difficultyLevel);
+      option.setOpponentsSize(this.opponentsSize);
+      
+      this.playButton.setData(option);
       this.playButton.setDisable(false);
     }
   }

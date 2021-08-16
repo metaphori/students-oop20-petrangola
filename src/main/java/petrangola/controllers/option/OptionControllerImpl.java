@@ -4,6 +4,7 @@ import main.java.petrangola.models.option.Option;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.ViewFactoryImpl;
+import java.util.List;
 
 
 public class OptionControllerImpl implements OptionController {
@@ -30,27 +31,9 @@ public class OptionControllerImpl implements OptionController {
     this.option.setUsername(username);
   }
   
-  @Override
-  public void play(Object... data) {
-    String username = "";
-    DifficultyLevel level = null;
-    int size = 0;
-    
-    for (Object o : data) {
-      if (o instanceof String) {
-        username = o.toString();
-      }
-      
-      if (o instanceof DifficultyLevel) {
-        level = (DifficultyLevel) o;
-      }
-      
-      if (o instanceof Integer) {
-        size = (int) o;
-      }
-    }
-    
-    this.viewFactory.createGameView(username, level, size);
+  
+  public void play(final Option option) {
+    this.viewFactory.createGameView(option);
   }
   
 }
