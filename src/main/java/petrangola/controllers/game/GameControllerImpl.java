@@ -11,9 +11,7 @@ import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameFactory;
 import main.java.petrangola.models.game.GameFactoryImpl;
 import main.java.petrangola.models.game.GameImpl;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerFactory;
-import main.java.petrangola.models.player.PlayerFactoryImpl;
+import main.java.petrangola.models.player.*;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.utlis.Pair;
 
@@ -22,8 +20,8 @@ public class GameControllerImpl implements GameController {
   private final PlayerFactory playerFactory;
   private final Game game;
   
-  public GameControllerImpl() {
-    this.game = new GameImpl();
+  public GameControllerImpl(Game model) {
+    this.game = model;
     this.gameFactory = new GameFactoryImpl();
     this.playerFactory = new PlayerFactoryImpl();
   }
@@ -50,17 +48,34 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void createHighCards() {
-    final int playerSize = this.game.getPlayers().size();
+    final int playersSize = this.game.getPlayers().size();
     final List<Card> cards = new CardFactoryImpl()
                                    .createDeck()
                                    .stream()
-                                   .limit(playerSize)
+                                   .limit(playersSize)
                                    .collect(Collectors.toList());
     
   
-    IntStream.range(0, playerSize)
+    IntStream.range(0, playersSize)
           .boxed()
           .forEach(index -> this.game.getPlayerDetails().get(index).setHighCard(cards.get(index)));
+  }
+  
+  @Override
+  public void setDealer() {
+    final Player dealerPlayer = this.game
+                                      .getPlayerDetails()
+                                      .stream()
+                                      .collect(Collectors.toMap(PlayerDetail::getPlayer, playerDetail -> playerDetail.getHighCard().getValue()))
+                                      .entrySet()
+                                      .stream()
+                                      .max(Map.Entry.comparingByValue())
+                                      .get()
+                                      .getKey();
+    
+    final Dealer dealer = new DealerImpl(dealerPlayer);
+    
+    this.game.setDealer(dealer);
   }
   
   @Override

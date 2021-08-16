@@ -27,6 +27,11 @@ public interface GameController extends Controller {
   /**
    *
    */
+  void setDealer();
+  
+  /**
+   *
+   */
   void setWinner();
   
   /**
