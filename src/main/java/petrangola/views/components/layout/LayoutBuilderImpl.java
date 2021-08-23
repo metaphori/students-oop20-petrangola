@@ -29,7 +29,6 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     this.layoutPosition = layoutPositions;
     
     initPositionsMap();
-    initLayout();
   }
   
   public Map<Pos, Pair<Vertical, Horizontal>> getPositionsMap() {
@@ -91,13 +90,14 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   private List<? extends Node> getChildNodes(List<Pair<? extends Node, String>> childNodes) {
     return childNodes.stream().map(pair -> {
       final Node node = pair.getX();
+      
       node.setId(pair.getY());
       
       return node;
     }).collect(Collectors.toList());
   }
   
-  private void initLayout() {
+  /*private void initLayout() {
     ObservableList<Node> childNode = this.layout.getChildren();
     
     Arrays.stream(this.layoutPosition)
@@ -110,7 +110,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
             
             childNode.add(region);
           });
-  }
+  }*/
   
   private void initPositionsMap() {
     Arrays.stream(Vertical.values())

@@ -36,9 +36,15 @@ public class CardImpl implements Card {
    */
   @Override
   public String getFullName() {
+    String value = String.valueOf(getValue());
+    
+    if (value == Name.ASSO.name()) {
+      value = "1";
+    }
+    
     return getSuit().toString().toLowerCase()
                  .concat(Delimiter.UNDERSCORE.getText())
-                 .concat(String.valueOf(getValue()));
+                 .concat(value);
   }
   
   /**

@@ -72,6 +72,7 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     this.gameController.createBoard();
     this.gameController.createHighCards();
     this.gameController.setDealer();
+    
   }
   
   /*

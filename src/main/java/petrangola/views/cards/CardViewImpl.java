@@ -53,7 +53,7 @@ public class CardViewImpl implements CardView {
     if (isCovered()) {
       this.service.setResourceName(CARD_COVER.concat(EXTENSION));
     }
-  
+    
     final ImageView imageView = new ImageView(createImage(this.service.getPath()));
   
     if (isHidden()) {

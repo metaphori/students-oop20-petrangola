@@ -8,7 +8,7 @@ public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider
   private int value = 1;
   
   public OpponentSizeSlider(final OptionController optionController) {
-    super(1, 12, 1);
+    super(1, 11, 1);
     
     super.get().setMinWidth(320);
     // super.get().setWidth(480);
