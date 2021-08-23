@@ -4,6 +4,7 @@ import main.java.petrangola.models.board.Board;
 import main.java.petrangola.models.game.GameObject;
 import main.java.petrangola.models.player.Player;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,5 +68,10 @@ public class CardsImpl implements Cards {
   @Override
   public PropertyChangeSupport getSupport() {
     return this.support;
+  }
+  
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+    this.setCombination((Combination) evt.getSource());
   }
 }

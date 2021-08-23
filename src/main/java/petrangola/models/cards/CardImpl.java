@@ -4,22 +4,28 @@ import main.java.petrangola.utlis.Delimiter;
 import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Suit;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
 /**
  * {@inheritDoc}
  */
 public class CardImpl implements Card {
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private final Name name;
   private final Suit suit;
   private boolean isCovered = false;
   private boolean isHidden = false;
+  private boolean isChosen = false;
   
   public CardImpl(final Name name, final Suit suit) {
     this.name = name;
     this.suit = suit;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Name getName() {
     return this.name;
@@ -51,14 +57,48 @@ public class CardImpl implements Card {
     return getName().getValue();
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isHidden() {
+    return this.isHidden;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setHidden(boolean hidden) {
     this.isHidden = hidden;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isCovered() {
+    return this.isCovered;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setCovered(boolean covered) {
     this.isCovered = covered;
+  }
+  
+  @Override
+  public boolean isChosen() {
+    return this.isChosen;
+  }
+  
+  @Override
+  public void setChosen(boolean chosen) {
+    boolean oldValue = this.isChosen;
+    this.isChosen = chosen;
+    firePropertyChange("isChosen", oldValue, this.isChosen);
   }
   
   @Override
@@ -72,5 +112,10 @@ public class CardImpl implements Card {
   @Override
   public int hashCode() {
     return Objects.hash(getName(), getSuit());
+  }
+  
+  @Override
+  public PropertyChangeSupport getSupport() {
+    return this.support;
   }
 }

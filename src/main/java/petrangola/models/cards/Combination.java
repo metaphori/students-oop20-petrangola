@@ -31,4 +31,5 @@ public interface Combination extends Replaceable {
    */
   List<Card> getCards();
   
+  List<Card> getChosenCards();
 }

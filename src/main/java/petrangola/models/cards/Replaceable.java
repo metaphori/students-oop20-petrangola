@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Replaceable {
   /**
-   * Pretty straightforward, the only responsability of this method si
+   * The only responsibility of this method is to replace
    *
    * @param cardsToPut
    * @param cardsToReplace

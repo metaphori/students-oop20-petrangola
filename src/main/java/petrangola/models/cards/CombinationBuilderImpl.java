@@ -79,7 +79,14 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       public List<Card> getCards() {
         return cards;
       }
-      
+  
+      @Override
+      public List<Card> getChosenCards() {
+        return cards.stream()
+                     .filter(Card::isChosen)
+                     .collect(Collectors.toList());
+      }
+  
       @Override
       public Pair<List<Card>, Integer> getBest() {
         List<Card> cards = new ArrayList<>(getCards());
