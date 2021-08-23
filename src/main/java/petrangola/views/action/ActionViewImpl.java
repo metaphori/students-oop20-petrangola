@@ -10,6 +10,8 @@ import main.java.petrangola.controllers.action.ActionController;
 import main.java.petrangola.controllers.action.ActionControllerImpl;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.views.AbstractViewFX;
+import main.java.petrangola.views.action.button.QuitButton;
+import main.java.petrangola.views.action.button.StartButton;
 import main.java.petrangola.views.components.AbstractComponentFX;
 
 public class ActionViewImpl extends AbstractViewFX implements ActionView {

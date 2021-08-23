@@ -2,9 +2,8 @@ package main.java.petrangola.views.components.imageview;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
-public interface ImageViewFX extends SimpleImageView<ImageView, Pane> {
+public interface ImageViewFX extends SimpleImageView<ImageView> {
   /**
    * @param path - [←relative] of the image
    * @return

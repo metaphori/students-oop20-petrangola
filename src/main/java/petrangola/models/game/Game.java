@@ -43,6 +43,10 @@ public interface Game extends ObservableModel {
     */
    List<Cards> getCards();
    
+   /**
+    *
+    * @param cards
+    */
    void setCards(List<Cards> cards);
    
    /**

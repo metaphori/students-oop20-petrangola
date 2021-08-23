@@ -16,16 +16,4 @@ public interface Placeable {
    */
   Pair<Vertical, Horizontal> getPosition();
   
-  
-  /**
-   *
-   * @param depth
-   */
-  void setDepth(int depth);
-  
-  /**
-   *
-   * @return
-   */
-  int getDepth();
 }

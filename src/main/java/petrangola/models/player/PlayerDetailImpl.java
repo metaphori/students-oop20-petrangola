@@ -5,7 +5,7 @@ import java.util.Objects;
 import main.java.petrangola.models.cards.Card;
 
 public class PlayerDetailImpl implements PlayerDetail {
-  private final static int INITIAL_LIVES = 3;
+  private static final int INITIAL_LIVES = 3;
   
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private final int turnNumber;

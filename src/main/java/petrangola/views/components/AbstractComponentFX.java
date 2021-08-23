@@ -10,9 +10,11 @@ public abstract class AbstractComponentFX<E> extends ViewNodeImpl<E> {
   public abstract void setListeners();
   
   public String getId() {
-    return getPosition().getX().name()
+    /*return getPosition().getX().name()
                  .concat(Delimiter.UNDERSCORE.name())
                  .concat(getPosition().getY().name())
-                 .concat(String.valueOf(getDepth()));
+                 .concat(String.valueOf(getDepth()));*/
+    
+    return getClass().getSimpleName();
   };
 }

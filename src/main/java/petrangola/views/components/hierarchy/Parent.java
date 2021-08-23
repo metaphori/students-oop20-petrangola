@@ -8,15 +8,15 @@ public interface Parent<P> {
   /**
    * @return
    */
-  List<ViewNode> getChildren();
+  List<ViewNode<P>> getChildren();
   
   /**
    * @param childNode
    */
-  void addChildren(ViewNode childNode);
+  void addChildren(ViewNode<P> childNode);
   
   /**
    * @param childNode
    */
-  void removeChildren(ViewNode childNode);
+  void removeChildren(ViewNode<P> childNode);
 }

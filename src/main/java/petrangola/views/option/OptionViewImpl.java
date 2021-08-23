@@ -16,7 +16,8 @@ import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.slider.DifficultySlider;
 import main.java.petrangola.views.components.slider.OpponentSizeSlider;
-import main.java.petrangola.views.components.textView.UsernameTextView;
+import main.java.petrangola.views.components.textFieldView.UsernameTextFieldView;
+import main.java.petrangola.views.option.buttons.PlayButton;
 
 import java.beans.PropertyChangeEvent;
 
@@ -26,7 +27,7 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
   
   private final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
   private final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
-  private final AbstractComponentFX<TextField> userTextView = new UsernameTextView(optionController);
+  private final AbstractComponentFX<TextField> userTextView = new UsernameTextFieldView(optionController);
   private final AbstractButtonFX playButton = new PlayButton(optionController);
   
   public OptionViewImpl(Stage stage) {
