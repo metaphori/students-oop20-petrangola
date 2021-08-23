@@ -1,4 +1,4 @@
-package main.java.petrangola.views.option;
+package main.java.petrangola.views.option.buttons;
 
 import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.models.option.Option;
@@ -7,7 +7,7 @@ import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
 public class PlayButton extends AbstractButtonFX {
-  private final static String PLAY = "Play";
+  private static final String PLAY = "Play";
   private final OptionController optionController;
   
   public PlayButton(OptionController optionController) {

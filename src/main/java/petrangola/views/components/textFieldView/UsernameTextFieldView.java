@@ -1,15 +1,15 @@
-package main.java.petrangola.views.components.textView;
+package main.java.petrangola.views.components.textFieldView;
 
 import javafx.scene.control.TextField;
 import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.option.commands.UsernameCommand;
 
-public class UsernameTextView extends AbstractComponentFX<TextField> implements SimpleTextView<String> {
+public class UsernameTextFieldView extends AbstractComponentFX<TextField> implements SimpleTextFieldView<String> {
   private final UsernameCommand command;
   private String text;
   
-  public UsernameTextView(final OptionController optionController) {
+  public UsernameTextFieldView(final OptionController optionController) {
     super(new TextField());
     super.get().setMinWidth(320);
    // super.get().setWidth(380);
