@@ -8,4 +8,6 @@ public interface Player extends Exchangeable, GameObject {
   
   boolean isNPC();
   
+  boolean isDealer();
+  
 }

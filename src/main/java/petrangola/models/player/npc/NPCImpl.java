@@ -41,6 +41,11 @@ public class NPCImpl implements NPC {
   }
   
   @Override
+  public boolean isDealer() {
+    return false;
+  }
+  
+  @Override
   public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
     final Random random = new Random();
     final Combination tempBoardCards = boardCards.getCombination();

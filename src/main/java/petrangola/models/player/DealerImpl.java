@@ -24,11 +24,10 @@ public class DealerImpl implements Dealer {
     final Map<GameObject, Combination> cardsToDeal = new HashMap<>();
     final List<Combination> combinations = combinationFactory.createCombinations(cardFactory.createDeck(), playerDetails.size());
     
-    System.out.println(combinations);
-    for (int index = 0; index < playerDetails.size() - 1; index++) {
+    for (int index = 0; index < playerDetails.size(); index++) {
       cardsToDeal.put(playerDetails.get(index).getPlayer(), combinations.get(index));
     }
-    
+  
     cardsToDeal.put(board, combinations.get(combinations.size() - 1));
     
     return cardsFactory.createCards(cardsToDeal);
@@ -52,6 +51,11 @@ public class DealerImpl implements Dealer {
   @Override
   public boolean isNPC() {
     return getPlayer().isNPC();
+  }
+  
+  @Override
+  public boolean isDealer() {
+    return true;
   }
   
   @Override
