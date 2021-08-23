@@ -1,15 +1,17 @@
 package main.java.petrangola.views.cards;
 
+import javafx.scene.Group;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
+import main.java.petrangola.views.components.ViewNode;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CardsViewImpl implements CardsView<List<CardView>> {
+public class CardsViewImpl implements CardsView<Group> {
   private final Cards cards;
   private final ResourceService service;
   private List<CardView> cardsViews;
@@ -40,11 +42,6 @@ public class CardsViewImpl implements CardsView<List<CardView>> {
   }
   
   @Override
-  public List<CardView> get() {
-    return this.cardsViews;
-  }
-  
-  @Override
   public Cards getCards() {
     return this.cards;
   }
@@ -61,14 +58,19 @@ public class CardsViewImpl implements CardsView<List<CardView>> {
   
   public void set() {
     this.cardsViews = this.cards
-                           .getCombination()
-                           .getCards()
-                           .stream()
-                           .map(card -> new CardViewImpl(card, this.service))
-                           .collect(Collectors.toList());
+                            .getCombination()
+                            .getCards()
+                            .stream()
+                            .map(card -> new CardViewImpl(card, this.service))
+                            .collect(Collectors.toList());
   }
   
   private void addListeners() {
     this.cardsViews.forEach(cardView -> cardView.get().setOnMouseClicked(mouseEvent -> cardView.toggleChosen()));
+  }
+  
+  @Override
+  public Group get() {
+    return new Group(this.cardsViews.stream().map(ViewNode::get).collect(Collectors.toList()));
   }
 }

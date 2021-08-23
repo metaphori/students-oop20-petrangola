@@ -42,4 +42,6 @@ public interface CardView extends ImageViewFX {
    * @return
    */
   Card getCard();
+  
+  void setListeners();
 }

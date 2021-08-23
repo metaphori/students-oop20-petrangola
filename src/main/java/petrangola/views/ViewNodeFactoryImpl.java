@@ -1,19 +1,16 @@
 package main.java.petrangola.views;
 
+import javafx.scene.Group;
 import javafx.scene.text.Text;
-import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.views.board.BoardView;
 import main.java.petrangola.views.board.BoardViewImpl;
-import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
 import main.java.petrangola.views.game.*;
 import main.java.petrangola.views.player.*;
-
-import java.util.List;
 
 public class ViewNodeFactoryImpl implements ViewNodeFactory {
   private final Game game;
@@ -27,22 +24,22 @@ public class ViewNodeFactoryImpl implements ViewNodeFactory {
   }
   
   @Override
-  public NPCView createNPCView(final PlayerDetail playerDetail, final CardsView<List<CardView>> cardsView) {
+  public NPCView createNPCView(final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
     return new NPCViewImpl(this.playerController, this.game, playerDetail, cardsView);
   }
   
   @Override
-  public UserView createUserView(final PlayerDetail playerDetail, final CardsView<List<CardView>> cardsView) {
+  public UserView createUserView(final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
     return new UserViewImpl(this.playerController, this.game, playerDetail, cardsView, this.cardsExchanged);
   }
   
   @Override
-  public DealerView createDealerView(final PlayerDetail playerDetail, final CardsView<List<CardView>> cardsView) {
+  public DealerView createDealerView(final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
     return new DealerViewImpl(this.playerController, this.game, playerDetail, cardsView);
   }
   
   @Override
-  public BoardView createBoardView(CardsView<List<CardView>> cardsView) {
+  public BoardView createBoardView(CardsView<Group> cardsView) {
     return new BoardViewImpl(cardsView);
   }
   

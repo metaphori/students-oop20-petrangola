@@ -1,26 +1,24 @@
 package main.java.petrangola.views.player;
 
+import javafx.scene.Group;
 import javafx.scene.text.Text;
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.player.buttons.ExchangeButton;
 import main.java.petrangola.views.player.buttons.KnockButton;
 
-import java.util.List;
-
 public class AbstractPlayerViewImpl implements PlayerView {
   private final PlayerDetail playerDetail;
-  private final CardsView<List<CardView>> cardsView;
+  private final CardsView<Group> cardsView;
   private final LifeView lifeView = new LifeViewImpl(new Text());
   private AbstractButtonFX exchangeButton;
   private AbstractButtonFX knockButton;
   
-  public AbstractPlayerViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, final CardsView<List<CardView>> cardsView, CardsExchanged cardsExchanged) {
+  public AbstractPlayerViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, final CardsView<Group> cardsView, CardsExchanged cardsExchanged) {
     this.playerDetail = playerDetail;
     this.cardsView = cardsView;
     
@@ -55,7 +53,7 @@ public class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public CardsView<List<CardView>> getCardsView() {
+  public CardsView<Group> getCardsView() {
     return this.cardsView;
   }
   

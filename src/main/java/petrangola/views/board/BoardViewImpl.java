@@ -1,14 +1,13 @@
 package main.java.petrangola.views.board;
 
+import javafx.scene.Group;
 import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsView;
 
-import java.util.List;
-
 public class BoardViewImpl implements BoardView {
-  private final CardsView<List<CardView>> cardsView;
+  private final CardsView<Group> cardsView;
   
-  public BoardViewImpl(final CardsView<List<CardView>> cardsView) {
+  public BoardViewImpl(final CardsView<Group> cardsView) {
     this.cardsView = cardsView;
   }
   
@@ -17,7 +16,7 @@ public class BoardViewImpl implements BoardView {
     this.cardsView.getCardsViews().forEach(CardView::showCard);
   }
   
-  public CardsView<List<CardView>> getCardsView() {
+  public CardsView<Group> getCardsView() {
     return this.cardsView;
   }
 }

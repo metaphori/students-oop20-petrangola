@@ -1,6 +1,8 @@
 package main.java.petrangola.views.cards;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.utlis.Pair;
@@ -13,13 +15,17 @@ public class CardViewImpl implements CardView {
   
   private final Card card;
   private final ResourceService service;
+  
   private Pair<Vertical, Horizontal> position;
   private boolean isChosen;
+  private ImageView imageView;
   
   public CardViewImpl(final Card card, final ResourceService service) {
     this.card = card;
     this.service = service;
     this.service.setResourceName("/".concat(card.getFullName().concat(EXTENSION)));
+    this.set();
+    this.setListeners();
   }
   
   @Override
@@ -40,17 +46,21 @@ public class CardViewImpl implements CardView {
   
   @Override
   public ImageView get() {
+    return this.imageView;
+  }
+  
+  private void set() {
     if (isCovered()) {
       this.service.setResourceName(CARD_COVER.concat(EXTENSION));
     }
-    
+  
     final ImageView imageView = new ImageView(createImage(this.service.getPath()));
-    
+  
     if (isHidden()) {
       imageView.setVisible(false);
     }
-    
-    return imageView;
+  
+    this.imageView = imageView;
   }
   
   @Override
@@ -77,5 +87,13 @@ public class CardViewImpl implements CardView {
   @Override
   public Card getCard() {
     return this.card;
+  }
+  
+  @Override
+  public void setListeners() {
+    this.imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+      toggleChosen();
+      event.consume();
+    });
   }
 }
