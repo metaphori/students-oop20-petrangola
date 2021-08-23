@@ -1,8 +1,9 @@
 package main.java.petrangola.views.option.commands;
 
 import main.java.petrangola.controllers.option.OptionController;
+import main.java.petrangola.views.Command;
 
-public abstract class AbstractOptionCommand {
+public abstract class AbstractOptionCommand implements Command {
   public final OptionController optionController;
   
   public AbstractOptionCommand(final OptionController optionController) {
@@ -12,6 +13,4 @@ public abstract class AbstractOptionCommand {
   public OptionController getOptionController() {
     return this.optionController;
   }
-  
-  public abstract void execute();
 }
