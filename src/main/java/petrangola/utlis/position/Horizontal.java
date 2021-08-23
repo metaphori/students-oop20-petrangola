@@ -1,7 +1,12 @@
 package main.java.petrangola.utlis.position;
 
-public enum Horizontal {
+public enum Horizontal implements Position {
   LEFT,
   CENTER,
-  RIGHT
+  RIGHT;
+  
+  @Override
+  public Position[] positions() {
+    return Horizontal.values();
+  }
 }

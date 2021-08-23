@@ -1,7 +1,12 @@
 package main.java.petrangola.utlis.position;
 
-public enum Vertical {
-  UP,
+public enum Vertical implements Position {
+  TOP,
   CENTER,
-  DOWN
+  BOTTOM;
+  
+  @Override
+  public Position[] positions() {
+    return Vertical.values();
+  }
 }
