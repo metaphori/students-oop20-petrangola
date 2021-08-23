@@ -8,7 +8,6 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.ViewNodeFactory;
-import main.java.petrangola.views.game.GameIds;
 
 import java.util.List;
 import java.util.Map;

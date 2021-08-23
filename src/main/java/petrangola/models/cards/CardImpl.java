@@ -38,7 +38,7 @@ public class CardImpl implements Card {
   public String getFullName() {
     String value = String.valueOf(getValue());
     
-    if (value == Name.ASSO.name()) {
+    if (value.equals(String.valueOf(Name.ASSO.getValue()))) {
       value = "1";
     }
     

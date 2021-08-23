@@ -1,6 +1,7 @@
 package main.java.petrangola.views.game;
 
 
+import javafx.geometry.Orientation;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -58,21 +59,28 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     
     this.layoutBuilder = new LayoutBuilderImpl(getLayout(), Horizontal.values());
     
+    final FlowPane leftPane = new FlowPane(Orientation.VERTICAL);
+    leftPane.setVgap(24);
+    leftPane.setHgap(32);
+    
+    final FlowPane rightPane = new FlowPane(Orientation.VERTICAL);
+    rightPane.setVgap(24);
+    rightPane.setHgap(32);
+    
     this.layoutBuilder
-          .addGroup(List.of(layoutBuilder.addPair(new FlowPane(), GameIds.SIDES_IDS.getIds())))
+          .addGroup(List.of(layoutBuilder.addPair(leftPane, GameStyleClass.SIDES_IDS.getClasses())))
           .addVBox(List.of(
-                layoutBuilder.addPair(new HBox(), GameIds.TOP_IDS.getIds()),
-                layoutBuilder.addPair(new HBox(), GameIds.CENTRAL_IDS.getIds()),
-                layoutBuilder.addPair(new HBox(), GameIds.BOTTOM_IDS.getIds())
+                layoutBuilder.addPair(new HBox(), GameStyleClass.TOP_IDS.getClasses()),
+                layoutBuilder.addPair(new HBox(), GameStyleClass.CENTRAL_IDS.getClasses()),
+                layoutBuilder.addPair(new HBox(), GameStyleClass.BOTTOM_IDS.getClasses())
           ))
-          .addGroup(List.of(layoutBuilder.addPair(new FlowPane(), GameIds.SIDES_IDS.getIds())));
+          .addGroup(List.of(layoutBuilder.addPair(rightPane, GameStyleClass.SIDES_IDS.getClasses())));
     
     this.gameController.createPlayers(option.getUsername(), option.getDifficultyLevel(), option.getOpponentsSize());
     this.gameController.createPlayerDetails();
     this.gameController.createBoard();
     this.gameController.createHighCards();
     this.gameController.setDealer();
-    
   }
   
   /*
@@ -103,7 +111,6 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
                                   .findFirst()
                                   .get();
     
-    // TODO: finish
   }
   
   @Override
@@ -113,6 +120,10 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   @Override
   public void showRound() {
+  
+  }
+  
+  public void showDealerName() {
   
   }
   

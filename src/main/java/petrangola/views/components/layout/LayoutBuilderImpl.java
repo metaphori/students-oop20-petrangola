@@ -1,11 +1,12 @@
 package main.java.petrangola.views.components.layout;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import main.java.petrangola.utlis.Delimiter;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
@@ -38,7 +39,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   @Override
   public LayoutBuilder addHBox(List<Pair<? extends Node, String>> childNodes) {
     final HBox hBox = new HBox();
-  
+    
     addToLayout(hBox, getChildNodes(childNodes));
     
     return this;
@@ -79,7 +80,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     if (VBox.class.isAssignableFrom(pane.getClass())) {
       VBox.setVgrow(node, Priority.ALWAYS);
     }
-  
+    
     if (HBox.class.isAssignableFrom(pane.getClass())) {
       HBox.setHgrow(node, Priority.ALWAYS);
     }
@@ -91,7 +92,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     return childNodes.stream().map(pair -> {
       final Node node = pair.getX();
       
-      node.setId(pair.getY());
+      node.getStyleClass().addAll(pair.getY().split(Delimiter.COMMA.getText()));
       
       return node;
     }).collect(Collectors.toList());
@@ -142,7 +143,6 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     
     return optionalEntry.get().getKey();
   }
-  
   
   
   @Override

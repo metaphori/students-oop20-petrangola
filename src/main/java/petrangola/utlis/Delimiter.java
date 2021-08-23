@@ -1,7 +1,8 @@
 package main.java.petrangola.utlis;
 
 public enum Delimiter {
-  UNDERSCORE("_");
+  UNDERSCORE("_"),
+  COMMA(",");
   
   private final String text;
   
