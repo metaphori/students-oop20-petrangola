@@ -8,7 +8,7 @@ import main.java.petrangola.views.cards.CardsView;
 
 public class NPCViewImpl extends AbstractPlayerViewImpl implements NPCView {
   public NPCViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
-    super(playerController, game, playerDetail, cardsView, null);
+    super(playerController, game, playerDetail, cardsView);
   }
   
 }

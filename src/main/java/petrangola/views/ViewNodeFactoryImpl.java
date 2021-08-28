@@ -14,12 +14,10 @@ import main.java.petrangola.views.player.*;
 
 public class ViewNodeFactoryImpl implements ViewNodeFactory {
   private final Game game;
-  private final CardsExchanged cardsExchanged;
   private final PlayerController playerController;
   
-  public ViewNodeFactoryImpl(final Game game, final PlayerController playerController, CardsExchanged cardsExchanged) {
+  public ViewNodeFactoryImpl(final Game game, final PlayerController playerController) {
     this.game = game;
-    this.cardsExchanged = cardsExchanged;
     this.playerController = playerController;
   }
   
@@ -30,7 +28,7 @@ public class ViewNodeFactoryImpl implements ViewNodeFactory {
   
   @Override
   public UserView createUserView(final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
-    return new UserViewImpl(this.playerController, this.game, playerDetail, cardsView, this.cardsExchanged);
+    return new UserViewImpl(this.playerController, this.game, playerDetail, cardsView);
   }
   
   @Override

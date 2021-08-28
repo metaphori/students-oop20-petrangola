@@ -8,7 +8,7 @@ import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
 
 public class UserViewImpl extends AbstractPlayerViewImpl implements UserView {
-  public UserViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, final CardsView<Group> cardsView, CardsExchanged cardsExchanged) {
-    super(playerController, game, playerDetail, cardsView, cardsExchanged);
+  public UserViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, final CardsView<Group> cardsView) {
+    super(playerController, game, playerDetail, cardsView);
   }
 }

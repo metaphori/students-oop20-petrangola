@@ -1,6 +1,7 @@
 package main.java.petrangola.views.player;
 
 
+import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
 public interface PlayerView extends GameObjectView {
@@ -12,7 +13,17 @@ public interface PlayerView extends GameObjectView {
   /**
    *
    */
+  void hideName();
+  
+  /**
+   *
+   */
   void showLives();
+  
+  /**
+   *
+   */
+  void hideLives();
   
   /**
    *
@@ -34,4 +45,15 @@ public interface PlayerView extends GameObjectView {
    */
   LifeView getLifeView();
   
+  /**
+   *
+   * @return
+   */
+  UsernameView getUsernameView();
+  
+  /**
+   *
+   * @return
+   */
+  Player getPlayer();
 }
