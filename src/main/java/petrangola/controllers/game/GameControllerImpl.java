@@ -1,27 +1,24 @@
 package main.java.petrangola.controllers.game;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import main.java.petrangola.models.board.BoardImpl;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.CardFactoryImpl;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.game.GameFactory;
-import main.java.petrangola.models.game.GameFactoryImpl;
 import main.java.petrangola.models.player.*;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.utlis.Pair;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class GameControllerImpl implements GameController {
-  private final GameFactory gameFactory;
   private final PlayerFactory playerFactory;
   private final Game game;
   
   public GameControllerImpl(Game model) {
     this.game = model;
-    this.gameFactory = new GameFactoryImpl();
     this.playerFactory = new PlayerFactoryImpl();
   }
   
@@ -42,7 +39,7 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void createPlayerDetails() {
-    this.game.setPlayerDetails(this.gameFactory.createPlayerDetails(this.game.getPlayers()));
+    this.game.setPlayerDetails(this.game.getPlayers().stream().map(PlayerDetailImpl::new).collect(Collectors.toList()));
   }
   
   @Override
@@ -54,8 +51,9 @@ public class GameControllerImpl implements GameController {
                                    .limit(playersSize)
                                    .collect(Collectors.toList());
     
-  
-    IntStream.range(0, playersSize)
+    
+    IntStream
+          .range(0, playersSize)
           .boxed()
           .forEach(index -> this.game.getPlayerDetails().get(index).setHighCard(cards.get(index)));
   }
@@ -72,9 +70,32 @@ public class GameControllerImpl implements GameController {
                                       .get()
                                       .getKey();
     
+    dealerPlayer.setIsDealer(true);
+    
     final Dealer dealer = new DealerImpl(dealerPlayer);
     
     this.game.setDealer(dealer);
+  }
+  
+  @Override
+  public void setTurnNumbers() {
+    List<PlayerDetail> playerDetails = new ArrayList<>(this.game.getPlayerDetails());
+    int distance = 0;
+    
+    for (int index = 0; index < playerDetails.size() - 1; index++) {
+      if (playerDetails.get(index).getPlayer().isDealer()) {
+        distance = index;
+        break;
+      }
+    }
+    
+    Collections.rotate(playerDetails, distance);
+    
+    IntStream.range(0, playerDetails.size())
+          .boxed()
+          .forEachOrdered(index -> {
+            playerDetails.get(index).setTurnNumber(index);
+          });
   }
   
   @Override
@@ -95,11 +116,53 @@ public class GameControllerImpl implements GameController {
   public boolean checkKnocks() {
     final int size = this.game.getPlayers().size();
     final int knockerCount = this.game.getKnockerCount();
-  
+    
     if (size > 4) {
-      return  knockerCount == 3;
+      return knockerCount == 3;
     }
-  
+    
     return knockerCount == (size - 1);
+  }
+  
+  @Override
+  public Player getCurrentPlayer() {
+    System.out.println("CURRENT PLAYER: " + this.game
+                                          .getPlayerDetails()
+                                          .stream()
+                                          .filter(playerDetails -> playerDetails.getTurnNumber() == this.game.getCurrentTurnNumber())
+                                          .findFirst()
+                                          .get()
+                                          .getPlayer()
+                                          .getUsername());
+    return this.game
+                 .getPlayerDetails()
+                 .stream()
+                 .filter(playerDetails -> playerDetails.getTurnNumber() == this.game.getCurrentTurnNumber())
+                 .findFirst()
+                 .get()
+                 .getPlayer();
+  }
+  
+  @Override
+  public void nextTurnNumberHandler() {
+    int nextTurnNumber = this.game.getCurrentTurnNumber() + 1;
+    
+    if (this.game.getPlayerDetails().size() - 1 == this.game.getCurrentTurnNumber()) {
+      nextTurnNumber = 0;
+    }
+    
+    this.game.setCurrentTurnNumber(nextTurnNumber);
+  }
+  
+  @Override
+  public void roundHandler() {
+    int nextRound = this.game.getRound() + 1;
+    System.out.println("nextR:" + nextRound);
+    this.game.setRound(nextRound);
+  }
+  
+  @Override
+  public void onlyOneRound() {
+    this.game.onlyOneRound();
   }
 }
