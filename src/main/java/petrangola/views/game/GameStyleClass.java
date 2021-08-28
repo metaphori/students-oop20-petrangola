@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum GameStyleClass {
+  NPC_HIGH_CARD("npcHighCard"),
   NPC_CARDS("npcCards"),
-  HIGH_CARD("highCard"),
-  SIDES_IDS(List.of(NPC_CARDS, HIGH_CARD)),
+  SIDES_IDS(List.of(NPC_CARDS, NPC_HIGH_CARD)),
   
   LIFE("life"),
   ROUND("round"),
@@ -22,7 +22,9 @@ public enum GameStyleClass {
   
   USER_CARDS("userCards"),
   USER_ACTIONS("userActions"),
-  BOTTOM_IDS(List.of(USER_ACTIONS, USER_ACTIONS, HIGH_CARD));
+  USER_HIGH_CARD("userHighCard"),
+  DEALER_BUTTONS("dealerButtons"),
+  BOTTOM_IDS(List.of(USER_CARDS, USER_ACTIONS, USER_HIGH_CARD, DEALER_BUTTONS));
   
   private final String classes;
   
@@ -36,5 +38,9 @@ public enum GameStyleClass {
   
   public String getClasses() {
     return classes;
+  }
+  
+  public String getAsStyleClass() {
+    return this.classes.contains(Delimiter.COMMA.getText()) ? String.join(" .", this.classes.split(Delimiter.COMMA.getText())) : ".".concat(this.classes);
   }
 }

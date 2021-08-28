@@ -1,7 +1,6 @@
 package main.java.petrangola.views.components.layout;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -47,7 +46,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   
   @Override
   public LayoutBuilder addVBox(List<Pair<? extends Node, String>> childNodes) {
-    final VBox vBox = new VBox();
+    final VBox vBox = (VBox) setGrow(new VBox());
     
     addToLayout(vBox, getChildNodes(childNodes));
     
@@ -55,13 +54,9 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   }
   
   @Override
-  public LayoutBuilder addGroup(List<Pair<? extends Node, String>> childNodes) {
-    final Pane pane = new Pane();
-    final Group group = new Group();
-    
-    pane.getChildren().add(setGrow(getLayout(), group));
-    
-    addToLayout(pane, getChildNodes(childNodes));
+  public LayoutBuilder addSimplePane(Pair<? extends Node, String> panePair) {
+    panePair.getX().getStyleClass().addAll(panePair.getY().split(Delimiter.COMMA.getText()));
+    getLayout().getChildren().add(panePair.getX());
     
     return this;
   }
@@ -76,14 +71,9 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     getLayout().getChildren().add(pane);
   }
   
-  private Node setGrow(Pane pane, Node node) {
-    if (VBox.class.isAssignableFrom(pane.getClass())) {
-      VBox.setVgrow(node, Priority.ALWAYS);
-    }
-    
-    if (HBox.class.isAssignableFrom(pane.getClass())) {
-      HBox.setHgrow(node, Priority.ALWAYS);
-    }
+  private Node setGrow(Node node) {
+    VBox.setVgrow(node, Priority.ALWAYS);
+    HBox.setHgrow(node, Priority.ALWAYS);
     
     return node;
   }
@@ -130,6 +120,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
                                      }));
   }
   
+  @Override
   public Pos getPos(final Pair<Vertical, Horizontal> pair) {
     Optional<Map.Entry<Pos, Pair<Vertical, Horizontal>>> optionalEntry = this.positionsMap
                                                                                .entrySet()

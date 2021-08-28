@@ -20,7 +20,7 @@ public interface LayoutBuilder {
   
   LayoutBuilder addVBox(List<Pair<? extends Node, String>> childNodes);
   
-  LayoutBuilder addGroup(List<Pair<? extends Node, String>> childNodes);
+  LayoutBuilder addSimplePane(Pair<? extends Node, String> panePair);
   
   LayoutBuilder addNodeById(String Id, Function<ViewNodeFactory, Node> viewNode);
   
@@ -28,6 +28,12 @@ public interface LayoutBuilder {
    * @return
    */
   Pane getLayout();
+  
+  /**
+   * @param pair
+   * @return
+   */
+  Pos getPos(final Pair<Vertical, Horizontal> pair);
   
   default Pair<? extends Node, String> addPair(Node node, String Id) {
     return new Pair<>(node, Id);
