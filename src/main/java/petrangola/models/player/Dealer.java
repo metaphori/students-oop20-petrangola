@@ -11,5 +11,5 @@ public interface Dealer extends Player {
    * @param playerDetails
    * @param board
    */
-  List<Cards> dealCards(List<PlayerDetail> playerDetails, Board board);
+  void dealCards(List<PlayerDetail> playerDetails, Board board);
 }

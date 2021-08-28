@@ -5,11 +5,13 @@ import main.java.petrangola.models.cards.Combination;
 import main.java.petrangola.utlis.Delimiter;
 import main.java.petrangola.utlis.DifficultyLevel;
 
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class NPCImpl implements NPC {
   private static final String NPC_NAME = "NPC_";
   private static final Map<DifficultyLevel, DrawbackStrategy> STRATEGY_MAP = new EnumMap<>(DifficultyLevel.class);
+  private boolean isDealer = false;
   
   static {
     STRATEGY_MAP.put(DifficultyLevel.EASY, new EasyDrawback());
@@ -17,6 +19,7 @@ public class NPCImpl implements NPC {
     STRATEGY_MAP.put(DifficultyLevel.ADVANCED, new AdvancedDrawback());
   }
   
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
   private final DifficultyLevel difficultyLevel;
   private final int id;
   
@@ -42,11 +45,16 @@ public class NPCImpl implements NPC {
   
   @Override
   public boolean isDealer() {
-    return false;
+    return isDealer;
   }
   
   @Override
-  public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
+  public void setIsDealer(boolean isDealer) {
+    this.isDealer = isDealer;
+  }
+  
+  @Override
+  public void firstExchange(Cards boardCards, Cards playerCards) {
     final Random random = new Random();
     final Combination tempBoardCards = boardCards.getCombination();
     final Combination tempPlayerCards = playerCards.getCombination();
@@ -56,11 +64,11 @@ public class NPCImpl implements NPC {
       playerCards.setCombination(tempBoardCards);
     }
     
-    return List.of(boardCards, playerCards);
+    firePropertyChange("firstExchange", null, List.of(boardCards, playerCards));
   }
   
   @Override
-  public List<Cards> exchange(final Cards boardCards, final Cards playerCards) {
+  public void exchange(final Cards boardCards, final Cards playerCards) {
     final double drawback = getDrawback();
     final Random random = new Random();
     ChoiceStrategy choiceStrategy;
@@ -71,7 +79,7 @@ public class NPCImpl implements NPC {
       choiceStrategy = new BestChoice();
     }
     
-    return choiceStrategy.chooseCards(List.of(boardCards, playerCards));
+    firePropertyChange("exchange", null, choiceStrategy.chooseCards(List.of(boardCards, playerCards)));
   }
   
   private double getDrawback() {
@@ -92,6 +100,11 @@ public class NPCImpl implements NPC {
   
   @Override
   public int hashCode() {
-    return Objects.hash(getDifficultyLevel(), id);
+    return Objects.hash(getSupport(), getDifficultyLevel(), id);
+  }
+  
+  @Override
+  public PropertyChangeSupport getSupport() {
+    return this.support;
   }
 }

@@ -1,25 +1,33 @@
 package main.java.petrangola.models.player;
 
 import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.models.cards.CardsImpl;
+import main.java.petrangola.models.game.GameObject;
 
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Objects;
 
 public class UserImpl implements User {
   private final String username;
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+  private boolean isDealer = false;
   
   public UserImpl(final String username) {
     this.username = username;
   }
   
   @Override
-  public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
-    return List.of(boardCards, playerCards);
+  public void firstExchange(Cards boardCards, Cards playerCards) {
+    Cards tempBoardCards = new CardsImpl(playerCards.getCombination(), boardCards.getBoard().get());
+    Cards tempPlayerCards = new CardsImpl(boardCards.getCombination(), playerCards.getPlayer().get());
+    
+    firePropertyChange("firstExchange", null, List.of(tempPlayerCards, tempBoardCards));
   }
   
   @Override
-  public List<Cards> exchange(Cards boardCards, Cards playerCards) {
-    return List.of(boardCards, playerCards);
+  public void exchange(Cards boardCards, Cards playerCards) {
+    firePropertyChange("exchange", null, List.of(boardCards, playerCards));
   }
   
   @Override
@@ -34,7 +42,12 @@ public class UserImpl implements User {
   
   @Override
   public boolean isDealer() {
-    return false;
+    return this.isDealer;
+  }
+  
+  @Override
+  public void setIsDealer(boolean isDealer) {
+    this.isDealer = isDealer;
   }
   
   @Override
@@ -47,6 +60,11 @@ public class UserImpl implements User {
   
   @Override
   public int hashCode() {
-    return Objects.hash(getUsername());
+    return Objects.hash(getUsername(), getSupport());
+  }
+  
+  @Override
+  public PropertyChangeSupport getSupport() {
+    return this.support;
   }
 }

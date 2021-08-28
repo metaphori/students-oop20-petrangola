@@ -17,9 +17,8 @@ public class RandomChoice extends AbstractChoiceStrategy {
     final Card toGive = playerCards.getCombination().getCards().get(indexToGive);
     final Card toTake = boardCards.getCombination().getCards().get(indexToTake);
   
-    // TODO: check, I'm not sure, it's probably a concurrent modification
-    playerCards.getCombination().getCards().set(indexToTake, toGive);
-    boardCards.getCombination().getCards().set(indexToGive, toTake);
+    playerCards.getCombination().replaceCards(List.of(toGive), List.of(toTake));
+    boardCards.getCombination().replaceCards(List.of(toTake), List.of(toGive));
     
     return List.of(boardCards, playerCards);
   }

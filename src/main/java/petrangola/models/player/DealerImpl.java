@@ -4,20 +4,23 @@ import main.java.petrangola.models.board.Board;
 import main.java.petrangola.models.cards.*;
 import main.java.petrangola.models.game.GameObject;
 
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class DealerImpl implements Dealer {
-  final Player player;
+  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+  
+  private final Player player;
   
   public DealerImpl(Player player) {
     this.player = player;
   }
   
   @Override
-  public List<Cards> dealCards(List<PlayerDetail> playerDetails, Board board) {
+  public void dealCards(List<PlayerDetail> playerDetails, Board board) {
     final CardFactory cardFactory = new CardFactoryImpl();
     final CardsFactory cardsFactory = new CardsFactoryImpl();
     final CombinationFactory combinationFactory = new CombinationFactoryImpl();
@@ -30,17 +33,17 @@ public class DealerImpl implements Dealer {
   
     cardsToDeal.put(board, combinations.get(combinations.size() - 1));
     
-    return cardsFactory.createCards(cardsToDeal);
+    firePropertyChange("dealtCards", null, cardsFactory.createCards(cardsToDeal));
   }
   
   @Override
-  public List<Cards> firstExchange(Cards boardCards, Cards playerCards) {
-    return getPlayer().firstExchange(boardCards, playerCards);
+  public void firstExchange(Cards boardCards, Cards playerCards) {
+    getPlayer().firstExchange(boardCards, playerCards);
   }
   
   @Override
-  public List<Cards> exchange(Cards boardCards, Cards playerCards) {
-    return getPlayer().exchange(boardCards, playerCards);
+  public void exchange(Cards boardCards, Cards playerCards) {
+    getPlayer().exchange(boardCards, playerCards);
   }
   
   @Override
@@ -55,7 +58,12 @@ public class DealerImpl implements Dealer {
   
   @Override
   public boolean isDealer() {
-    return true;
+    return getPlayer().isDealer();
+  }
+  
+  @Override
+  public void setIsDealer(boolean isDealer) {
+    getPlayer().setIsDealer(isDealer);
   }
   
   @Override
@@ -73,5 +81,10 @@ public class DealerImpl implements Dealer {
   
   private Player getPlayer() {
     return this.player;
+  }
+  
+  @Override
+  public PropertyChangeSupport getSupport() {
+    return this.support;
   }
 }
