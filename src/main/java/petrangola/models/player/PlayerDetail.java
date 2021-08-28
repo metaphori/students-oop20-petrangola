@@ -33,6 +33,8 @@ public interface PlayerDetail extends ObservableModel {
    */
   int getTurnNumber();
   
+  void setTurnNumber(int turnNumber);
+  
   /**
    *
    * @return

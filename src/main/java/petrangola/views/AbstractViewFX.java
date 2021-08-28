@@ -27,8 +27,8 @@ public abstract class AbstractViewFX extends Group {
     
     this.setNeedsLayout(true);
     
-    getLayout().setPrefWidth(getRoot().getScene().getWidth());
-    getLayout().setPrefHeight(getRoot().getScene().getHeight());
+    getLayout().prefWidthProperty().bind(getScene().widthProperty());
+    getLayout().prefHeightProperty().bind(getScene().heightProperty());
     
     getRoot().getChildren().clear();
     getRoot().getChildren().addAll(getLayout());
@@ -36,11 +36,11 @@ public abstract class AbstractViewFX extends Group {
   
   public final void loadChildren(Field[] declaredFields) {
     Arrays.stream(declaredFields).forEach(field -> {
-        
-        if (!AbstractComponentFX.class.isAssignableFrom(field.getType())) {
-          return;
-        }
-  
+      
+      if (!AbstractComponentFX.class.isAssignableFrom(field.getType())) {
+        return;
+      }
+      
       try {
         field.setAccessible(true);
         

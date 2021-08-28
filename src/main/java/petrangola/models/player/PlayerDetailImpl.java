@@ -8,15 +8,14 @@ public class PlayerDetailImpl implements PlayerDetail {
   private static final int INITIAL_LIVES = 3;
   
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-  private final int turnNumber;
   private final Player player;
+  private int turnNumber;
   
   private int playerLives = INITIAL_LIVES;
   private Card highCard;
   
-  public PlayerDetailImpl(final Player player, final int turnNumber) {
+  public PlayerDetailImpl(final Player player) {
     this.player = player;
-    this.turnNumber = turnNumber;
   }
   
   @Override
@@ -45,6 +44,11 @@ public class PlayerDetailImpl implements PlayerDetail {
   @Override
   public int getTurnNumber() {
     return this.turnNumber;
+  }
+  
+  @Override
+  public void setTurnNumber(int turnNumber) {
+    this.turnNumber = turnNumber;
   }
   
   @Override
