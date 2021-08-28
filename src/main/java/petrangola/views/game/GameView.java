@@ -11,11 +11,6 @@ public interface GameView extends View {
   /**
    *
    */
-  void showCurrentPlayerName();
-  
-  /**
-   *
-   */
   void showKnocks();
   
   /**
