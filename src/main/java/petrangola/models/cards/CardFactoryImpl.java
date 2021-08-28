@@ -1,14 +1,13 @@
 package main.java.petrangola.models.cards;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Suit;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CardFactoryImpl implements CardFactory {
   @Override
@@ -17,18 +16,9 @@ public class CardFactoryImpl implements CardFactory {
   }
   
   private List<Card> shuffleCards(List<Card> deck) {
-    final Random random = new Random();
     final List<Card> tempDeck = new ArrayList<>(deck);
-  
-    IntStream.rangeClosed(tempDeck.size() - 1,0 )
-          .boxed()
-          .forEachOrdered(index -> {
-            final int randomIndex = (int) Math.floor(random.nextInt()*index);
-            final Card temp = tempDeck.get(randomIndex);
-            
-            tempDeck.set(index, tempDeck.get(randomIndex));
-            tempDeck.set(randomIndex, temp);
-          });
+    
+    Collections.shuffle(tempDeck);
     
     return tempDeck;
   }

@@ -17,6 +17,8 @@ public class CardsImpl implements Cards {
   
   public CardsImpl(final Combination combination, final GameObject gameObject) {
     this.combination = combination;
+    this.combination.addPropertyChangeListener(this);
+    
     this.gameObject = gameObject;
   }
   
@@ -27,9 +29,8 @@ public class CardsImpl implements Cards {
   
   @Override
   public void setCombination(Combination combination) {
-    final Combination oldValue = this.combination;
     this.combination = combination;
-    firePropertyChange("combination", oldValue, combination);
+    firePropertyChange("updatedCombination", null, combination);
   }
   
   @Override
@@ -62,7 +63,7 @@ public class CardsImpl implements Cards {
   
   @Override
   public int hashCode() {
-    return Objects.hash(gameObject, getCombination());
+    return Objects.hash(getSupport(), gameObject, getCombination());
   }
   
   @Override
@@ -72,6 +73,6 @@ public class CardsImpl implements Cards {
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    this.setCombination((Combination) evt.getSource());
+    this.setCombination((Combination) evt.getNewValue());
   }
 }

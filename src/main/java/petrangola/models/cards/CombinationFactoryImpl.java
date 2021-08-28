@@ -8,6 +8,7 @@ import java.util.List;
 public class CombinationFactoryImpl implements CombinationFactory {
   @Override
   public List<Combination> createCombinations(final List<Card> cardList, final int playersSize) {
+    
     final List<Combination> combinations = new ArrayList<>();
     final int deckSize = DeckConstants.DECK_SIZE.getValue();
     final int length = cardList.size() - ((playersSize + 1) * deckSize);
@@ -20,6 +21,8 @@ public class CombinationFactoryImpl implements CombinationFactory {
       
       combinations.add(new CombinationBuilderImpl().setCards(List.of(card1, card2, card3)).build());
     }
+    
+    combinations.forEach(Combination::addPropertyChangeListener);
     
     return combinations;
   }

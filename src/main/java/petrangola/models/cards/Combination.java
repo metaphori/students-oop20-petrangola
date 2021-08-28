@@ -1,11 +1,15 @@
 package main.java.petrangola.models.cards;
 
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.utlis.Pair;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public interface Combination extends Replaceable {
+public interface Combination extends Replaceable, ObservableModel, PropertyChangeListener {
+  void addPropertyChangeListener();
+  
   /**
    * @return if the cards have the same name value
    */
@@ -31,5 +35,9 @@ public interface Combination extends Replaceable {
    */
   List<Card> getCards();
   
+  /**
+   *
+   * @return
+   */
   List<Card> getChosenCards();
 }

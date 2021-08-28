@@ -4,12 +4,14 @@ import main.java.petrangola.utlis.DeckConstants;
 import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Pair;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CombinationBuilderImpl implements CombinationBuilder {
-  
   private List<Card> cards;
   
   @Override
@@ -26,6 +28,33 @@ public class CombinationBuilderImpl implements CombinationBuilder {
   @Override
   public Combination build() {
     return new Combination() {
+      final PropertyChangeSupport support = new PropertyChangeSupport(this);
+  
+      @Override
+      public void addPropertyChangeListener() {
+        cards.forEach(card -> card.addPropertyChangeListener(this));
+      }
+  
+      @Override
+      public PropertyChangeSupport getSupport() {
+        return this.support;
+      }
+  
+      @Override
+      public void propertyChange(PropertyChangeEvent evt) {
+        this.replaceUpdatedCard((Card) evt.getSource());
+      }
+      
+      private void replaceUpdatedCard(Card card) {
+        List<Card> cardList = new ArrayList<>(getCards());
+        
+        int index = cardList.indexOf(card);
+        cardList.set(index, card);
+        setCards(cardList);
+        
+        firePropertyChange("combination", null, this);
+      }
+      
       @Override
       public void replaceCards(List<Card> cardsToPut, List<Card> cardsToReplace) {
         final List<Card> tempCards = new ArrayList<>(getCards());

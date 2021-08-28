@@ -36,11 +36,25 @@ public class CardImpl implements Card {
    */
   @Override
   public String getFullName() {
-    String value = String.valueOf(getValue());
+    String value;
     
-    if (value.equals(String.valueOf(Name.ASSO.getValue()))) {
-      value = "1";
+    switch (getName()) {
+      case RE:
+        value = "10";
+        break;
+      case CAVALLO:
+        value = "9";
+        break;
+      case FANTE:
+        value = "8";
+        break;
+      case ASSO:
+        value = "1";
+        break;
+      default:
+        value = String.valueOf(getValue());
     }
+    
     
     return getSuit().toString().toLowerCase()
                  .concat(Delimiter.UNDERSCORE.getText())
@@ -104,7 +118,7 @@ public class CardImpl implements Card {
   public void setChosen(boolean chosen) {
     boolean oldValue = this.isChosen;
     this.isChosen = chosen;
-    firePropertyChange("isChosen", oldValue, this.isChosen);
+    firePropertyChange("isChosen", oldValue, chosen);
   }
   
   @Override
