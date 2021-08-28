@@ -13,7 +13,7 @@ public class BoardViewImpl implements BoardView {
   
   @Override
   public void showCards() {
-    this.cardsView.getCardsViews().forEach(CardView::showCard);
+    this.cardsView.getCardViews().forEach(CardView::showCard);
   }
   
   public CardsView<Group> getCardsView() {

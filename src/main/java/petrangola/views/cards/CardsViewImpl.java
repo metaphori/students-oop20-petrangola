@@ -1,6 +1,7 @@
 package main.java.petrangola.views.cards;
 
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.utlis.Pair;
@@ -12,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CardsViewImpl implements CardsView<Group> {
-  private final Cards cards;
   private final ResourceService service;
+  private Cards cards;
   private List<CardView> cardsViews;
   private Pair<Vertical, Horizontal> position;
   
@@ -32,7 +33,7 @@ public class CardsViewImpl implements CardsView<Group> {
   }
   
   @Override
-  public List<CardView> getCardsViews() {
+  public List<CardView> getCardViews() {
     return this.cardsViews;
   }
   
@@ -44,6 +45,12 @@ public class CardsViewImpl implements CardsView<Group> {
   @Override
   public Cards getCards() {
     return this.cards;
+  }
+  
+  @Override
+  public void setCards(final Cards cards) {
+    this.cards = cards;
+    this.set();
   }
   
   @Override
@@ -71,6 +78,6 @@ public class CardsViewImpl implements CardsView<Group> {
   
   @Override
   public Group get() {
-    return new Group(this.cardsViews.stream().map(ViewNode::get).collect(Collectors.toList()));
+    return new Group(this.cardsViews.stream().map(ViewNode::get).toArray(ImageView[]::new));
   }
 }

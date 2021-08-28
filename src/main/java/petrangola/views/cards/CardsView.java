@@ -14,12 +14,17 @@ public interface CardsView<T> extends ViewNode<T> {
   /**
    * @return
    */
-  List<CardView> getCardsViews();
+  List<CardView> getCardViews();
   
   /**
    *
    */
   Cards getCards();
+  
+  /**
+   * @param cards
+   */
+  void setCards(Cards cards);
   
   /**
    *

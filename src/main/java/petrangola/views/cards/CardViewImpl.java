@@ -1,6 +1,5 @@
 package main.java.petrangola.views.cards;
 
-import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import main.java.petrangola.models.cards.Card;
@@ -32,6 +31,7 @@ public class CardViewImpl implements CardView {
   public void showCard() {
     this.card.setHidden(false);
     this.card.setCovered(false);
+    this.imageView.setVisible(true);
   }
   
   @Override
@@ -55,11 +55,11 @@ public class CardViewImpl implements CardView {
     }
     
     final ImageView imageView = new ImageView(createImage(this.service.getPath()));
-  
+    
     if (isHidden()) {
       imageView.setVisible(false);
     }
-  
+    
     this.imageView = imageView;
   }
   
@@ -92,8 +92,9 @@ public class CardViewImpl implements CardView {
   @Override
   public void setListeners() {
     this.imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-      toggleChosen();
-      event.consume();
+      if (event.isConsumed()) {
+        toggleChosen();
+      }
     });
   }
 }
