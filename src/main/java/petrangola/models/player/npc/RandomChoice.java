@@ -1,9 +1,12 @@
 package main.java.petrangola.models.player.npc;
 
-import java.util.List;
-import java.util.Random;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.views.events.KnockEvent;
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+import java.util.Random;
 
 public class RandomChoice extends AbstractChoiceStrategy {
   @Override
@@ -14,11 +17,16 @@ public class RandomChoice extends AbstractChoiceStrategy {
     
     final Cards boardCards = getBoardCards(cardsList);
     final Cards playerCards = getPlayerCards(cardsList);
-    final Card toGive = playerCards.getCombination().getCards().get(indexToGive);
-    final Card toTake = boardCards.getCombination().getCards().get(indexToTake);
-  
-    playerCards.getCombination().replaceCards(List.of(toGive), List.of(toTake));
-    boardCards.getCombination().replaceCards(List.of(toTake), List.of(toGive));
+    final Card playerCard = playerCards.getCombination().getCards().get(indexToGive);
+    final Card boardCard = boardCards.getCombination().getCards().get(indexToTake);
+    
+    if (Math.random() < 0.5) {
+      playerCards.getCombination().replaceCards(List.of(boardCard), List.of(playerCard));
+      boardCards.getCombination().replaceCards(List.of(playerCard), List.of(boardCard));
+    } else {
+      EventBus.getDefault().post(new KnockEvent(playerCards.getPlayer().get()));
+    }
+    
     
     return List.of(boardCards, playerCards);
   }
