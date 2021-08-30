@@ -1,12 +1,15 @@
 package main.java.petrangola.models.player;
 
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.cards.CardsImpl;
 import main.java.petrangola.models.game.GameObject;
 
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class UserImpl implements User {
   private final String username;
@@ -27,6 +30,12 @@ public class UserImpl implements User {
   
   @Override
   public void exchange(Cards boardCards, Cards playerCards) {
+    List<Card> playerChosenCards = new ArrayList<>(playerCards.getCombination().getChosenCards());
+    List<Card> boardChosenCards = new ArrayList<>(boardCards.getCombination().getChosenCards());
+    
+    boardCards.getCombination().replaceCards(playerChosenCards, boardChosenCards);
+    playerCards.getCombination().replaceCards(boardChosenCards, playerChosenCards);
+    
     firePropertyChange("exchange", null, List.of(boardCards, playerCards));
   }
   
