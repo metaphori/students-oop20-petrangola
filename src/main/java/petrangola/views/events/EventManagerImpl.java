@@ -23,6 +23,13 @@ public class EventManagerImpl implements EventManager {
     this.gameController.nextTurnNumberHandler();
   }
   
+  @Subscribe
+  public void onKnockEvent(KnockEvent event) {
+    if (!this.gameController.checkKnocks()) {
+      this.gameController.addKnock(event.getPlayer().getUsername());
+    }
+  }
+  
   @Override
   public void register() {
     EventBus.getDefault().register(this);
