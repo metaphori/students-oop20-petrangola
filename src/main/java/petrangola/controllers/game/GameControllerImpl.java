@@ -82,7 +82,7 @@ public class GameControllerImpl implements GameController {
     List<PlayerDetail> playerDetails = new ArrayList<>(this.game.getPlayerDetails());
     int distance = 0;
     
-    for (int index = 0; index < playerDetails.size() - 1; index++) {
+    for (int index = 0; index <= playerDetails.size() - 1; index++) {
       if (playerDetails.get(index).getPlayer().isDealer()) {
         distance = index;
         break;
@@ -126,14 +126,6 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public Player getCurrentPlayer() {
-    System.out.println("CURRENT PLAYER: " + this.game
-                                          .getPlayerDetails()
-                                          .stream()
-                                          .filter(playerDetails -> playerDetails.getTurnNumber() == this.game.getCurrentTurnNumber())
-                                          .findFirst()
-                                          .get()
-                                          .getPlayer()
-                                          .getUsername());
     return this.game
                  .getPlayerDetails()
                  .stream()
@@ -157,12 +149,17 @@ public class GameControllerImpl implements GameController {
   @Override
   public void roundHandler() {
     int nextRound = this.game.getRound() + 1;
-    System.out.println("nextR:" + nextRound);
     this.game.setRound(nextRound);
   }
   
   @Override
   public void onlyOneRound() {
     this.game.onlyOneRound();
+  }
+  
+  @Override
+  public void addKnock(String username) {
+    this.game.setKnockerCount(this.game.getKnockerCount() + 1);
+    this.game.setLastKnocker(username);
   }
 }

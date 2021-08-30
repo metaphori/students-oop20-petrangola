@@ -30,6 +30,9 @@ public interface GameController extends Controller {
    */
   void setDealer();
   
+  /**
+   *
+   */
   void setTurnNumbers();
   
   /**
@@ -61,4 +64,10 @@ public interface GameController extends Controller {
    *
    */
   void onlyOneRound();
+  
+  /**
+   *
+   * @param username
+   */
+  void addKnock(String username);
 }
