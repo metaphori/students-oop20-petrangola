@@ -38,6 +38,6 @@ public class ExchangeCommand implements Command {
     final int sizePlayerCards = playerCards.get().getCombination().getChosenCards().size();
     final int sizeBoardCards = boardCards.get().getCombination().getChosenCards().size();
     
-    return sizeBoardCards == sizePlayerCards;
+    return sizeBoardCards > 0 && sizeBoardCards == sizePlayerCards;
   }
 }

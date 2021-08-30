@@ -2,32 +2,38 @@ package main.java.petrangola.views.cards;
 
 import main.java.petrangola.models.cards.Cards;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class CardsExchangedImpl implements CardsExchanged {
-  private final List<Cards> cardsList = new CopyOnWriteArrayList<>();
+  private final Set<Cards> cardsList = new HashSet<>();
   
   @Override
   public void addCards(Cards cards) {
-    this.cardsList.remove(cards);
     this.cardsList.add(cards);
   }
   
   @Override
   public Optional<Cards> getPlayerCards() {
-    return cardsList
-                 .stream()
-                 .filter(Cards::isPlayerCards)
-                 .findFirst();
+    return getOptionalCards(Cards::isPlayerCards);
   }
   
   @Override
   public Optional<Cards> getBoardCards() {
+    return getOptionalCards(Cards::isCommunity);
+  }
+  
+  private Optional<Cards> getOptionalCards(Predicate<? super Cards> predicate) {
+    if (cardsList.stream().noneMatch(predicate)) {
+      return Optional.empty();
+    }
+    
     return cardsList
                  .stream()
-                 .filter(Cards::isCommunity)
+                 .filter(predicate)
                  .findFirst();
   }
 }
