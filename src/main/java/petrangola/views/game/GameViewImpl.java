@@ -4,6 +4,7 @@ package main.java.petrangola.views.game;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Orientation;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -13,12 +14,14 @@ import main.java.petrangola.controllers.game.GameControllerImpl;
 import main.java.petrangola.controllers.player.DealerControllerImpl;
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.controllers.player.PlayerControllerImpl;
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.utlis.Background;
+import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.ViewNodeFactory;
@@ -40,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameViewImpl extends AbstractViewFX implements GameView {
   private final Game game = new GameImpl();
@@ -154,8 +158,10 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {
       case "updatedCombination":
-        this.handleExchangedCards((Cards) evt.getSource());
-        this.gameObjectViewMediator.update("exchangedCards", this.cardsExchanged);
+        if (!this.currentPlayer.isNPC()) {
+          this.handleExchangedCards((Cards) evt.getSource());
+          this.gameObjectViewMediator.update("exchangedCards", this.cardsExchanged);
+        }
         
         break;
       case "cards":
@@ -176,7 +182,6 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
         this.addListenerToModel(this.game.getDealer());
         this.gameController.setTurnNumbers();
         this.setCurrentPlayer();
-        
         this.beforeStartingGameAnimation();
         
         break;
@@ -184,13 +189,27 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
         if (!dealerIsNotAUser()) {
           this.gameObjectViewMediator.hideDealerView();
         }
-        
+        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
         break;
       case "currentTurnNumber":
         this.currentTurnNumber = (int) evt.getNewValue();
+        this.setCurrentPlayer();
+        this.setCurrentPlayerCards(this.game.getCards());
+        this.gameObjectViewMediator.update("currentPlayer", this.gameController.getCurrentPlayer());
+  
+        if (this.currentPlayer.isNPC()) {
+          this.playerController.exchangeCards(this.currentPlayer, this.boardCards, this.currentPlayerCards);
+        }
         
         break;
       case "knockerCount":
+        
+        if (this.gameController.checkKnocks()) {
+          System.out.println("IS FINISHED");
+        } else {
+          EventBus.getDefault().post(new NextTurnEvent());
+        }
+        
         break;
       case "lastKnocker":
         break;
@@ -205,22 +224,27 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
         
         if (dealerIsNotAUser() && this.boardCards != null && this.currentPlayerCards != null) {
           EventBus.getDefault().post(new NextRoundEvent());
+          EventBus.getDefault().post(new NextTurnEvent());
           this.dealerController.cherryPickingCombination(this.boardCards, this.currentPlayerCards);
         }
         break;
       case "onlyOneRound":
         this.gameController.onlyOneRound();
       case "exchange":
-      case "firstExchange":
-        this.setCurrentPlayer();
-        this.setCurrentPlayerCards(this.game.getCards());
-        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
-  
+        System.out.println(this.game.getCards()
+                                 .stream()
+                                 .filter(Cards::isPlayerCards)
+                                 .map(cards -> new Pair<>(cards.getPlayer().get().getUsername(), cards.getCombination()
+                                                                                                       .getCards()
+                                                                                                       .stream()
+                                                                                                       .map(Card::getFullName)
+                                                                                                       .collect(Collectors.joining(" ,"))))
+                                .map(pair ->  pair.getX() + " "  + pair.getY())
+        .collect(Collectors.joining("  &&&&  ")));
         EventBus.getDefault().post(new NextTurnEvent());
-        
-        if (this.currentPlayer.isNPC()) {
-          this.playerController.exchangeCards(this.currentPlayer, boardCards, this.currentPlayerCards);
-        }
+        this.clearChosenCards();
+      case "firstExchange":
+        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
         
         break;
     }
@@ -230,6 +254,10 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
       this.highCardsMediator = new HighCardMediator(this.game.getPlayerDetails());
       this.highCardsMediator.register(getLayout());
     }
+  }
+  
+  private void clearChosenCards() {
+    this.gameObjectViewMediator.update("clearChosenCards",null);
   }
   
   private void setCurrentPlayer() {
@@ -249,7 +277,7 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     this.gameObjectViewMediator = new GameObjectViewMediator(viewNodeFactory, cardsViewFactory, this.game, this.layoutBuilder);
     this.gameObjectViewMediator.register(getLayout());
   
-    if (this.boardCards != null) {
+    if (this.boardCards != null && !dealerIsNotAUser()) {
       this.gameObjectViewMediator.initDealerView(this.gameController, this.dealerController, this.boardCards);
     }
     
