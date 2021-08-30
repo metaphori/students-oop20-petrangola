@@ -1,5 +1,6 @@
 package main.java.petrangola.models.cards;
 
+import main.java.petrangola.services.CombinationChecker;
 import main.java.petrangola.utlis.DeckConstants;
 import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Pair;
@@ -49,60 +50,23 @@ public class CombinationBuilderImpl implements CombinationBuilder {
         List<Card> cardList = new ArrayList<>(getCards());
         
         int index = cardList.indexOf(card);
-        cardList.set(index, card);
-        setCards(cardList);
         
-        firePropertyChange("combination", null, this);
+        if (index != -1) {
+          cardList.set(index, card);
+          setCards(cardList);
+  
+          firePropertyChange("combination", null, this);
+        }
       }
       
       @Override
       public void replaceCards(List<Card> cardsToPut, List<Card> cardsToReplace) {
         final List<Card> tempCards = new ArrayList<>(getCards());
-        final List<Card> tempCardsToPut = new ArrayList<>(cardsToPut);
         
-        tempCards.forEach(card -> {
-          if (cardsToReplace.contains(card)) {
-            this.getCards().remove(card);
-            
-            final Card cardToPut = cardsToPut.get(tempCardsToPut.size() - 1);
-            
-            this.getCards().add(cardToPut);
-            tempCardsToPut.removeIf(tempCard -> tempCard.equals(cardToPut));
-          }
-        });
-      }
-      
-      @Override
-      public boolean isTris() {
-        return getCards().stream().allMatch(getCards().get(0)::equals);
-      }
-      
-      @Override
-      public boolean isFlush() {
-        final Stream<Card> stream = getCards().stream().sorted(Comparator.comparingInt(Card::getValue));
+        cardsToReplace.forEach(tempCards::remove);  
+        tempCards.addAll(cardsToPut);
         
-        if (!areSameSuit()) {
-          return false;
-        }
-        
-        final List<Card> list = stream.collect(Collectors.toList());
-        final int max = list.get(list.size() - 1).getValue();
-        final int sum = list.stream().mapToInt(Card::getValue).sum();
-        
-        return sum == max * (max + 1) / 2;
-      }
-      
-      private boolean areSameSuit() {
-        return getCards().stream().allMatch(card -> cards.get(0).getSuit().equals(card.getSuit()));
-      }
-      
-      @Override
-      public boolean isAceLow() {
-        return areSameSuit() && getCards()
-                                      .stream()
-                                      .map(Card::getName)
-                                      .collect(Collectors.toList())
-                                      .containsAll(List.of(Name.ASSO, Name.DUE, Name.TRE));
+        setCards(tempCards);
       }
       
       public List<Card> getCards() {
@@ -117,10 +81,15 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       }
   
       @Override
+      public void clearChosenCards() {
+        getChosenCards().forEach(card -> card.setChosen(false));
+      }
+  
+      @Override
       public Pair<List<Card>, Integer> getBest() {
         List<Card> cards = new ArrayList<>(getCards());
         
-        if (isAceLow()) {
+        if (CombinationChecker.isAceLow(cards)) {
           cards = cards.stream().map(card -> {
             if (card.getName().equals(Name.ASSO)) {
               return new AceLow(card.getName(), card.getSuit());
