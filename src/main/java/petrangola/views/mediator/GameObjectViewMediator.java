@@ -18,6 +18,7 @@ import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.ViewNodeFactory;
 import main.java.petrangola.views.board.BoardView;
+import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
 import main.java.petrangola.views.cards.CardsViewFactory;
@@ -243,19 +244,51 @@ public class GameObjectViewMediator implements GameMediator {
   
   @Override
   public void update(String propertyName, Object newValue) {
+    System.out.println("updating in mediator: " + propertyName  + "   " +  newValue);
     switch (propertyName) {
+      case "clearChosenCards":
+        this.clearChosenCards();
+        break;
       case "exchangedCards":
-        this.userView
+        this.getUserPlayerView()
               .getExchangeButton()
               .setData((CardsExchanged) newValue);
+        
         break;
       case "round":
-        this.showBoardCards();
+        if (newValue.equals(1)) {
+          this.showBoardCards();
+          this.getUserPlayerView().getCardsView().showCards();
+        }
+        
+        break;
+      case "currentPlayer":
+        this.toggleUserButton((Player) newValue);
+        
         break;
       case "firstExchange":
+        this.showBoardCards();
+        
       case "exchange":
         this.updateCards((List<Cards>) newValue);
+        
         break;
+    }
+  }
+  
+  private void clearChosenCards() {
+    getUserPlayerView().getCardsView().getCardViews().forEach(CardView::clearChosen);
+    getUserPlayerView().getExchangeButton().setData(null);
+    this.boardView.getCardsView().getCardViews().forEach(CardView::clearChosen);
+  }
+  
+  private void toggleUserButton(Player player) {
+    if (!player.isNPC()) {
+      getUserPlayerView().getExchangeButton().get().setVisible(true);
+      getUserPlayerView().getKnockButton().get().setVisible(true);
+    } else {
+      getUserPlayerView().getExchangeButton().get().setVisible(false);
+      getUserPlayerView().getKnockButton().get().setVisible(false);
     }
   }
   
@@ -266,25 +299,32 @@ public class GameObjectViewMediator implements GameMediator {
   private void updateCards(List<Cards> cardsList) {
     cardsList.forEach(cards -> {
       // Not the nicest solution, probably a bad pattern BUT, its saved me
+      CardsView<Group> cardsView = null;
+      
       switch (this.getGameObject(cards)) {
         case NPC:
-          this.npcViews
-                .stream()
-                .filter(npcView -> npcView.getPlayer().equals(cards.getPlayer().get()))
-                .findFirst()
-                .get()
-                .getCardsView()
-                .setCards(cards);
+          cardsView = this.npcViews
+                            .stream()
+                            .filter(npcView -> npcView.getPlayer().equals(cards.getPlayer().get()))
+                            .findFirst()
+                            .get()
+                            .getCardsView();
           break;
         case USER:
-          this.userView.getCardsView().setCards(cards);
+          cardsView = this.userView.getCardsView();
           break;
         case BOARD:
-          this.boardView.getCardsView().setCards(cards);
+          cardsView = this.boardView.getCardsView();
           break;
         case DEALER:
-          this.dealerView.getCardsView().setCards(cards);
+          cardsView = this.dealerView.getCardsView();
           break;
+      }
+      
+      cardsView.setCards(cards);
+      
+      if ((cards.isPlayerCards() && !cards.getPlayer().get().isNPC()) || cards.isCommunity())  {
+        cardsView.update(cards);
       }
     });
   }
@@ -299,14 +339,16 @@ public class GameObjectViewMediator implements GameMediator {
     if (player.isEmpty()) {
       throw new IllegalStateException();
     }
+  
+    if (player.get().isNPC()) {
+      return GAME_OBJECT.NPC;
+    }
     
     if (dealer.getUsername().equals(player.get().getUsername())) {
       return GAME_OBJECT.DEALER;
     }
-    
-    if (player.get().isNPC()) {
-      return GAME_OBJECT.NPC;
-    }
+  
+    System.out.println(player.get().getUsername() + "  " + player.get().isNPC());
     
     return GAME_OBJECT.USER;
   }
