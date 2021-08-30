@@ -5,6 +5,9 @@ import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
+import main.java.petrangola.views.events.NextRoundEvent;
+import main.java.petrangola.views.events.NextTurnEvent;
+import org.greenrobot.eventbus.EventBus;
 
 public class FirstExchangeButton extends AbstractButtonFX {
   private static final String FIRST_CHANGE = "Take board cards";
@@ -47,6 +50,10 @@ public class FirstExchangeButton extends AbstractButtonFX {
   
   @Override
   public void setListeners() {
-    this.get().setOnMouseClicked(mouseEvent -> this.dealerController.cherryPickingCombination(this.boardCards, this.ownCards));
+    this.get().setOnMouseClicked(mouseEvent -> {
+      EventBus.getDefault().post(new NextRoundEvent());
+      EventBus.getDefault().post(new NextTurnEvent());
+      this.dealerController.cherryPickingCombination(this.boardCards, this.ownCards);
+    });
   }
 }
