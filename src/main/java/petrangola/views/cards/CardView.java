@@ -6,17 +6,15 @@ import main.java.petrangola.views.components.imageview.ImageViewFX;
 
 public interface CardView extends ImageViewFX {
   /**
-   * @param player
-   * @return
-   */
-  default boolean isActionDisabled(Player player) {
-    return player.isNPC();
-  }
-  
-  /**
    *
    */
   void showCard();
+  
+  /**
+   *
+   * @param card
+   */
+  void updateCard(Card card);
   
   /**
    * @return
@@ -39,9 +37,22 @@ public interface CardView extends ImageViewFX {
   void toggleChosen();
   
   /**
+   *
+   */
+  void effectsHandler();
+  
+  /**
    * @return
    */
   Card getCard();
   
+  /**
+   *
+   */
   void setListeners();
+  
+  /**
+   *
+   */
+  void clearChosen();
 }

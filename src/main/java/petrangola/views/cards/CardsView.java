@@ -30,4 +30,10 @@ public interface CardsView<T> extends ViewNode<T> {
    *
    */
   void highlightBestCardsCombination();
+  
+  /**
+   *
+   * @param cards
+   */
+  void update(Cards cards);
 }

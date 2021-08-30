@@ -13,7 +13,7 @@ public class CardsViewFactoryImpl implements CardsViewFactory {
   
   @Override
   public CardsView<Group> createUserCards(Cards cards, Pair<Vertical, Horizontal> position) {
-    return new CardsViewImpl(this.service, cards, position);
+    return new CardsViewImpl(this.service, cards, position, false);
   }
   
   @Override
@@ -22,14 +22,14 @@ public class CardsViewFactoryImpl implements CardsViewFactory {
     
     final Pair<Vertical, Horizontal> position = npcIndex < thresholdNpc ? new Pair<>(Vertical.TOP, Horizontal.LEFT) : new Pair<>(Vertical.TOP, Horizontal.RIGHT);
     
-    return new CardsViewImpl(this.service, cards, position);
+    return new CardsViewImpl(this.service, cards, position, true);
   }
   
   // TODO: if nothing changes, just make one method called "simple"
   @Override
   public CardsView<Group> createBoardCards(Cards cards, Pair<Vertical, Horizontal> position) {
     cards.getCombination().getCards().stream().skip(2).forEach(card -> card.setCovered(true));
-    return new CardsViewImpl(this.service, cards, position);
+    return new CardsViewImpl(this.service, cards, position, false);
   }
   
   @Override
@@ -37,6 +37,8 @@ public class CardsViewFactoryImpl implements CardsViewFactory {
     cards.getCombination().getCards().stream().limit(2).forEach(card -> card.setCovered(true));
     cards.getCombination().getCards().stream().skip(2).forEach(card -> card.setHidden(true));
     
-    return new CardsViewImpl(this.service, cards, position);
+    final boolean areListenerDisabled = cards.getPlayer().get().isNPC();
+    
+    return new CardsViewImpl(this.service, cards, position, areListenerDisabled);
   }
 }

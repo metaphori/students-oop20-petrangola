@@ -1,7 +1,10 @@
 package main.java.petrangola.views.cards;
 
+import javafx.beans.value.ObservableValue;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.utlis.Pair;
@@ -12,9 +15,9 @@ public class CardViewImpl implements CardView {
   private static final String CARD_COVER = "/card_back";
   private static final String EXTENSION = ".png";
   
-  private final Card card;
   private final ResourceService service;
   
+  private Card card;
   private Pair<Vertical, Horizontal> position;
   private boolean isChosen;
   private ImageView imageView;
@@ -22,16 +25,30 @@ public class CardViewImpl implements CardView {
   public CardViewImpl(final Card card, final ResourceService service) {
     this.card = card;
     this.service = service;
-    this.service.setResourceName("/".concat(card.getFullName().concat(EXTENSION)));
+    this.setPath(card);
     this.set();
-    this.setListeners();
+  }
+  
+  private void setPath(final Card card) {
+    this.service.setResourceName("/".concat(card.getFullName().concat(EXTENSION)));
   }
   
   @Override
   public void showCard() {
     this.card.setHidden(false);
     this.card.setCovered(false);
-    this.imageView.setVisible(true);
+    this.get().setVisible(true);
+    this.setPath(this.card);
+    this.get().setImage(createImage(this.service.getPath()));
+  }
+  
+  @Override
+  public void updateCard(final Card card) {
+    this.card = card;
+    
+    this.setPath(card);
+    this.get().setImage(null);
+    this.get().setImage(createImage(this.service.getPath()));
   }
   
   @Override
@@ -85,16 +102,45 @@ public class CardViewImpl implements CardView {
   }
   
   @Override
+  public void effectsHandler() {
+    final DropShadow pressEffect = new DropShadow( 20, Color.AQUA );
+    
+    this.get().pressedProperty().addListener((observable, eventHandler, t1) ->  {
+        if (observable.getValue()) {
+          this.get().setEffect(pressEffect);
+        } else {
+          this.get().setEffect(null);
+        }
+    });
+    
+    final DropShadow clickedEffect = new DropShadow(24, Color.CORAL);
+    
+    this.get().setOnMouseClicked(mouseEvent -> {
+      if (this.isChosen()) {
+        this.get().setEffect(clickedEffect);
+      } else {
+        this.get().setEffect(null);
+      }
+    });
+  }
+  
+  
+  @Override
   public Card getCard() {
     return this.card;
   }
   
   @Override
   public void setListeners() {
-    this.imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-      if (event.isConsumed()) {
-        toggleChosen();
-      }
-    });
+    this.get().addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> toggleChosen());
+  }
+  
+  @Override
+  public void clearChosen() {
+    this.get().setEffect(null);
+    
+    if (this.isChosen()) {
+      this.toggleChosen();
+    }
   }
 }

@@ -2,8 +2,10 @@ package main.java.petrangola.views.cards;
 
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.services.ResourceService;
+import main.java.petrangola.utlis.DeckConstants;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
@@ -18,13 +20,16 @@ public class CardsViewImpl implements CardsView<Group> {
   private List<CardView> cardsViews;
   private Pair<Vertical, Horizontal> position;
   
-  public CardsViewImpl(ResourceService service, Cards cards, Pair<Vertical, Horizontal> position) {
+  public CardsViewImpl(ResourceService service, Cards cards, Pair<Vertical, Horizontal> position, boolean areListenerDisabled) {
     this.cards = cards;
     this.service = service;
     this.position = position;
     
     this.set();
-    this.addListeners();
+    
+    if (!areListenerDisabled) {
+      this.addListeners();
+    }
   }
   
   @Override
@@ -50,7 +55,16 @@ public class CardsViewImpl implements CardsView<Group> {
   @Override
   public void setCards(final Cards cards) {
     this.cards = cards;
-    this.set();
+  }
+  
+  @Override
+  public void update(final Cards cards) {
+    List<Card> cardList = cards.getCombination().getCards();
+    
+    
+    for (int index = 0; index < DeckConstants.DECK_SIZE.getValue(); index++) {
+      this.getCardViews().get(index).updateCard(cardList.get(index));
+    }
   }
   
   @Override
@@ -73,7 +87,10 @@ public class CardsViewImpl implements CardsView<Group> {
   }
   
   private void addListeners() {
-    this.cardsViews.forEach(cardView -> cardView.get().setOnMouseClicked(mouseEvent -> cardView.toggleChosen()));
+    this.cardsViews.forEach(cardView -> {
+      cardView.setListeners();
+      cardView.effectsHandler();
+    });
   }
   
   @Override
