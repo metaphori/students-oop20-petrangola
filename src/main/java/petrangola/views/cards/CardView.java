@@ -1,7 +1,6 @@
 package main.java.petrangola.views.cards;
 
 import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.components.imageview.ImageViewFX;
 
 public interface CardView extends ImageViewFX {
@@ -11,10 +10,10 @@ public interface CardView extends ImageViewFX {
   void showCard();
   
   /**
-   *
    * @param card
+   * @param showImage
    */
-  void updateCard(Card card);
+  void updateCard(Card card, boolean showImage);
   
   /**
    * @return

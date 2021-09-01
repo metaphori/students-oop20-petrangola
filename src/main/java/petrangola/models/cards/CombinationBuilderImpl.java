@@ -50,7 +50,7 @@ public class CombinationBuilderImpl implements CombinationBuilder {
         List<Card> cardList = new ArrayList<>(getCards());
         
         int index = cardList.indexOf(card);
-        
+  
         if (index != -1) {
           cardList.set(index, card);
           setCards(cardList);
@@ -63,10 +63,15 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       public void replaceCards(List<Card> cardsToPut, List<Card> cardsToReplace) {
         final List<Card> tempCards = new ArrayList<>(getCards());
         
-        cardsToReplace.forEach(tempCards::remove);  
+        cardsToReplace.forEach(tempCards::remove);
         tempCards.addAll(cardsToPut);
         
+        cards.forEach(card -> card.removePropertyChangeLister(this));
+        
         setCards(tempCards);
+        
+        cards.forEach(card -> card.addPropertyChangeListener(this));
+        
       }
       
       public List<Card> getCards() {
@@ -81,13 +86,12 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       }
   
       @Override
-      public void clearChosenCards() {
-        getChosenCards().forEach(card -> card.setChosen(false));
-      }
-  
-      @Override
       public Pair<List<Card>, Integer> getBest() {
         List<Card> cards = new ArrayList<>(getCards());
+        
+        if (CombinationChecker.isTris(cards)) {
+          return new Pair<>(cards,cards.get(0).getValue() * DeckConstants.DECK_SIZE.getValue());
+        }
         
         if (CombinationChecker.isAceLow(cards)) {
           cards = cards.stream().map(card -> {
@@ -99,16 +103,18 @@ public class CombinationBuilderImpl implements CombinationBuilder {
           }).collect(Collectors.toList());
         }
         
-        return cards.stream()
-                     .collect(Collectors.groupingBy(Card::getSuit))
-                     .entrySet()
-                     .stream()
-                     .collect(Collectors.toMap(Map.Entry::getValue, entry -> entry.getValue().stream().mapToInt(Card::getValue).sum()))
-                     .entrySet()
-                     .stream()
-                     .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
-                     .map(maxEntry -> new Pair<>(maxEntry.getKey(), maxEntry.getValue()))
-                     .get();
+        int bestValue = cards.stream()
+                              .collect(Collectors.groupingBy(Card::getSuit))
+                              .entrySet()
+                              .stream()
+                              .collect(Collectors.toMap(Map.Entry::getValue, entry -> entry.getValue().stream().mapToInt(Card::getValue).sum()))
+                              .entrySet()
+                              .stream()
+                              .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                              .map(Map.Entry::getValue)
+                              .get();
+        
+        return new Pair<>(cards, bestValue);
       }
     };
   }

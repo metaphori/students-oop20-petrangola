@@ -34,6 +34,7 @@ public interface CardsView<T> extends ViewNode<T> {
   /**
    *
    * @param cards
+ 
    */
   void update(Cards cards);
 }

@@ -25,9 +25,4 @@ public interface Combination extends Replaceable, ObservableModel, PropertyChang
    * @return
    */
   List<Card> getChosenCards();
-  
-  /**
-   *
-   */
-  void clearChosenCards();
 }

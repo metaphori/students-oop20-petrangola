@@ -1,6 +1,5 @@
 package main.java.petrangola.views.cards;
 
-import javafx.beans.value.ObservableValue;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -35,30 +34,33 @@ public class CardViewImpl implements CardView {
   
   @Override
   public void showCard() {
-    this.card.setHidden(false);
-    this.card.setCovered(false);
+    this.getCard().setHidden(false);
+    this.getCard().setCovered(false);
     this.get().setVisible(true);
-    this.setPath(this.card);
+    this.setPath(this.getCard());
     this.get().setImage(createImage(this.service.getPath()));
   }
   
   @Override
-  public void updateCard(final Card card) {
+  public void updateCard(final Card card, boolean showImage) {
     this.card = card;
     
     this.setPath(card);
-    this.get().setImage(null);
-    this.get().setImage(createImage(this.service.getPath()));
+    
+    if (showImage) {
+      this.get().setImage(null);
+      this.get().setImage(createImage(this.service.getPath()));
+    }
   }
   
   @Override
   public boolean isCovered() {
-    return this.card.isCovered();
+    return this.getCard().isCovered();
   }
   
   @Override
   public boolean isHidden() {
-    return this.card.isHidden();
+    return this.getCard().isHidden();
   }
   
   @Override
@@ -98,19 +100,19 @@ public class CardViewImpl implements CardView {
   @Override
   public void toggleChosen() {
     this.isChosen = !this.isChosen();
-    this.card.setChosen(this.isChosen);
+    this.getCard().setChosen(this.isChosen);
   }
   
   @Override
   public void effectsHandler() {
-    final DropShadow pressEffect = new DropShadow( 20, Color.AQUA );
+    final DropShadow pressEffect = new DropShadow(20, Color.AQUA);
     
-    this.get().pressedProperty().addListener((observable, eventHandler, t1) ->  {
-        if (observable.getValue()) {
-          this.get().setEffect(pressEffect);
-        } else {
-          this.get().setEffect(null);
-        }
+    this.get().pressedProperty().addListener((observable, eventHandler, t1) -> {
+      if (observable.getValue()) {
+        this.get().setEffect(pressEffect);
+      } else {
+        this.get().setEffect(null);
+      }
     });
     
     final DropShadow clickedEffect = new DropShadow(24, Color.CORAL);
