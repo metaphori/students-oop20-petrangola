@@ -4,7 +4,6 @@ package main.java.petrangola.views.game;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Orientation;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,6 +34,7 @@ import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 import main.java.petrangola.views.events.EventManagerImpl;
 import main.java.petrangola.views.events.NextRoundEvent;
 import main.java.petrangola.views.events.NextTurnEvent;
+import main.java.petrangola.views.events.WinnerEvent;
 import main.java.petrangola.views.mediator.GameMediator;
 import main.java.petrangola.views.mediator.GameObjectViewMediator;
 import main.java.petrangola.views.mediator.HighCardMediator;
@@ -66,7 +66,6 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   private Player currentPlayer;
   
   private boolean highCardsAreShown = false;
-  private Cards boardCards;
   private Cards currentPlayerCards;
   private int currentTurnNumber;
   
@@ -132,7 +131,10 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   @Override
   public void showWinner() {
+    final Pane winnerPane = (Pane) getLayout().lookup(GameStyleClass.USERNAME.getAsStyleClass());
     this.winnerView.show();
+    
+    winnerPane.getChildren().add(this.winnerView.get());
   }
   
   @Override
@@ -166,8 +168,6 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
         break;
       case "cards":
         this.game.getCards().forEach(this::addListenerToModel);
-        this.game.getPlayers().forEach(player -> System.out.println("username: " + player.getUsername() + "  isNpc:" + player.isNPC() + " isDealer:" + player.isDealer()));
-        this.setCurrentPlayerCards(this.game.getCards());
         
         break;
       case "players":
@@ -197,15 +197,14 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
         this.setCurrentPlayerCards(this.game.getCards());
         this.gameObjectViewMediator.update("currentPlayer", this.gameController.getCurrentPlayer());
   
-        if (this.currentPlayer.isNPC()) {
-          this.playerController.exchangeCards(this.currentPlayer, this.boardCards, this.currentPlayerCards);
+        if (this.currentPlayer.isNPC() && !this.gameController.checkKnocks()) {
+          this.playerController.exchangeCards(this.currentPlayer, getBoardCards(), getCurrentPlayerCards());
         }
         
         break;
       case "knockerCount":
-        
         if (this.gameController.checkKnocks()) {
-          System.out.println("IS FINISHED");
+          EventBus.getDefault().post(new WinnerEvent(this.game.getCards(), this.game.getPlayerDetails(), this.playerController, getLayout()));
         } else {
           EventBus.getDefault().post(new NextTurnEvent());
         }
@@ -214,37 +213,37 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
       case "lastKnocker":
         break;
       case "winner":
+        final String winner = (String) evt.getNewValue();
+        this.winnerView.setText(winner);
+        this.showWinner();
+        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
         break;
       case "dealtCards":
         final List<Cards> cardsList = (List<Cards>) evt.getNewValue();
         this.game.setCards(cardsList);
-        this.setBoardCards(cardsList);
+        this.setCurrentPlayerCards(cardsList);
         
         this.registerComponents();
         
-        if (dealerIsNotAUser() && this.boardCards != null && this.currentPlayerCards != null) {
-          EventBus.getDefault().post(new NextRoundEvent());
-          EventBus.getDefault().post(new NextTurnEvent());
-          this.dealerController.cherryPickingCombination(this.boardCards, this.currentPlayerCards);
+        if (dealerIsNotAUser() && getCurrentPlayerCards() != null) {
+          this.dealerController.cherryPickingCombination(getBoardCards(), getCurrentPlayerCards());
         }
         break;
       case "onlyOneRound":
-        this.gameController.onlyOneRound();
+        if (currentTurnNumber == this.game.getPlayerDetails().size() - 1)  {
+          EventBus.getDefault().post(new WinnerEvent(this.game.getCards(), this.game.getPlayerDetails(), this.playerController, getLayout()));
+        }
       case "exchange":
-        System.out.println(this.game.getCards()
-                                 .stream()
-                                 .filter(Cards::isPlayerCards)
-                                 .map(cards -> new Pair<>(cards.getPlayer().get().getUsername(), cards.getCombination()
-                                                                                                       .getCards()
-                                                                                                       .stream()
-                                                                                                       .map(Card::getFullName)
-                                                                                                       .collect(Collectors.joining(" ,"))))
-                                .map(pair ->  pair.getX() + " "  + pair.getY())
-        .collect(Collectors.joining("  &&&&  ")));
-        EventBus.getDefault().post(new NextTurnEvent());
         this.clearChosenCards();
+        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
+        
+        EventBus.getDefault().post(new NextTurnEvent());
+        
+        break;
       case "firstExchange":
         this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
+        EventBus.getDefault().post(new NextRoundEvent());
+        EventBus.getDefault().post(new NextTurnEvent());
         
         break;
     }
@@ -277,23 +276,18 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     this.gameObjectViewMediator = new GameObjectViewMediator(viewNodeFactory, cardsViewFactory, this.game, this.layoutBuilder);
     this.gameObjectViewMediator.register(getLayout());
   
-    if (this.boardCards != null && !dealerIsNotAUser()) {
-      this.gameObjectViewMediator.initDealerView(this.gameController, this.dealerController, this.boardCards);
-    }
-    
     if (!dealerIsNotAUser()) {
+      this.gameObjectViewMediator.initDealerView(this.gameController, this.dealerController, getBoardCards());
       this.gameObjectViewMediator.showDealerView(getLayout());
     }
   }
   
-  private void setBoardCards(List<Cards> cardsList) {
-    cardsList
-          .stream()
-          .filter(Cards::isCommunity)
-          .findFirst()
-          .ifPresent(cards -> {
-            this.boardCards = cards;
-          });
+  private Cards getBoardCards() {
+    return this.game.getCards()
+                 .stream()
+                 .filter(Cards::isCommunity)
+                 .findFirst()
+                 .get();
   }
   
   private boolean dealerIsNotAUser() {
@@ -332,5 +326,9 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   private boolean checkPlayerDetailsIsFullyInitialized() {
     return this.game.getPlayerDetails() != null && this.game.getPlayerDetails().size() == this.game.getPlayers().size();
+  }
+  
+  private Cards getCurrentPlayerCards() {
+    return this.currentPlayerCards;
   }
 }

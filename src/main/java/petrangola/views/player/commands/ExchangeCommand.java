@@ -1,12 +1,14 @@
 package main.java.petrangola.views.player.commands;
 
 import main.java.petrangola.controllers.player.PlayerController;
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.Command;
 import main.java.petrangola.views.cards.CardsExchanged;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ExchangeCommand implements Command {
   private final PlayerController playerController;

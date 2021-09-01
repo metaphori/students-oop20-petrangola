@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.player.DealerController;
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Dealer;
@@ -244,7 +245,6 @@ public class GameObjectViewMediator implements GameMediator {
   
   @Override
   public void update(String propertyName, Object newValue) {
-    System.out.println("updating in mediator: " + propertyName  + "   " +  newValue);
     switch (propertyName) {
       case "clearChosenCards":
         this.clearChosenCards();
@@ -265,6 +265,9 @@ public class GameObjectViewMediator implements GameMediator {
       case "currentPlayer":
         this.toggleUserButton((Player) newValue);
         
+        break;
+      case "winner":
+        this.npcViews.forEach(npcView -> npcView.getCardsView().showCards());
         break;
       case "firstExchange":
         this.showBoardCards();
@@ -322,10 +325,7 @@ public class GameObjectViewMediator implements GameMediator {
       }
       
       cardsView.setCards(cards);
-      
-      if ((cards.isPlayerCards() && !cards.getPlayer().get().isNPC()) || cards.isCommunity())  {
-        cardsView.update(cards);
-      }
+      cardsView.update(cards);
     });
   }
   
@@ -347,8 +347,6 @@ public class GameObjectViewMediator implements GameMediator {
     if (dealer.getUsername().equals(player.get().getUsername())) {
       return GAME_OBJECT.DEALER;
     }
-  
-    System.out.println(player.get().getUsername() + "  " + player.get().isNPC());
     
     return GAME_OBJECT.USER;
   }
