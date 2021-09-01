@@ -37,8 +37,9 @@ public interface GameController extends Controller {
   
   /**
    *
+   * @param winner
    */
-  void setWinner();
+  void setWinner(String winner);
   
   /**
    * @return

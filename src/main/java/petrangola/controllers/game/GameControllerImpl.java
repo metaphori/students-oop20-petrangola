@@ -89,7 +89,7 @@ public class GameControllerImpl implements GameController {
       }
     }
     
-    Collections.rotate(playerDetails, distance);
+    Collections.rotate(playerDetails, -distance);
     
     IntStream.range(0, playerDetails.size())
           .boxed()
@@ -99,7 +99,7 @@ public class GameControllerImpl implements GameController {
   }
   
   @Override
-  public void setWinner() {
+  public void setWinner(String winner) {
     Player player = this.game
                           .getCards()
                           .stream()
