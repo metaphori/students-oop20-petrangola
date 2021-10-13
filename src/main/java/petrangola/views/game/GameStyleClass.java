@@ -15,7 +15,8 @@ public enum GameStyleClass {
   USERNAME("username"),
   DEALER("dealer"),
   KNOCKS("knocks"),
-  TOP_IDS(List.of(LIFE, ROUND, USERNAME, DEALER, KNOCKS)),
+  WINNER("winner"),
+  TOP_IDS(List.of(LIFE, ROUND, USERNAME, DEALER, KNOCKS, WINNER)),
   
   RANKING("ranking"),
   BOARD_CARDS("boardCards"),

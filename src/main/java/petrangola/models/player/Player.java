@@ -3,7 +3,7 @@ package main.java.petrangola.models.player;
 import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.game.GameObject;
 
-public interface Player extends Exchangeable, GameObject, ObservableModel {
+public interface Player extends Exchanger, GameObject, ObservableModel {
   
   String getUsername();
   

@@ -1,33 +1,68 @@
 package main.java.petrangola.views.mediator;
 
-import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.models.game.Game;
+import main.java.petrangola.models.player.Dealer;
+import main.java.petrangola.models.player.Player;
 
-public interface GameMediator extends Mediator {
+public interface GameMediator extends Mediator, UpdatableMediator {
   /**
-   *
-   * @param gameController
-   * @param dealerController
-   * @param boardCards
+   * @param dealer
    */
-  void initDealerView(final GameController gameController, final DealerController dealerController, final Cards boardCards);
+  void onDealer(Dealer dealer);
+  
+  /**
+   * @param round
+   */
+  void onRound(int round);
+  
+  /**
+   * @param player
+   */
+  void onCurrentTurnNumber(Player player);
+  
+  /**
+   * @param game
+   */
+  void onKnockerCount(Game game);
   
   /**
    *
-   * @param layout
    */
-  void showDealerView(final Pane layout);
+  void onLastKnocker();
+  
+  /***
+   *
+   * @param winnerName
+   */
+  void onWinner(String winnerName);
+  
+  /**
+   * @param game
+   */
+  void onOnlyOneRound(Game game);
+  
+  /**
+   * @param highCardMediator
+   */
+  void setHighCardMediator(HighCardMediator highCardMediator);
+  
+  /**
+   * @param cardsMediator
+   */
+  void setCardsMediator(CardsMediator cardsMediator);
   
   /**
    *
    */
-  void hideDealerView();
+  void setDealerMediator(DealerMediator dealerMediator);
   
   /**
-   * @param propertyName
-   * @param newValue
+   * @param playerMediator
    */
-  void update(String propertyName, Object newValue);
+  void setPlayerMediator(PlayerMediator playerMediator);
+  
+  /**
+   * @param playerDetailMediator
+   */
+  void setPlayerDetailMediator(PlayerDetailMediator playerDetailMediator);
 }

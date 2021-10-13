@@ -1,124 +1,80 @@
 package main.java.petrangola.views.game;
 
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.Orientation;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.game.GameControllerImpl;
+import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.controllers.player.DealerControllerImpl;
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.controllers.player.PlayerControllerImpl;
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.option.Option;
-import main.java.petrangola.models.player.Player;
 import main.java.petrangola.utlis.Background;
-import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.views.AbstractViewFX;
-import main.java.petrangola.views.ViewNodeFactory;
-import main.java.petrangola.views.ViewNodeFactoryImpl;
-import main.java.petrangola.views.cards.CardsExchanged;
-import main.java.petrangola.views.cards.CardsExchangedImpl;
+import main.java.petrangola.views.GameObjectViewFactory;
+import main.java.petrangola.views.GameObjectViewFactoryImpl;
 import main.java.petrangola.views.cards.CardsViewFactory;
 import main.java.petrangola.views.cards.CardsViewFactoryImpl;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
-import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 import main.java.petrangola.views.events.EventManagerImpl;
-import main.java.petrangola.views.events.NextRoundEvent;
-import main.java.petrangola.views.events.NextTurnEvent;
-import main.java.petrangola.views.events.WinnerEvent;
-import main.java.petrangola.views.mediator.GameMediator;
-import main.java.petrangola.views.mediator.GameObjectViewMediator;
-import main.java.petrangola.views.mediator.HighCardMediator;
-import main.java.petrangola.views.mediator.Mediator;
-import org.greenrobot.eventbus.EventBus;
+import main.java.petrangola.views.mediator.*;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameViewImpl extends AbstractViewFX implements GameView {
   private final Game game = new GameImpl();
-  private final CardsExchanged cardsExchanged = new CardsExchangedImpl();
+  
+  private final DealerController dealerController = new DealerControllerImpl();
   private final PlayerController playerController = new PlayerControllerImpl();
   private final GameController gameController = new GameControllerImpl(game);
-  private final EventManagerImpl eventManager = new EventManagerImpl(gameController);
-  private final ViewNodeFactory viewNodeFactory = new ViewNodeFactoryImpl(game, playerController);
+  
+  private final EventManagerImpl eventManager = new EventManagerImpl(gameController, playerController);
+  
+  private final GameObjectViewFactory gameObjectViewFactory = new GameObjectViewFactoryImpl(game, playerController, dealerController, getLayout());
   private final CardsViewFactory cardsViewFactory = new CardsViewFactoryImpl();
-  private final DealerTextView dealerTextView = new DealerTextViewImpl(new Text());
-  private final RoundView roundView = new RoundViewImpl(new Text());
-  private final WinnerView winnerView = new WinnerViewImpl(new Text());
-  private final KnockView knockView = new KnockViewImpl(new Text());
-  private final Timeline timeline = new Timeline();
-  private final LayoutBuilder layoutBuilder;
+  private final MediatorsFactory mediatorsFactory = new MediatorsFactoryImpl();
   
-  private GameMediator gameObjectViewMediator;
-  private Mediator highCardsMediator;
-  private DealerControllerImpl dealerController;
-  private Player currentPlayer;
-  
-  private boolean highCardsAreShown = false;
-  private Cards currentPlayerCards;
-  private int currentTurnNumber;
-  
+  private final GameMediator gameMediator;
+  private HighCardMediator highCardsMediator;
   
   public GameViewImpl(Stage stage, Option option) {
-    super(stage, new HBox());
+    super(stage, new HBox(), Horizontal.values());
     
     addListenerToModel(game);
     
-    eventManager.register();
+    this.eventManager.register();
     
     getLayout().setStyle("-fx-background-image: url('" + Background.GAME.getPath() + "');" +
                                "-fx-background-repeat: no-repeat;" +
                                "-fx-background-size: cover;" +
                                "-fx-background-position: center center;");
     
-    this.layoutBuilder = new LayoutBuilderImpl(getLayout(), Horizontal.values());
-    
-    final FlowPane leftPane = new FlowPane(Orientation.VERTICAL);
-    leftPane.setVgap(24);
-    leftPane.setHgap(32);
-    leftPane.setPrefHeight(getScene().getHeight());
-    
-    final FlowPane rightPane = new FlowPane(Orientation.VERTICAL);
-    rightPane.setVgap(24);
-    rightPane.setHgap(32);
-    rightPane.setPrefHeight(getScene().getHeight());
+    final FlowPane leftPane = createFlowPane(Orientation.VERTICAL);
+    final FlowPane rightPane = createFlowPane(Orientation.VERTICAL);
     
     leftPane.setStyle("-fx-padding: 32px; -fx-border-insets: 32px; -fx-background-insets: 32px;");
     rightPane.setStyle("-fx-padding: 32px; -fx-border-insets: 32px; -fx-background-insets: 32px;");
     
-    final HBox topHBox = new HBox();
-    HBox.setHgrow(topHBox, Priority.ALWAYS);
-    VBox.setVgrow(topHBox, Priority.ALWAYS);
-    
-    final HBox centralHBox = new HBox();
-    HBox.setHgrow(centralHBox, Priority.ALWAYS);
-    VBox.setVgrow(centralHBox, Priority.ALWAYS);
-    
-    final HBox bottomHBox = new HBox();
-    HBox.setHgrow(bottomHBox, Priority.ALWAYS);
-    VBox.setVgrow(bottomHBox, Priority.ALWAYS);
-    
-    this.layoutBuilder
-          .addSimplePane(layoutBuilder.addPair(leftPane, GameStyleClass.SIDES_IDS.getClasses()))
+    getLayoutBuilder()
+          .addSimplePane(getLayoutBuilder().addPair(leftPane, GameStyleClass.SIDES_IDS.getClasses()))
           .addVBox(List.of(
-                layoutBuilder.addPair(topHBox, GameStyleClass.TOP_IDS.getClasses()),
-                layoutBuilder.addPair(centralHBox, GameStyleClass.CENTRAL_IDS.getClasses()),
-                layoutBuilder.addPair(bottomHBox, GameStyleClass.BOTTOM_IDS.getClasses())
+                getLayoutBuilder().addPair(createHBox(), GameStyleClass.TOP_IDS.getClasses()),
+                getLayoutBuilder().addPair(createHBox(), GameStyleClass.CENTRAL_IDS.getClasses()),
+                getLayoutBuilder().addPair(createHBox(), GameStyleClass.BOTTOM_IDS.getClasses())
           ))
-          .addSimplePane(layoutBuilder.addPair(rightPane, GameStyleClass.SIDES_IDS.getClasses()));
+          .addSimplePane(getLayoutBuilder().addPair(rightPane, GameStyleClass.SIDES_IDS.getClasses()));
     
     this.init(option);
+    
+    this.gameMediator = mediatorsFactory.createGameMediator(getLayoutBuilder(), this.gameController);
   }
   
   private void init(Option option) {
@@ -129,206 +85,52 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     this.gameController.setDealer();
   }
   
-  @Override
-  public void showWinner() {
-    final Pane winnerPane = (Pane) getLayout().lookup(GameStyleClass.USERNAME.getAsStyleClass());
-    this.winnerView.show();
+  private HBox createHBox() {
+    final HBox hBox = new HBox();
     
-    winnerPane.getChildren().add(this.winnerView.get());
+    HBox.setHgrow(hBox, Priority.ALWAYS);
+    VBox.setVgrow(hBox, Priority.ALWAYS);
+    
+    return hBox;
   }
   
-  @Override
-  public void showKnocks() {
-    this.knockView.show();
-  }
-  
-  @Override
-  public void showRound() {
-    this.roundView.show();
-  }
-  
-  public void showDealerName() {
-    final Pane usernamePane = (Pane) getLayout().lookup(GameStyleClass.USERNAME.getAsStyleClass());
+  private FlowPane createFlowPane(Orientation orientation) {
+    final FlowPane flowPane = new FlowPane(orientation);
+    flowPane.setVgap(24);
+    flowPane.setHgap(32);
+    flowPane.setPrefHeight(getScene().getHeight());
     
-    this.dealerTextView.setCurrentDealerName(this.game.getDealer().getUsername());
-    this.dealerTextView.show();
-    
-    usernamePane.getChildren().add(this.dealerTextView.get());
+    return flowPane;
   }
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    switch (evt.getPropertyName()) {
-      case "updatedCombination":
-        if (!this.currentPlayer.isNPC()) {
-          this.handleExchangedCards((Cards) evt.getSource());
-          this.gameObjectViewMediator.update("exchangedCards", this.cardsExchanged);
-        }
-        
-        break;
+    this.mediatorsInitializer(evt.getPropertyName());
+    this.gameMediator.update(evt.getPropertyName(), evt.getSource());
+  }
+  
+  private void mediatorsInitializer(String propertyName) {
+    switch (propertyName) {
       case "cards":
-        this.game.getCards().forEach(this::addListenerToModel);
-        
-        break;
-      case "players":
-        this.game.getPlayers().forEach(this::addListenerToModel);
+        CardsMediator cardsMediator = this.mediatorsFactory.createCardsMediator(this.gameObjectViewFactory, this.cardsViewFactory, this.game.getCards(), this.game.getPlayerDetails());
+        this.gameMediator.setCardsMediator(cardsMediator);
         
         break;
       case "playerDetails":
-        this.game.getPlayerDetails().forEach(this::addListenerToModel);
+        PlayerDetailMediator playerDetailMediator = this.mediatorsFactory.createPlayerDetailMediator();
+        this.gameMediator.setPlayerDetailMediator(playerDetailMediator);
         
-        break;
-      case "dealer":
-        this.addListenerToModel(this.game.getDealer());
-        this.gameController.setTurnNumbers();
-        this.setCurrentPlayer();
-        this.beforeStartingGameAnimation();
-        
-        break;
-      case "round":
-        if (!dealerIsNotAUser()) {
-          this.gameObjectViewMediator.hideDealerView();
-        }
-        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
-        break;
-      case "currentTurnNumber":
-        this.currentTurnNumber = (int) evt.getNewValue();
-        this.setCurrentPlayer();
-        this.setCurrentPlayerCards(this.game.getCards());
-        this.gameObjectViewMediator.update("currentPlayer", this.gameController.getCurrentPlayer());
-  
-        if (this.currentPlayer.isNPC() && !this.gameController.checkKnocks()) {
-          this.playerController.exchangeCards(this.currentPlayer, getBoardCards(), getCurrentPlayerCards());
-        }
-        
-        break;
-      case "knockerCount":
-        if (this.gameController.checkKnocks()) {
-          EventBus.getDefault().post(new WinnerEvent(this.game.getCards(), this.game.getPlayerDetails(), this.playerController, getLayout()));
-        } else {
-          EventBus.getDefault().post(new NextTurnEvent());
-        }
-        
-        break;
-      case "lastKnocker":
-        break;
-      case "winner":
-        final String winner = (String) evt.getNewValue();
-        this.winnerView.setText(winner);
-        this.showWinner();
-        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
-        break;
-      case "dealtCards":
-        final List<Cards> cardsList = (List<Cards>) evt.getNewValue();
-        this.game.setCards(cardsList);
-        this.setCurrentPlayerCards(cardsList);
-        
-        this.registerComponents();
-        
-        if (dealerIsNotAUser() && getCurrentPlayerCards() != null) {
-          this.dealerController.cherryPickingCombination(getBoardCards(), getCurrentPlayerCards());
-        }
-        break;
-      case "onlyOneRound":
-        if (currentTurnNumber == this.game.getPlayerDetails().size() - 1)  {
-          EventBus.getDefault().post(new WinnerEvent(this.game.getCards(), this.game.getPlayerDetails(), this.playerController, getLayout()));
-        }
-      case "exchange":
-        this.clearChosenCards();
-        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
-        
-        EventBus.getDefault().post(new NextTurnEvent());
-        
-        break;
-      case "firstExchange":
-        this.gameObjectViewMediator.update(evt.getPropertyName(), evt.getNewValue());
-        EventBus.getDefault().post(new NextRoundEvent());
-        EventBus.getDefault().post(new NextTurnEvent());
+        this.registerHighCard();
         
         break;
     }
-    
-    if (!this.highCardsAreShown && highCardsArePresent()) {
-      this.highCardsAreShown = true;
-      this.highCardsMediator = new HighCardMediator(this.game.getPlayerDetails());
+  }
+  
+  private void registerHighCard() {
+    if (game.getPlayerDetails().stream().noneMatch(playerDetail -> playerDetail.getHighCard() != null)) {
+      this.highCardsMediator = this.mediatorsFactory.createHighCardMediator(game.getPlayerDetails());
       this.highCardsMediator.register(getLayout());
+      this.gameMediator.setHighCardMediator(this.highCardsMediator);
     }
-  }
-  
-  private void clearChosenCards() {
-    this.gameObjectViewMediator.update("clearChosenCards",null);
-  }
-  
-  private void setCurrentPlayer() {
-    this.currentPlayer = this.gameController.getCurrentPlayer();
-  }
-  
-  private void setCurrentPlayerCards(List<Cards> cardsList) {
-    cardsList
-          .stream()
-          .filter(cards -> cards.getPlayer().isPresent())
-          .filter(cards -> cards.getPlayer().get().equals(this.currentPlayer))
-          .findFirst()
-          .ifPresent(cards -> this.currentPlayerCards = cards);
-  }
-  
-  private void registerComponents() {
-    this.gameObjectViewMediator = new GameObjectViewMediator(viewNodeFactory, cardsViewFactory, this.game, this.layoutBuilder);
-    this.gameObjectViewMediator.register(getLayout());
-  
-    if (!dealerIsNotAUser()) {
-      this.gameObjectViewMediator.initDealerView(this.gameController, this.dealerController, getBoardCards());
-      this.gameObjectViewMediator.showDealerView(getLayout());
-    }
-  }
-  
-  private Cards getBoardCards() {
-    return this.game.getCards()
-                 .stream()
-                 .filter(Cards::isCommunity)
-                 .findFirst()
-                 .get();
-  }
-  
-  private boolean dealerIsNotAUser() {
-    return this.game.getPlayers().stream().anyMatch(player -> !player.isDealer() && !player.isNPC());
-  }
-  
-  private void handleExchangedCards(Cards cards) {
-    this.cardsExchanged.addCards(cards);
-  }
-  
-  private void beforeStartingGameAnimation() {
-    final KeyFrame keyFrame1 = new KeyFrame(Duration.millis(600), (actionEvent) -> this.showDealerName());
-    
-    final KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2600), (actionEvent) -> {
-      this.highCardsMediator.unregister(getLayout());
-      this.dealerTextView.hide();
-      
-      final Pane pane = (Pane) getLayout().lookup(GameStyleClass.USERNAME.getAsStyleClass());
-      getLayout().getChildren().removeAll(pane.getChildren());
-    });
-    
-    final KeyFrame keyFrame3 = new KeyFrame(Duration.millis(5000), (actionEvent) -> {
-      this.dealerController = new DealerControllerImpl(this.game.getDealer());
-      this.dealerController.dealCards(this.game.getPlayerDetails(), this.game.getBoard());
-    });
-    
-    
-    this.timeline.getKeyFrames().addAll(keyFrame1, keyFrame2, keyFrame3);
-    
-    this.timeline.play();
-  }
-  
-  private boolean highCardsArePresent() {
-    return checkPlayerDetailsIsFullyInitialized() && this.game.getPlayerDetails().stream().noneMatch(playerDetail -> playerDetail.getHighCard() == null);
-  }
-  
-  private boolean checkPlayerDetailsIsFullyInitialized() {
-    return this.game.getPlayerDetails() != null && this.game.getPlayerDetails().size() == this.game.getPlayers().size();
-  }
-  
-  private Cards getCurrentPlayerCards() {
-    return this.currentPlayerCards;
   }
 }

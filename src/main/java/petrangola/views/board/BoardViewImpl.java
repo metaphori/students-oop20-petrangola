@@ -5,10 +5,9 @@ import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsView;
 
 public class BoardViewImpl implements BoardView {
-  private final CardsView<Group> cardsView;
+  private CardsView<Group> cardsView;
   
-  public BoardViewImpl(final CardsView<Group> cardsView) {
-    this.cardsView = cardsView;
+  public BoardViewImpl() {
   }
   
   @Override
@@ -18,5 +17,10 @@ public class BoardViewImpl implements BoardView {
   
   public CardsView<Group> getCardsView() {
     return this.cardsView;
+  }
+  
+  @Override
+  public void setCardsView(CardsView<Group> cardsView) {
+    this.cardsView = cardsView;
   }
 }

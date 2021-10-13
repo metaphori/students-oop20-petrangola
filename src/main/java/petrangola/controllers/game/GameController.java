@@ -36,7 +36,6 @@ public interface GameController extends Controller {
   void setTurnNumbers();
   
   /**
-   *
    * @param winner
    */
   void setWinner(String winner);
@@ -67,8 +66,12 @@ public interface GameController extends Controller {
   void onlyOneRound();
   
   /**
-   *
    * @param username
    */
   void addKnock(String username);
+  
+  /**
+   * @return
+   */
+  boolean isLastPlayerTurn();
 }

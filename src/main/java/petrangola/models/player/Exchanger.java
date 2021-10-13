@@ -2,7 +2,7 @@ package main.java.petrangola.models.player;
 
 import main.java.petrangola.models.cards.Cards;
 
-public interface Exchangeable {
+public interface Exchanger {
   /**
    *
    * @param boardCards

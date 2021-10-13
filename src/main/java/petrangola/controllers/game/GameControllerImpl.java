@@ -162,4 +162,18 @@ public class GameControllerImpl implements GameController {
     this.game.setKnockerCount(this.game.getKnockerCount() + 1);
     this.game.setLastKnocker(username);
   }
+  
+  @Override
+  public boolean isLastPlayerTurn() {
+    int currentTurnNumber = this.game.getCurrentTurnNumber();
+    int maxTurnNumber = this.game
+                                 .getPlayerDetails()
+                                 .stream()
+                                 .filter(playerDetail -> playerDetail.getTurnNumber() < currentTurnNumber)
+                                 .max(Comparator.comparingInt(PlayerDetail::getPlayerLives))
+                                 .get()
+                                 .getTurnNumber();
+    
+    return currentTurnNumber == maxTurnNumber;
+  }
 }

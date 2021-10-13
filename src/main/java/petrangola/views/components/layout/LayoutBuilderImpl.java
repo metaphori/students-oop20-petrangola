@@ -2,19 +2,14 @@ package main.java.petrangola.views.components.layout;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import main.java.petrangola.utlis.Delimiter;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Position;
 import main.java.petrangola.utlis.position.Vertical;
-import main.java.petrangola.views.ViewNodeFactory;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class LayoutBuilderImpl implements LayoutBuilder {
@@ -36,7 +31,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   }
   
   @Override
-  public LayoutBuilder addHBox(List<Pair<? extends Node, String>> childNodes) {
+  public LayoutBuilder addHBox(List<Pair<? extends Pane, String>> childNodes) {
     final HBox hBox = new HBox();
     
     addToLayout(hBox, getChildNodes(childNodes));
@@ -45,7 +40,7 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   }
   
   @Override
-  public LayoutBuilder addVBox(List<Pair<? extends Node, String>> childNodes) {
+  public LayoutBuilder addVBox(List<Pair<? extends Pane, String>> childNodes) {
     final VBox vBox = (VBox) setGrow(new VBox());
     
     addToLayout(vBox, getChildNodes(childNodes));
@@ -54,19 +49,32 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   }
   
   @Override
-  public LayoutBuilder addSimplePane(Pair<? extends Node, String> panePair) {
+  public LayoutBuilder addSimplePane(Pair<? extends Pane, String> panePair) {
     panePair.getX().getStyleClass().addAll(panePair.getY().split(Delimiter.COMMA.getText()));
+    
     getLayout().getChildren().add(panePair.getX());
     
     return this;
   }
   
   @Override
-  public LayoutBuilder addNodeById(String Id, Function<ViewNodeFactory, Node> viewNode) {
+  public LayoutBuilder addNode(Node node) {
+    getLayout().getChildren().add(node);
+    
     return this;
   }
   
-  private void addToLayout(Pane pane, List<? extends Node> childNodes) {
+  @Override
+  public LayoutBuilder addNodeById(String Id, Node node) {
+    Pane pane = (Pane) getLayout().lookup(Id);
+    
+    pane.getChildren().add(node);
+    
+    return this;
+  }
+  
+  
+  private void addToLayout(Pane pane, List<? extends Pane> childNodes) {
     pane.getChildren().addAll(childNodes);
     getLayout().getChildren().add(pane);
   }
@@ -78,30 +86,26 @@ public class LayoutBuilderImpl implements LayoutBuilder {
     return node;
   }
   
-  private List<? extends Node> getChildNodes(List<Pair<? extends Node, String>> childNodes) {
+  private List<? extends Pane> getChildNodes(List<Pair<? extends Pane, String>> childNodes) {
     return childNodes.stream().map(pair -> {
-      final Node node = pair.getX();
+      final String[] styleClasses = pair.getY().split(Delimiter.COMMA.getText());
       
-      node.getStyleClass().addAll(pair.getY().split(Delimiter.COMMA.getText()));
+      List<Pane> children = Arrays.stream(styleClasses).map(styleClass -> {
+        final StackPane childPane = new StackPane();
+        
+        setGrow(childPane);
+        
+        childPane.getStyleClass().add(styleClass);
+        
+        return childPane;
+      }).collect(Collectors.toList());
       
-      return node;
+      pair.getX().getChildren().addAll(children);
+      
+      return pair.getX();
     }).collect(Collectors.toList());
   }
   
-  /*private void initLayout() {
-    ObservableList<Node> childNode = this.layout.getChildren();
-    
-    Arrays.stream(this.layoutPosition)
-          .forEachOrdered(position -> {
-            final Region region = new Region();
-            
-            region.setId(Horizontal.CENTER.name().concat(Delimiter.UNDERSCORE.getText()).concat(position.name()));
-            
-            HBox.setHgrow(region, Priority.ALWAYS);
-            
-            childNode.add(region);
-          });
-  }*/
   
   private void initPositionsMap() {
     Arrays.stream(Vertical.values())

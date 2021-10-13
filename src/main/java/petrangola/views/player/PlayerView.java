@@ -8,26 +8,6 @@ public interface PlayerView extends GameObjectView {
   /**
    *
    */
-  void showName();
-  
-  /**
-   *
-   */
-  void hideName();
-  
-  /**
-   *
-   */
-  void showLives();
-  
-  /**
-   *
-   */
-  void hideLives();
-  
-  /**
-   *
-   */
   void showAction();
   
   /**
@@ -43,17 +23,10 @@ public interface PlayerView extends GameObjectView {
   /**
    * @return
    */
-  LifeView getLifeView();
-  
-  /**
-   *
-   * @return
-   */
-  UsernameView getUsernameView();
-  
-  /**
-   *
-   * @return
-   */
   Player getPlayer();
+  
+  /**
+   *
+   */
+  void toggleUserButton(Player player);
 }

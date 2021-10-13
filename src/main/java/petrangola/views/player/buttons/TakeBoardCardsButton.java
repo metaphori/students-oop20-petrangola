@@ -1,5 +1,6 @@
 package main.java.petrangola.views.player.buttons;
 
+import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.utlis.UserAction;
@@ -9,16 +10,18 @@ import main.java.petrangola.views.events.NextRoundEvent;
 import main.java.petrangola.views.events.NextTurnEvent;
 import org.greenrobot.eventbus.EventBus;
 
-public class FirstExchangeButton extends AbstractButtonFX {
+public class TakeBoardCardsButton extends AbstractButtonFX {
   private static final String FIRST_CHANGE = "Take board cards";
   
+  private final GameController gameController;
   private final DealerController dealerController;
   private final Cards boardCards;
   private final Cards ownCards;
   
-  public FirstExchangeButton(final DealerController dealerController, final Cards boardCards, final Cards ownCards) {
+  public TakeBoardCardsButton(GameController gameController, final DealerController dealerController, final Cards boardCards, final Cards ownCards) {
     super(FIRST_CHANGE);
     
+    this.gameController = gameController;
     this.dealerController = dealerController;
     this.boardCards = boardCards;
     this.ownCards = ownCards;
@@ -53,6 +56,8 @@ public class FirstExchangeButton extends AbstractButtonFX {
     this.get().setOnMouseClicked(mouseEvent -> {
       EventBus.getDefault().post(new NextRoundEvent());
       EventBus.getDefault().post(new NextTurnEvent());
+      
+      this.gameController.onlyOneRound();
       this.dealerController.cherryPickingCombination(this.boardCards, this.ownCards);
     });
   }

@@ -11,6 +11,7 @@ import main.java.petrangola.controllers.option.OptionControllerImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.option.OptionImpl;
 import main.java.petrangola.utlis.Background;
+import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
@@ -24,18 +25,12 @@ import java.beans.PropertyChangeEvent;
 public class OptionViewImpl extends AbstractViewFX implements OptionView {
   private final Option option = new OptionImpl();
   private final OptionController optionController = new OptionControllerImpl(option);
-  
-  private final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
-  private final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
-  private final AbstractComponentFX<TextField> userTextView = new UsernameTextFieldView(optionController);
   private final AbstractButtonFX playButton = new PlayButton(optionController);
   
   public OptionViewImpl(Stage stage) {
-    super(stage, new VBox(24));
+    super(stage, new VBox(24), Vertical.values());
     
     final VBox layout = (VBox) getLayout();
-    
-    loadChildren(OptionViewImpl.class.getDeclaredFields());
     
     layout.setStyle("-fx-background-image: url('" + Background.MENU_2.getPath() + "');" +
                           "-fx-background-repeat: no-repeat;" +
@@ -44,6 +39,16 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
     
     layout.setPadding(new Insets(24));
     layout.setAlignment(Pos.CENTER);
+  
+    final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
+    final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
+    final AbstractComponentFX<TextField> userTextView = new UsernameTextFieldView(optionController);
+    
+    getLayoutBuilder()
+          .addNode(difficultySlider.get())
+          .addNode(opponentSizeSlider.get())
+          .addNode(userTextView.get())
+          .addNode(playButton.get());
     
     addListenerToModel(option);
   }

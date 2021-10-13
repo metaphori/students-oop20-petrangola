@@ -5,7 +5,7 @@ import main.java.petrangola.models.cards.Cards;
 
 import java.util.Optional;
 
-public interface CardsExchanged extends DTO {
+public interface CardsExchanged extends DTO, Exchangeable {
   /**
    *
    * @param cards

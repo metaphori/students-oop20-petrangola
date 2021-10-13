@@ -10,8 +10,7 @@ import java.util.List;
 public class DealerControllerImpl implements DealerController {
   private Dealer dealer;
   
-  public DealerControllerImpl(Dealer dealer) {
-    this.dealer = dealer;
+  public DealerControllerImpl() {
   }
   
   @Override
@@ -22,5 +21,13 @@ public class DealerControllerImpl implements DealerController {
   @Override
   public void cherryPickingCombination(Cards boardCard, Cards ownCards) {
     this.dealer.firstExchange(boardCard, ownCards);
+  }
+  
+  public void setDealer(Dealer dealer) {
+    this.dealer = dealer;
+  }
+  
+  public Dealer getDealer() {
+    return dealer;
   }
 }

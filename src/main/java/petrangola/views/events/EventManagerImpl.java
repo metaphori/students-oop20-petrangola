@@ -3,6 +3,7 @@ package main.java.petrangola.views.events;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import main.java.petrangola.controllers.game.GameController;
+import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.cards.*;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Pair;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 
 public class EventManagerImpl implements EventManager {
   private final GameController gameController;
+  private final PlayerController playerController;
   
-  public EventManagerImpl(final GameController gameController) {
+  public EventManagerImpl(final GameController gameController, PlayerController playerController) {
     this.gameController = gameController;
+    this.playerController = playerController;
   }
   
   @Subscribe
@@ -72,9 +75,13 @@ public class EventManagerImpl implements EventManager {
                                             .findFirst()
                                             .get();
     
-    event.getPlayerController().looseLife(playerDetail);
+    getPlayerController().looseLife(playerDetail);
     
     this.gameController.setWinner(bestCombinations.get(0).getX());
+  }
+  
+  private PlayerController getPlayerController() {
+    return this.playerController;
   }
   
   

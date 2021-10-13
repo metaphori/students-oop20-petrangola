@@ -7,22 +7,47 @@ import javafx.scene.layout.Pane;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
-import main.java.petrangola.views.ViewNodeFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public interface LayoutBuilder {
+  /**
+   *
+   * @return
+   */
   Map<Pos, Pair<Vertical, Horizontal>> getPositionsMap();
   
-  LayoutBuilder addHBox(List<Pair<? extends Node, String>> childNodes);
+  /**
+   *
+   * @param childNodes
+   * @return
+   */
+  LayoutBuilder addHBox(List<Pair<? extends Pane, String>> childNodes);
   
-  LayoutBuilder addVBox(List<Pair<? extends Node, String>> childNodes);
+  /**
+   *
+   * @param childNodes
+   * @return
+   */
+  LayoutBuilder addVBox(List<Pair<? extends Pane, String>> childNodes);
   
-  LayoutBuilder addSimplePane(Pair<? extends Node, String> panePair);
+  /**
+   *
+   * @param panePair
+   * @return
+   */
+  LayoutBuilder addSimplePane(Pair<? extends Pane, String> panePair);
   
-  LayoutBuilder addNodeById(String Id, Function<ViewNodeFactory, Node> viewNode);
+  LayoutBuilder addNode(Node node);
+  
+  /**
+   *
+   * @param Id
+   * @param node
+   * @return
+   */
+  LayoutBuilder addNodeById(String Id, Node node);
   
   /**
    * @return
@@ -35,7 +60,13 @@ public interface LayoutBuilder {
    */
   Pos getPos(final Pair<Vertical, Horizontal> pair);
   
-  default Pair<? extends Node, String> addPair(Node node, String Id) {
-    return new Pair<>(node, Id);
+  /**
+   *
+   * @param pane
+   * @param Id
+   * @return
+   */
+  default Pair<? extends Pane, String> addPair(Pane pane, String Id) {
+    return new Pair<>(pane, Id);
   }
 }

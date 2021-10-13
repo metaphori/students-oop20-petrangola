@@ -1,21 +1,20 @@
 package main.java.petrangola.views;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.components.AbstractComponentFX;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
+import main.java.petrangola.utlis.position.Position;
+import main.java.petrangola.views.components.layout.LayoutBuilder;
+import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 
 public abstract class AbstractViewFX extends Group {
+  private final LayoutBuilder layoutBuilder;
   private final Stage stage;
   private final Pane layout;
   
-  public AbstractViewFX(final Stage stage, final Pane layout) {
+  public AbstractViewFX(final Stage stage, final Pane layout, Position[] positions) {
     this.stage = stage;
     this.layout = layout;
     
@@ -32,27 +31,8 @@ public abstract class AbstractViewFX extends Group {
     
     getRoot().getChildren().clear();
     getRoot().getChildren().addAll(getLayout());
-  }
-  
-  public final void loadChildren(Field[] declaredFields) {
-    Arrays.stream(declaredFields).forEach(field -> {
-      
-      if (!AbstractComponentFX.class.isAssignableFrom(field.getType())) {
-        return;
-      }
-      
-      try {
-        field.setAccessible(true);
-        
-        final AbstractComponentFX<?> component = (AbstractComponentFX<?>) field.get(this);
-        getLayout().getChildren().add((Node) component.get());
-        
-        
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-      
-    });
+    
+    this.layoutBuilder = new LayoutBuilderImpl(getLayout(), positions);
   }
   
   public Group getRoot() {
@@ -61,5 +41,9 @@ public abstract class AbstractViewFX extends Group {
   
   public Pane getLayout() {
     return this.layout;
+  }
+  
+  public LayoutBuilder getLayoutBuilder() {
+    return this.layoutBuilder;
   }
 }
