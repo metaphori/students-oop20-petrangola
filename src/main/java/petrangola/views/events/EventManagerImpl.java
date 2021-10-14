@@ -54,10 +54,19 @@ public class EventManagerImpl implements EventManager {
                                                          .map(cards -> new Pair<>(cards.getPlayer().get().getUsername(), cards.getCombination()))
                                                          .sorted((o1, o2) ->  comparator.compare(o1.getY().getBest(), o2.getY().getBest()))
                                                          .collect(Collectors.toList());
+  
+    final PlayerDetail playerDetail = event.getPlayerDetails()
+                                            .stream()
+                                            .filter(tempPlayerDetail -> bestCombinations.get(bestCombinations.size() - 1).getX().equals(tempPlayerDetail.getPlayer().getUsername()))
+                                            .findFirst()
+                                            .get();
+  
+    getPlayerController().looseLife(playerDetail);
     
     final RankingView rankingView = new RankingViewImpl(new TableView<>());
     
     rankingView.setBestCombinations(bestCombinations);
+    rankingView.setPlayerDetails(event.getPlayerDetails());
     rankingView.loadRows();
     
     final Pane pane = (Pane) event.getLayout().lookup(GameStyleClass.RANKING.getAsStyleClass());
@@ -69,13 +78,7 @@ public class EventManagerImpl implements EventManager {
   
     Collections.reverse(bestCombinations);
     
-    final PlayerDetail playerDetail = event.getPlayerDetails()
-                                            .stream()
-                                            .filter(tempPlayerDetail -> bestCombinations.get(bestCombinations.size() - 1).getX().equals(tempPlayerDetail.getPlayer().getUsername()))
-                                            .findFirst()
-                                            .get();
     
-    getPlayerController().looseLife(playerDetail);
     
     this.gameController.setWinner(bestCombinations.get(0).getX());
   }

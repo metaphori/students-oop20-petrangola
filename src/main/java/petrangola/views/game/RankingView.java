@@ -1,6 +1,7 @@
 package main.java.petrangola.views.game;
 
 import main.java.petrangola.models.cards.Combination;
+import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.views.components.table.TableFX;
 
@@ -17,4 +18,10 @@ public interface RankingView extends TableFX<RankedPlayer> {
    *
    */
   void loadRows();
+  
+  /**
+   *
+   * @param playersDetails
+   */
+  void setPlayerDetails(List<PlayerDetail> playersDetails);
 }

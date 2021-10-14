@@ -1,15 +1,14 @@
 package main.java.petrangola.views.game;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Combination;
+import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.services.CombinationChecker;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.views.components.table.TableImpl;
@@ -22,13 +21,14 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
   private static final Pair<String, String> USERNAME = new Pair<>("Username ↓", "username");
   private static final Pair<String, String> CARDS = new Pair<>("Cards ↓", "cards");
   private static final Pair<String, String> COMBINATION_VALUE = new Pair<>("Result ↓", "combinationValue");
-  private static final Pair<String, String> IS_PETRANGOLA = new Pair<>("Petrangola? ↓","isPetrangola");
+  private static final Pair<String, String> IS_PETRANGOLA = new Pair<>("Petrangola? ↓", "isPetrangola");
+  private static final Pair<String, String> LIVES = new Pair<>("Vite ↓", "playerLives");
   
   private List<Pair<String, Combination>> bestCombinations;
+  private List<PlayerDetail> playersDetails;
   
   public RankingViewImpl(TableView<RankedPlayer> component) {
     super(component, List.of(USERNAME, CARDS, COMBINATION_VALUE, IS_PETRANGOLA));
-    
     this.get().setEditable(false);
   }
   
@@ -61,18 +61,23 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
             
             return new RankedPlayerImpl(username, cards, combinationValue, isPetrangola);
           })
-          .forEachOrdered(data::add);
-  
-  
+          .peek(rankedPlayer -> getPlayersDetails()
+                                      .stream()
+                                      .filter(playerDetail -> rankedPlayer.getUsername().equals(playerDetail.getPlayer().getUsername()))
+                                      .findFirst()
+                                      .ifPresent(playerDetail -> rankedPlayer.setPlayerLives(playerDetail.getPlayerLives()))
+          ).forEachOrdered(data::add);
+    
+    
     super.getColumnHeadersPairs().forEach(pair -> {
       final TableColumn<RankedPlayer, String> column = new TableColumn<>(pair.getX());
-  
-      if (pair.getY().equals(IS_PETRANGOLA.getY()))  {
+      
+      if (pair.getY().equals(IS_PETRANGOLA.getY())) {
         column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isPetrangola() ? " Yes " : " No "));
       } else {
         column.setCellValueFactory(new PropertyValueFactory<>(pair.getY()));
       }
-  
+      
       this.get().getColumns().add(column);
     });
     
@@ -83,10 +88,19 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
     addRows(data);
   }
   
+  @Override
+  public void setPlayerDetails(List<PlayerDetail> playersDetails) {
+    this.playersDetails = playersDetails;
+  }
+  
+  public List<PlayerDetail> getPlayersDetails() {
+    return this.playersDetails;
+  }
+  
   private static class RankedPlayerComparator implements Comparator<RankedPlayer> {
     @Override
     public int compare(RankedPlayer o1, RankedPlayer o2) {
-      int value = Integer.compare(o1.getCombinationValue(),o2.getCombinationValue());
+      int value = Integer.compare(o1.getCombinationValue(), o2.getCombinationValue());
       
       if (o1.isPetrangola() && !o2.isPetrangola()) {
         value = 1;
@@ -105,6 +119,8 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
     private final StringProperty cards;
     private final IntegerProperty combinationValue;
     private final BooleanProperty isPetrangola;
+    
+    private IntegerProperty playerLives;
     
     public RankedPlayerImpl(final String username, final String cards, final int combinationValue, final boolean isPetrangola) {
       this.username = new SimpleStringProperty(username);
@@ -151,6 +167,16 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
     @Override
     public void setIsPetrangola(boolean isPetrangola) {
       this.isPetrangola.set(isPetrangola);
+    }
+    
+    @Override
+    public int getPlayerLives() {
+      return this.playerLives.get();
+    }
+    
+    @Override
+    public void setPlayerLives(int playerLives) {
+      this.playerLives = new SimpleIntegerProperty(playerLives);
     }
   }
 }

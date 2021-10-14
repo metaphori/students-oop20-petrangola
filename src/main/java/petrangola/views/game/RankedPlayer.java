@@ -50,4 +50,7 @@ public interface RankedPlayer {
   void setIsPetrangola(boolean isPetrangola);
   
   
+  int getPlayerLives();
+  
+  void setPlayerLives(int playerLives);
 }
