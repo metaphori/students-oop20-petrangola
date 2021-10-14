@@ -14,13 +14,11 @@ import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsExchangedImpl;
 import main.java.petrangola.views.cards.CardsView;
 import main.java.petrangola.views.cards.CardsViewFactory;
-import main.java.petrangola.views.player.CurrentPlayer;
-import main.java.petrangola.views.player.GameObjectView;
-import main.java.petrangola.views.player.NPCView;
-import main.java.petrangola.views.player.PlayerView;
+import main.java.petrangola.views.player.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CardsMediatorImpl implements CardsMediator {
   private static final Pair<Vertical, Horizontal> BOARD_POSITION = new Pair<>(Vertical.CENTER, Horizontal.CENTER);
@@ -29,6 +27,7 @@ public class CardsMediatorImpl implements CardsMediator {
   private static final int THRESHOLD_NPC = 6;
   
   private final CardsExchanged cardsExchanged = new CardsExchangedImpl();
+  private final List<GameObjectView> viewList = new CopyOnWriteArrayList<>();
   
   private final GameObjectViewFactory gameObjectViewFactory;
   private final CardsViewFactory cardsViewFactory;
@@ -37,8 +36,6 @@ public class CardsMediatorImpl implements CardsMediator {
   private final List<PlayerDetail> playersDetails;
   
   private int npcIndex = 0;
-  
-  private List<GameObjectView> viewList;
   
   public CardsMediatorImpl(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playerDetails) {
     this.gameObjectViewFactory = gameObjectViewFactory;
@@ -54,9 +51,11 @@ public class CardsMediatorImpl implements CardsMediator {
           .filter(Cards::isCommunity)
           .findFirst()
           .ifPresent(cards -> {
-            GameObjectView gameObjectView = gameObjectViewFactory.createBoardView();
-            gameObjectView.setCardsView(this.cardsViewFactory.createBoardCards(cards, BOARD_POSITION));
-            this.viewList.add(gameObjectView);
+            BoardView boardView = gameObjectViewFactory.createBoardView();
+            boardView.setCardsView(this.cardsViewFactory.createBoardCards(cards, BOARD_POSITION));
+            boardView.addListenerToModel(cards);
+            boardView.setCardsExchanged(cardsExchanged);
+            getViewList().add(boardView);
           });
     
     this.cardsList.forEach(cards -> {
@@ -78,31 +77,24 @@ public class CardsMediatorImpl implements CardsMediator {
                   cardsView = this.cardsViewFactory.createOpponentCards(cards, npcIndex, THRESHOLD_NPC);
                   gameObjectView = gameObjectViewFactory.createNPCView(playerDetail);
                   npcIndex++;
-                  
                 } else if (player.isDealer()) {
                   cardsView = this.cardsViewFactory.createDealerCards(cards, DEALER_POSITION);
                   gameObjectView = gameObjectViewFactory.createDealerView(playerDetail);
                 } else {
                   cardsView = this.cardsViewFactory.createUserCards(cards, USER_POSITION);
                   gameObjectView = gameObjectViewFactory.createUserView(playerDetail);
+                  ((UserView) gameObjectView).setCardsExchanged(cardsExchanged);
                 }
                 
-                
                 gameObjectView.setCardsView(cardsView);
-                gameObjectView.setBoardView(getBoardView());
-                gameObjectView.addListenerToModel(cardsView.getCards());
+                gameObjectView.addListenerToModel(cards);
                 gameObjectView.addListenerToModel(playerDetail);
                 gameObjectView.addListenerToModel(player);
                 
-                viewList.add(gameObjectView);
+                getViewList().add(gameObjectView);
               });
       });
     });
-  }
-  
-  @Override
-  public void onUpdatedCombination() {
-  
   }
   
   @Override
@@ -111,12 +103,12 @@ public class CardsMediatorImpl implements CardsMediator {
   }
   
   private BoardView getBoardView() {
-    return (BoardView) this.viewList.get(0);
+    return (BoardView) getViewList().get(0);
   }
   
   @Override
   public void showNPCCards() {
-    this.viewList
+    getViewList()
           .stream()
           .filter(gameObjectView -> gameObjectView.getClass().isInstance(NPCView.class))
           .forEach(GameObjectView::showCards);
@@ -124,7 +116,7 @@ public class CardsMediatorImpl implements CardsMediator {
   
   @Override
   public void showUserCards() {
-    this.viewList
+    getViewList()
           .stream()
           .filter(gameObjectView -> {
             if (gameObjectView.getCardsView().getCards().isCommunity()) {
@@ -150,20 +142,34 @@ public class CardsMediatorImpl implements CardsMediator {
   }
   
   private Optional<GameObjectView> getPlayerView(CurrentPlayer currentPlayer) {
-    return this.viewList
-               .stream()
-               .filter( gameObjectView -> gameObjectView.getCardsView().getCards().isCommunity())
-               .filter( gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().equals(currentPlayer.getPlayer()))
-               .findFirst();
+    return getViewList()
+                 .stream()
+                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().isCommunity())
+                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().equals(currentPlayer.getPlayer()))
+                 .findFirst();
+  }
+  
+  private PlayerView getUserPlayerView() {
+    return (PlayerView) getViewList()
+                              .stream()
+                              .filter(gameObjectView -> gameObjectView.getCardsView().getCards().isCommunity())
+                              .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().isPresent())
+                              .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().get().isNPC())
+                              .findFirst()
+                              .get();
   }
   
   @Override
   public void register(Pane layout) {
-  
+    // enumap with pos and GameStyleClass
   }
   
   @Override
   public void unregister(Pane layout) {
   
+  }
+  
+  private List<GameObjectView> getViewList() {
+    return this.viewList;
   }
 }
