@@ -7,7 +7,6 @@ import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.board.BoardView;
 import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
@@ -31,14 +30,13 @@ public class AbstractPlayerViewImpl implements PlayerView {
   private AbstractButtonFX exchangeButton;
   private AbstractButtonFX knockButton;
   private CardsView<Group> cardsView;
-  private BoardView boardView;
   
   public AbstractPlayerViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, Pane layout) {
     this.game = game;
     this.playerDetail = playerDetail;
     this.playerController = playerController;
     this.layout = layout;
-  
+    
     if (this.isUserPlayer()) {
       this.exchangeButton = new ExchangeButton(playerController, playerDetail.getPlayer());
       this.knockButton = new KnockButton(playerController, game);
@@ -68,15 +66,6 @@ public class AbstractPlayerViewImpl implements PlayerView {
     this.cardsView = cardsView;
   }
   
-  public BoardView getBoardView() {
-    return this.boardView;
-  }
-  
-  @Override
-  public void setBoardView(BoardView boardView) {
-    this.boardView = boardView;
-  }
-  
   @Override
   public AbstractButtonFX getExchangeButton() {
     if (this.isUserPlayer()) {
@@ -100,33 +89,63 @@ public class AbstractPlayerViewImpl implements PlayerView {
     return this.playerDetail.getPlayer();
   }
   
+  @Override
+  public void enableExchangeButton(CardsExchanged cardsExchanged, ExchangeButton exchangeButton) {
+    cardsExchanged
+          .getBoardCards()
+          .ifPresent(boardCards -> {
+            cardsExchanged
+                  .getPlayerCards()
+                  .ifPresent(playerCards -> exchangeButton.setDisable(!cardsExchanged.areExchangeable(boardCards, playerCards)));
+          });
+  }
   
-  protected PlayerController getPlayerController() {
-    return this.playerController;
+  @Override
+  public void updateCards(List<Cards> cardsList) {
+    cardsList.forEach(cards -> {
+      if (cards.getPlayer().equals(getPlayer())) {
+        getCardsView().setCards(cards);
+        getCardsView().update(cards);
+      }
+    });
+  }
+  
+  @Override
+  public void toggleUserButton(Player player) {
+    if (!player.isNPC()) {
+      this.getExchangeButton().get().setVisible(true);
+      this.getKnockButton().get().setVisible(true);
+    } else {
+      this.getExchangeButton().get().setVisible(false);
+      this.getKnockButton().get().setVisible(false);
+    }
+  }
+  
+  @Override
+  public void clearChosenCards() {
+    this.getExchangeButton().setData(null);
+    this.getCardsView().getCardViews().forEach(CardView::clearChosen);
   }
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {
-      case "exchangedCards":
-        CardsExchanged cardsExchanged = (CardsExchanged) evt.getNewValue();
-        
-        this.getExchangeButton().setData(cardsExchanged);
-        this.enableExchangeButton(cardsExchanged, getExchangeButton());
+      case "updatedCombination":
+        if (!getPlayer().isNPC()) {
+          final UserView userView = ((UserView) this);
+          userView.addCards((Cards) evt.getSource());
+          this.getExchangeButton().setData(userView.getCardsExchanged());
+          this.enableExchangeButton(userView.getCardsExchanged(), (ExchangeButton) getExchangeButton());
+        }
         
         break;
       case "firstExchange":
-        this.getBoardView().getCardsView().showCards();
-        
         EventBus.getDefault().post(new NextRoundEvent());
         EventBus.getDefault().post(new NextTurnEvent());
-        
         break;
-      
       case "exchange":
         this.clearChosenCards();
         this.updateCards((List<Cards>) evt.getNewValue());
-        
         EventBus.getDefault().post(new NextTurnEvent());
         
         break;
@@ -136,54 +155,15 @@ public class AbstractPlayerViewImpl implements PlayerView {
     }
   }
   
-  @Override
-  public void toggleUserButton(Player player) {
-    if (!player.isNPC()) {
-      // if its not current player
-      this.getExchangeButton().get().setVisible(true);
-      this.getKnockButton().get().setVisible(true);
-    } else {
-      this.getExchangeButton().get().setVisible(false);
-      this.getKnockButton().get().setVisible(false);
-    }
+  protected PlayerController getPlayerController() {
+    return this.playerController;
   }
   
-  public Pane getLayout() {
+  protected Pane getLayout() {
     return this.layout;
-  }
-  
-  private void updateCards(List<Cards> cardsList) {
-    cardsList.forEach(cards -> {
-      if (cards.isCommunity()) {
-        final CardsView<Group> boardCardsView = getBoardView().getCardsView();
-        boardCardsView.setCards(cards);
-        boardCardsView.update(cards);
-      }
-      
-      if (cards.getPlayer().equals(getPlayer())) {
-        getCardsView().setCards(cards);
-        getCardsView().update(cards);
-      }
-    });
   }
   
   private boolean isUserPlayer() {
     return !this.getPlayer().isNPC();
-  }
-  
-  private void clearChosenCards() {
-    this.getExchangeButton().setData(null);
-    this.getCardsView().getCardViews().forEach(CardView::clearChosen);
-    this.getBoardView().getCardsView().getCardViews().forEach(CardView::clearChosen);
-  }
-  
-  private void enableExchangeButton(CardsExchanged cardsExchanged, AbstractButtonFX exchangeButton) {
-    cardsExchanged
-          .getBoardCards()
-          .ifPresent(boardCards -> {
-            cardsExchanged
-                  .getPlayerCards()
-                  .ifPresent(playerCards -> exchangeButton.setDisable(!cardsExchanged.areExchangeable(boardCards, playerCards)));
-          });
   }
 }
