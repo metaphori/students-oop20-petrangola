@@ -8,7 +8,7 @@ import javafx.scene.text.TextAlignment;
 import main.java.petrangola.views.components.text.TextViewImpl;
 
 public class WinnerViewImpl extends TextViewImpl implements WinnerView {
-  private static final String TEXT = "Il vincitore di questo round è : ";
+  private static final String TEXT = "The winner of this round is : ";
   
   public WinnerViewImpl(Text component) {
     super(component);

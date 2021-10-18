@@ -3,9 +3,7 @@ package main.java.petrangola.views.events;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.cards.*;
-import main.java.petrangola.models.player.PlayerDetail;
+import main.java.petrangola.models.cards.Combination;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.game.RankingView;
@@ -15,15 +13,12 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EventManagerImpl implements EventManager {
   private final GameController gameController;
-  private final PlayerController playerController;
   
-  public EventManagerImpl(final GameController gameController, PlayerController playerController) {
+  public EventManagerImpl(final GameController gameController) {
     this.gameController = gameController;
-    this.playerController = playerController;
   }
   
   @Subscribe
@@ -45,48 +40,25 @@ public class EventManagerImpl implements EventManager {
   
   @Subscribe
   public void onWinnerEvent(WinnerEvent event) {
-    final List<Cards> cardsList = event.getCardsList();
-    final BestCombinationsComparator comparator = new BestCombinationComparatorImpl();
+    List<Pair<String, Combination>> bestCombinations = event.getBestCombinations();
+    Collections.reverse(bestCombinations);
     
-    List<Pair<String, Combination>> bestCombinations = cardsList
-                                                         .stream()
-                                                         .filter(Cards::isPlayerCards)
-                                                         .map(cards -> new Pair<>(cards.getPlayer().get().getUsername(), cards.getCombination()))
-                                                         .sorted((o1, o2) ->  comparator.compare(o1.getY().getBest(), o2.getY().getBest()))
-                                                         .collect(Collectors.toList());
-  
-    final PlayerDetail playerDetail = event.getPlayerDetails()
-                                            .stream()
-                                            .filter(tempPlayerDetail -> bestCombinations.get(bestCombinations.size() - 1).getX().equals(tempPlayerDetail.getPlayer().getUsername()))
-                                            .findFirst()
-                                            .get();
-  
-    getPlayerController().looseLife(playerDetail);
+    event.takeLifeIfPossible();
+    event.giveLifeIfPossible();
     
     final RankingView rankingView = new RankingViewImpl(new TableView<>());
-    
+    rankingView.get().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     rankingView.setBestCombinations(bestCombinations);
     rankingView.setPlayerDetails(event.getPlayerDetails());
     rankingView.loadRows();
     
     final Pane pane = (Pane) event.getLayout().lookup(GameStyleClass.RANKING.getAsStyleClass());
-    
     rankingView.get().prefWidthProperty().bind(pane.widthProperty());
-    rankingView.get().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     pane.getChildren().clear();
     pane.getChildren().add(rankingView.get());
-  
-    Collections.reverse(bestCombinations);
-    
-    
     
     this.gameController.setWinner(bestCombinations.get(0).getX());
   }
-  
-  private PlayerController getPlayerController() {
-    return this.playerController;
-  }
-  
   
   @Override
   public void register() {

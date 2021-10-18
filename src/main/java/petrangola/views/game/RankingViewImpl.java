@@ -28,7 +28,7 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
   private List<PlayerDetail> playersDetails;
   
   public RankingViewImpl(TableView<RankedPlayer> component) {
-    super(component, List.of(USERNAME, CARDS, COMBINATION_VALUE, IS_PETRANGOLA));
+    super(component, List.of(USERNAME, CARDS, COMBINATION_VALUE, IS_PETRANGOLA, LIVES));
     this.get().setEditable(false);
   }
   
