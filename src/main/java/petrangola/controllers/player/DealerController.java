@@ -1,6 +1,5 @@
 package main.java.petrangola.controllers.player;
 
-import main.java.petrangola.controllers.Controller;
 import main.java.petrangola.models.board.Board;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.player.Dealer;

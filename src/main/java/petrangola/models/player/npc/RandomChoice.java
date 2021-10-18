@@ -24,7 +24,7 @@ public class RandomChoice extends AbstractChoiceStrategy {
       playerCards.getCombination().replaceCards(List.of(boardCard), List.of(playerCard));
       boardCards.getCombination().replaceCards(List.of(playerCard), List.of(boardCard));
     } else {
-      EventBus.getDefault().post(new KnockEvent(playerCards.getPlayer().get()));
+      playerCards.getPlayer().ifPresent(player -> EventBus.getDefault().post(new KnockEvent(player)));
     }
     
     return List.of(boardCards, playerCards);

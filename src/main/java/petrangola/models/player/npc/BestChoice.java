@@ -35,7 +35,7 @@ public class BestChoice extends AbstractChoiceStrategy {
                                         .filter(card -> !maxCombination.contains(card))
                                         .collect(Collectors.toList());
     
-    if (maxCombination.equals(playerCards.getCombination().getCards())) {
+    if (playerCards.getPlayer().isPresent() && maxCombination.equals(playerCards.getCombination().getCards())) {
       EventBus.getDefault().post(new KnockEvent(playerCards.getPlayer().get()));
     }
     
@@ -72,18 +72,18 @@ public class BestChoice extends AbstractChoiceStrategy {
                                                  .findAny();
     
     return flushWithAceLow.orElseGet(() -> combinations
-                                       .stream()
-                                       .map(cards -> new Pair<>(cards, cards.stream()
-                                                                             .collect(Collectors.groupingBy(Card::getSuit))
-                                                                             .entrySet()
-                                                                             .stream()
-                                                                             .map(entry -> new Pair<>(entry.getKey(), entry.getValue().stream().mapToInt(Card::getValue).sum()))
-                                                                             .max(Comparator.comparingInt(Pair::getY))
-                                                                             .get()
-                                                                             .getY()))
-                                       .max(Comparator.comparingInt(Pair::getY))
-                                       .get()
-                                       .getX());
+                                                 .stream()
+                                                 .map(cards -> new Pair<>(cards, cards.stream()
+                                                                                       .collect(Collectors.groupingBy(Card::getSuit))
+                                                                                       .entrySet()
+                                                                                       .stream()
+                                                                                       .map(entry -> new Pair<>(entry.getKey(), entry.getValue().stream().mapToInt(Card::getValue).sum()))
+                                                                                       .max(Comparator.comparingInt(Pair::getY))
+                                                                                       .get()
+                                                                                       .getY()))
+                                                 .max(Comparator.comparingInt(Pair::getY))
+                                                 .get()
+                                                 .getX());
     
   }
   

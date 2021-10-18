@@ -9,7 +9,10 @@ import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Position;
 import main.java.petrangola.utlis.position.Vertical;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LayoutBuilderImpl implements LayoutBuilder {
@@ -115,7 +118,6 @@ public class LayoutBuilderImpl implements LayoutBuilder {
                   
                                        if (vertical.name().equals(horizontal.name())) {
                                          posString = vertical.name();
-                    
                                        }
                   
                                        final Pos pos = Pos.valueOf(posString);
@@ -126,17 +128,13 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   
   @Override
   public Pos getPos(final Pair<Vertical, Horizontal> pair) {
-    Optional<Map.Entry<Pos, Pair<Vertical, Horizontal>>> optionalEntry = this.positionsMap
-                                                                               .entrySet()
-                                                                               .stream()
-                                                                               .filter(entry -> entry.getValue().equals(pair))
-                                                                               .findFirst();
-    
-    if (optionalEntry.isEmpty()) {
-      throw new IllegalStateException();
-    }
-    
-    return optionalEntry.get().getKey();
+    return this.positionsMap
+                 .entrySet()
+                 .stream()
+                 .filter(entry -> entry.getValue().equals(pair))
+                 .findFirst()
+                 .map(Map.Entry::getKey)
+                 .orElse(null);
   }
   
   

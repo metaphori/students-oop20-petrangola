@@ -24,8 +24,9 @@ public interface PlayerDetail extends ObservableModel {
   
   /**
    *
+   * @param isTaking
    */
-  void takeLife();
+  void lifeHandler(boolean isTaking);
   
   /**
    *
@@ -33,6 +34,10 @@ public interface PlayerDetail extends ObservableModel {
    */
   int getTurnNumber();
   
+  /**
+   *
+   * @param turnNumber
+   */
   void setTurnNumber(int turnNumber);
   
   /**
@@ -40,5 +45,4 @@ public interface PlayerDetail extends ObservableModel {
    * @return
    */
   Player getPlayer();
-  
 }

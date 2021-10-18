@@ -2,6 +2,7 @@ package main.java.petrangola.views.cards;
 
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.utlis.DeckConstants;
@@ -42,11 +43,6 @@ public class CardsViewImpl implements CardsView<Group> {
   }
   
   @Override
-  public void highlightBestCardsCombination() {
-    // TODO: I don't know If I'll get to do it
-  }
-  
-  @Override
   public Cards getCards() {
     return this.cards;
   }
@@ -59,7 +55,10 @@ public class CardsViewImpl implements CardsView<Group> {
   @Override
   public void update(Cards cards) {
     for (int index = 0; index < DeckConstants.DECK_SIZE.getValue(); index++) {
-      this.getCardViews().get(index).updateCard(getCards().getCombination().getCards().get(index), getCards().isCommunity() || !getCards().getPlayer().get().isNPC());
+      final Card cardToUpdate = getCards().getCombination().getCards().get(index);
+      final boolean isShowing = getCards().isCommunity() || (getCards().getPlayer().isPresent() && !getCards().getPlayer().get().isNPC());
+      
+      this.getCardViews().get(index).updateCard(cardToUpdate, isShowing);
     }
   }
   

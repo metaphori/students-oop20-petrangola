@@ -35,9 +35,15 @@ public class PlayerDetailImpl implements PlayerDetail {
   }
   
   @Override
-  public void takeLife() {
+  public void lifeHandler(boolean isTaking) {
     final int oldValue = this.playerLives;
-    this.playerLives--;
+    
+    if (isTaking) {
+      this.playerLives--;
+    } else {
+      this.playerLives++;
+    }
+    
     firePropertyChange("playerLives", oldValue , playerLives);
   }
   

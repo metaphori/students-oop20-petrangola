@@ -11,13 +11,8 @@ public abstract class TextViewImpl extends AbstractComponentFX<Text> implements 
   
   @Override
   public void setListeners() {
-    this.get().setOnMouseEntered(mouseEvent -> {
-      this.get().setStyle("-fx-background-color: linear-gradient(focus-angle 45deg, #85FFBD 0%, #FFFB7D 100%)");
-    });
-  
-    this.get().setOnMouseExited(mouseEvent -> {
-      this.get().setStyle("");
-    });
+    this.get().setOnMouseEntered(mouseEvent -> this.get().setStyle("-fx-background-color: linear-gradient(focus-angle 45deg, #85FFBD 0%, #FFFB7D 100%)"));
+    this.get().setOnMouseExited(mouseEvent -> this.get().setStyle(""));
   }
   
   @Override

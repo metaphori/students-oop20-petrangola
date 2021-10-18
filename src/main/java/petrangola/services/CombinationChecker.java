@@ -84,4 +84,8 @@ public interface CombinationChecker {
     
     return card.getValue();
   }
+  
+  static boolean isAnyKindOfPetrangola(List<Card> cardList) {
+    return isFlush(cardList) || isTris(cardList);
+  }
 }

@@ -3,13 +3,11 @@ package main.java.petrangola.models.player;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.cards.CardsImpl;
-import main.java.petrangola.models.game.GameObject;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserImpl implements User {
   private final String username;
@@ -22,10 +20,14 @@ public class UserImpl implements User {
   
   @Override
   public void firstExchange(Cards boardCards, Cards playerCards) {
-    Cards tempBoardCards = new CardsImpl(playerCards.getCombination(), boardCards.getBoard().get());
-    Cards tempPlayerCards = new CardsImpl(boardCards.getCombination(), playerCards.getPlayer().get());
-    
-    firePropertyChange("firstExchange", null, List.of(tempPlayerCards, tempBoardCards));
+    boardCards.getBoard().ifPresent(board -> {
+      playerCards.getPlayer().ifPresent(player -> {
+        Cards tempBoardCards = new CardsImpl(playerCards.getCombination(), board);
+        Cards tempPlayerCards = new CardsImpl(boardCards.getCombination(), player);
+        
+        firePropertyChange("firstExchange", null, List.of(tempPlayerCards, tempBoardCards));
+      });
+    });
   }
   
   @Override

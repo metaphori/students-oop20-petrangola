@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class CardsExchangedImpl implements CardsExchanged {
   private final Set<Cards> cardsList = new HashSet<>();
@@ -31,9 +30,6 @@ public class CardsExchangedImpl implements CardsExchanged {
       return Optional.empty();
     }
     
-    return cardsList
-                 .stream()
-                 .filter(predicate)
-                 .findFirst();
+    return cardsList.stream().filter(predicate).findFirst();
   }
 }

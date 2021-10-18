@@ -4,7 +4,6 @@ import main.java.petrangola.services.CombinationChecker;
 import main.java.petrangola.utlis.Pair;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BestCombinationComparatorImpl implements BestCombinationsComparator {
   private static final Integer O1_GREATER = 1;

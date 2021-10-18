@@ -21,7 +21,6 @@ public class GameImpl implements Game {
   private int knockerCount;
   private String lastKnocker;
   private String winner;
-  private boolean onlyOneRound = false;
   
   public GameImpl() {}
   
@@ -147,8 +146,7 @@ public class GameImpl implements Game {
   
   @Override
   public void onlyOneRound() {
-    this.onlyOneRound = true;
-    firePropertyChange("onlyOneRound", false, this.onlyOneRound);
+    firePropertyChange("onlyOneRound", false, true);
   }
   
   @Override

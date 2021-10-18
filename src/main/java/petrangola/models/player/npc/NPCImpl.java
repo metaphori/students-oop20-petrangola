@@ -1,6 +1,7 @@
 package main.java.petrangola.models.player.npc;
 
 import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.models.cards.CardsImpl;
 import main.java.petrangola.models.cards.Combination;
 import main.java.petrangola.utlis.Delimiter;
 import main.java.petrangola.utlis.DifficultyLevel;
@@ -59,9 +60,9 @@ public class NPCImpl implements NPC {
     final Combination tempBoardCards = boardCards.getCombination();
     final Combination tempPlayerCards = playerCards.getCombination();
     
-    if (random.nextBoolean()) {
-      boardCards.setCombination(tempPlayerCards);
-      playerCards.setCombination(tempBoardCards);
+    if (random.nextBoolean() && playerCards.getPlayer().isPresent() && boardCards.getBoard().isPresent()) {
+      playerCards = new CardsImpl(tempBoardCards, playerCards.getPlayer().get());
+      boardCards = new CardsImpl(tempPlayerCards, boardCards.getBoard().get());
     }
     
     firePropertyChange("firstExchange", null, List.of(boardCards, playerCards));

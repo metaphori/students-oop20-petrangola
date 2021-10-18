@@ -19,8 +19,8 @@ public class PlayerControllerImpl implements PlayerController {
   }
   
   @Override
-  public void looseLife(final PlayerDetail playerDetail) {
-    playerDetail.takeLife();
+  public void lifeHandler(final PlayerDetail playerDetail, final boolean isTaking) {
+    playerDetail.lifeHandler(isTaking);
   }
   
   @Override

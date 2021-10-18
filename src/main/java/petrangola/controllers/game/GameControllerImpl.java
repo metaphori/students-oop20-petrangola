@@ -24,9 +24,8 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void createPlayers(final String username, final DifficultyLevel level, final int size) {
-    final List<Player> players = new ArrayList<>();
     
-    players.addAll(this.playerFactory.createNPC(size, level));
+    final List<Player> players = new ArrayList<>(this.playerFactory.createNPC(size, level));
     players.add(this.playerFactory.createUser(username));
     
     this.game.setPlayers(players);
@@ -60,21 +59,21 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void setDealer() {
-    final Player dealerPlayer = this.game
-                                      .getPlayerDetails()
-                                      .stream()
-                                      .collect(Collectors.toMap(PlayerDetail::getPlayer, playerDetail -> playerDetail.getHighCard().getValue()))
-                                      .entrySet()
-                                      .stream()
-                                      .max(Map.Entry.comparingByValue())
-                                      .get()
-                                      .getKey();
-    
-    dealerPlayer.setIsDealer(true);
-    
-    final Dealer dealer = new DealerImpl(dealerPlayer);
-    
-    this.game.setDealer(dealer);
+    this.game
+          .getPlayerDetails()
+          .stream()
+          .collect(Collectors.toMap(PlayerDetail::getPlayer, playerDetail -> playerDetail.getHighCard().getValue()))
+          .entrySet()
+          .stream()
+          .max(Map.Entry.comparingByValue())
+          .map(Map.Entry::getKey)
+          .ifPresent(dealerPlayer -> {
+            dealerPlayer.setIsDealer(true);
+            
+            final Dealer dealer = new DealerImpl(dealerPlayer);
+            
+            this.game.setDealer(dealer);
+          });
   }
   
   @Override
@@ -91,25 +90,20 @@ public class GameControllerImpl implements GameController {
     
     Collections.rotate(playerDetails, -distance);
     
-    IntStream.range(0, playerDetails.size())
-          .boxed()
-          .forEachOrdered(index -> {
-            playerDetails.get(index).setTurnNumber(index);
-          });
+    IntStream.range(0, playerDetails.size()).boxed().forEachOrdered(index -> playerDetails.get(index).setTurnNumber(index));
   }
   
   @Override
   public void setWinner(String winner) {
-    Player player = this.game
-                          .getCards()
-                          .stream()
-                          .filter(Cards::isPlayerCards)
-                          .map(cards -> new Pair<>(cards.getCombination().getBest().getY(), cards.getPlayer().get()))
-                          .max(Comparator.comparingInt(Pair::getX))
-                          .get()
-                          .getY();
-    
-    this.game.setWinner(player.getUsername());
+    this.game
+          .getCards()
+          .stream()
+          .filter(Cards::isPlayerCards)
+          .filter(cards -> cards.getPlayer().isPresent())
+          .map(cards -> new Pair<>(cards.getCombination().getBest().getY(), cards.getPlayer().get()))
+          .max(Comparator.comparingInt(Pair::getX))
+          .map(Pair::getY)
+          .ifPresent(player -> this.game.setWinner(player.getUsername()));
   }
   
   @Override
@@ -131,8 +125,8 @@ public class GameControllerImpl implements GameController {
                  .stream()
                  .filter(playerDetails -> playerDetails.getTurnNumber() == this.game.getCurrentTurnNumber())
                  .findFirst()
-                 .get()
-                 .getPlayer();
+                 .map(PlayerDetail::getPlayer)
+                 .orElse(null);
   }
   
   @Override
@@ -166,14 +160,13 @@ public class GameControllerImpl implements GameController {
   @Override
   public boolean isLastPlayerTurn() {
     int currentTurnNumber = this.game.getCurrentTurnNumber();
-    int maxTurnNumber = this.game
-                                 .getPlayerDetails()
-                                 .stream()
-                                 .filter(playerDetail -> playerDetail.getTurnNumber() < currentTurnNumber)
-                                 .max(Comparator.comparingInt(PlayerDetail::getPlayerLives))
-                                 .get()
-                                 .getTurnNumber();
     
-    return currentTurnNumber == maxTurnNumber;
+    return this.game
+                 .getPlayerDetails()
+                 .stream()
+                 .filter(playerDetail -> playerDetail.getTurnNumber() < currentTurnNumber)
+                 .max(Comparator.comparingInt(PlayerDetail::getPlayerLives))
+                 .stream()
+                 .anyMatch(playerDetail -> currentTurnNumber == playerDetail.getTurnNumber());
   }
 }

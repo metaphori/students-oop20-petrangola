@@ -6,11 +6,9 @@ import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Pair;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CombinationBuilderImpl implements CombinationBuilder {
   private List<Card> cards;
@@ -112,7 +110,7 @@ public class CombinationBuilderImpl implements CombinationBuilder {
                               .stream()
                               .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
                               .map(Map.Entry::getValue)
-                              .get();
+                              .orElse(-1);
         
         return new Pair<>(cards, bestValue);
       }

@@ -21,8 +21,9 @@ public interface PlayerController extends Controller {
   
   /**
    * @param playerDetail
+   * @param isTaking
    */
-  void looseLife(final PlayerDetail playerDetail);
+  void lifeHandler(final PlayerDetail playerDetail, final boolean isTaking);
   
   /**
    * @param playerDetail

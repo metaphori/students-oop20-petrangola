@@ -11,7 +11,6 @@ public abstract class AbstractButtonFX extends AbstractComponentFX<Button> imple
   private final StyleBuilder styleBuilder = new StyleBuilderImpl();
   private DTO data;
   
-  
   public AbstractButtonFX(String label) {
     super(new Button(label));
     this.handleStyle();

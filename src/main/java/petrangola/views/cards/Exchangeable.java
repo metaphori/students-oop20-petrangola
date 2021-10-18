@@ -10,6 +10,9 @@ public interface Exchangeable {
    * @return
    */
   default boolean areExchangeable(final Cards boardCards, final Cards playerCards) {
-    return boardCards.getCombination().getChosenCards().size() == playerCards.getCombination().getChosenCards().size();
+    final int boardCardsChosenSize = boardCards.getCombination().getChosenCards().size();
+    final int playerCardsChosenSize = playerCards.getCombination().getChosenCards().size();
+    
+    return boardCardsChosenSize > 0 && boardCardsChosenSize == playerCardsChosenSize;
   }
 }

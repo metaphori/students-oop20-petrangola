@@ -7,7 +7,7 @@ import main.java.petrangola.models.player.PlayerDetail;
 
 import java.util.List;
 
-public class DealerControllerImpl implements DealerController {
+public class DealerControllerImpl extends PlayerControllerImpl implements DealerController {
   private Dealer dealer;
   
   public DealerControllerImpl() {
@@ -23,11 +23,11 @@ public class DealerControllerImpl implements DealerController {
     this.dealer.firstExchange(boardCard, ownCards);
   }
   
-  public void setDealer(Dealer dealer) {
-    this.dealer = dealer;
-  }
-  
   public Dealer getDealer() {
     return dealer;
+  }
+  
+  public void setDealer(Dealer dealer) {
+    this.dealer = dealer;
   }
 }
