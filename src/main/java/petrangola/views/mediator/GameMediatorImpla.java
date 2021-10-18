@@ -96,7 +96,7 @@
 //  }
 //
 //  @Override
-//  public void register(Pane pane) {
+//  public void register(Pane layout) {
 //    registerTop(pane);
 //    registerCentral(pane);
 //    registerBottom(pane);

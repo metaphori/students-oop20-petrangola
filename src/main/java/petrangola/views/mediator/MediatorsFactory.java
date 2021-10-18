@@ -1,6 +1,7 @@
 package main.java.petrangola.views.mediator;
 
 import main.java.petrangola.controllers.game.GameController;
+import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.views.GameObjectViewFactory;
@@ -13,14 +14,8 @@ public interface MediatorsFactory {
   
   CardsMediator createCardsMediator(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playerDetails);
   
-  DealerMediator createDealerMediator();
+  GameMediator createGameMediator(LayoutBuilder layoutBuilder, GameController gameController, DealerController dealerController);
   
-  GameMediator createGameMediator(LayoutBuilder layoutBuilder, GameController gameController);
-  
-  PlayerMediator createPlayerMediator();
-  
-  PlayerDetailMediator createPlayerDetailMediator();
-  
-  HighCardMediator createHighCardMediator(List<PlayerDetail> playerDetails);
+  HighCardMediator createHighCardMediator();
   
 }

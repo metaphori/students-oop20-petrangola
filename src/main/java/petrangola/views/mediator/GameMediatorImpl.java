@@ -2,12 +2,13 @@ package main.java.petrangola.views.mediator;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.models.board.Board;
+import main.java.petrangola.controllers.player.DealerController;
+import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.events.NextTurnEvent;
 import main.java.petrangola.views.events.WinnerEvent;
@@ -31,48 +32,54 @@ public class GameMediatorImpl implements GameMediator {
   
   private final LayoutBuilder layoutBuilder;
   private final GameController gameController;
-  
-  private CardsMediator cardsMediator;
-  private DealerMediator dealerMediator;
-  private PlayerMediator playerMediator;
-  private HighCardMediator highCardmediator;
-  private PlayerDetailMediator playerDetailMediator;
-  
+  private final DealerController dealerController;
   private final DealerAnimation dealerAnimation;
+  private CardsMediator cardsMediator;
+  private HighCardMediator highCardMediator;
   
-  public GameMediatorImpl(LayoutBuilder layoutBuilder, GameController gameController) {
+  public GameMediatorImpl(LayoutBuilder layoutBuilder, GameController gameController, DealerController dealerController) {
     this.layoutBuilder = layoutBuilder;
     this.gameController = gameController;
+    this.dealerController = dealerController;
     this.dealerAnimation = new DealerAnimationImpl(this.layoutBuilder.getLayout());
   }
   
   @Override
   public void onDealer(Dealer dealer) {
     getGameController().setTurnNumbers();
+    
     getCurrentPlayer().setPlayer(dealer);
-    getDealerAnimation().showDealerName();
+    getDealerController().setDealer(dealer);
+    
+    getDealerAnimation().setDealerController(getDealerController());
+    getDealerAnimation()
+          .addKeyFrame(Duration.millis(600), getDealerAnimation().showDealerName())
+          .addKeyFrame(Duration.millis(2600), getDealerAnimation().hideHighCards(getHighCardMediator()))
+          .addKeyFrame(Duration.millis(3000), getDealerAnimation().dealCards())
+          .play();
   }
   
   @Override
   public void onRound(int round) {
-    if (!currentPlayer.getPlayer().isDealer()) {
-      this.dealerMediator.hideDealerView(getLayout());
+    if (round == 1) {
+      getCardsMediator().hideDealerView(getLayout());
+      getCardsMediator().showBoardCards();
+      getCardsMediator().showUserCards();
     }
     
-    if (round == 1) {
-      this.cardsMediator.showBoardCards();
-      this.cardsMediator.showUserCards();
-    }
-  
-    updateRoundTextView(String.valueOf(round));
+    this.updateRoundTextView(String.valueOf(round));
   }
   
   @Override
   public void onCurrentTurnNumber(Player player) {
-    getCurrentPlayer().setPlayer(player);
-    this.cardsMediator.setCurrentPlayerCards(getCurrentPlayer());
-    this.cardsMediator.toggleUserButton(getCurrentPlayer());
+    this.getCurrentPlayer().setPlayer(player);
+    this.getCardsMediator().setCurrentPlayerCards(getCurrentPlayer());
+    this.getCardsMediator().toggleUserButton(getCurrentPlayer());
     this.updateUsernameView(getCurrentPlayer().getPlayer().getUsername());
+    
+    if (player.isNPC()) {
+      this.getCardsMediator().npcExchangeCards(player);
+    }
   }
   
   @Override
@@ -103,45 +110,21 @@ public class GameMediatorImpl implements GameMediator {
     }
   }
   
-  @Override
-  public void setHighCardMediator(HighCardMediator highCardMediator) {
-    this.highCardmediator = highCardMediator;
-  }
-  
-  @Override
-  public void setCardsMediator(CardsMediator cardsMediator) {
-    this.cardsMediator = cardsMediator;
-  }
-  
-  @Override
-  public void setDealerMediator(DealerMediator dealerMediator) {
-    this.dealerMediator = dealerMediator;
-  }
-  
-  @Override
-  public void setPlayerMediator(PlayerMediator playerMediator) {
-    this.playerMediator = playerMediator;
-  }
-  
-  @Override
-  public void setPlayerDetailMediator(PlayerDetailMediator playerDetailMediator) {
-    this.playerDetailMediator = playerDetailMediator;
-  }
   
   @Override
   public void register(Pane layout) {
     final Pane userPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
     userPane.getChildren().add(getUsernameView().get());
-  
+    
     final Pane lifeView = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
     lifeView.getChildren().add(getLifeView().get());
-  
+    
     final Pane roundPane = (Pane) layout.lookup(GameStyleClass.ROUND.getAsStyleClass());
     roundPane.getChildren().add(getRoundView().get());
-  
+    
     final Pane knockPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
     knockPane.getChildren().add(getKnockView().get());
-  
+    
     final Pane winnerPane = (Pane) layout.lookup(GameStyleClass.WINNER.getAsStyleClass());
     winnerPane.getChildren().add(getWinnerView().get());
   }
@@ -150,13 +133,13 @@ public class GameMediatorImpl implements GameMediator {
   public void unregister(Pane layout) {
     final Pane userPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
     userPane.getChildren().clear();
-  
+    
     final Pane lifeView = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
     lifeView.getChildren().clear();
-  
+    
     final Pane roundPane = (Pane) layout.lookup(GameStyleClass.ROUND.getAsStyleClass());
     roundPane.getChildren().clear();
-  
+    
     final Pane knockPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
     knockPane.getChildren().clear();
     
@@ -166,29 +149,78 @@ public class GameMediatorImpl implements GameMediator {
   
   @Override
   public void update(String propertyName, Object source) {
+    final Game game = (Game) source;
+    
     switch (propertyName) {
+      case "dealtCards":
+        List<Cards> cardsList = game.getCards();
+        
+        if (getCurrentPlayer().getPlayer().isNPC()) {
+          this.getDealerController().cherryPickingCombination(this.getBoardCards(cardsList), this.getCurrentPlayerCards(cardsList));
+        }
+        
+        break;
+      case "cards":
+        this.getCardsMediator().setLayoutBuilder(this.layoutBuilder);
+        this.getCardsMediator().register(getLayout());
+        this.getCardsMediator().showDealerView(getLayout());
       case "playerDetails":
         // No inspection uncheck for the sole reason that I know for sure the source is a List<PlayerDetails>
         //noinspection unchecked
-        this.getDealerAnimation().setPlayerDetails((List<PlayerDetail>) source);
-        
+        this.getDealerAnimation().setPlayerDetails(game.getPlayerDetails());
         break;
       case "board":
-        this.getDealerAnimation().setBoard((Board) source);
+        this.onBoard(game);
         break;
       case "dealer":
-        this.onDealer((Dealer) source);
+        this.onDealer(game.getDealer());
         break;
       case "round":
-        this.onRound(((Game) source).getRound());
+        this.onRound(game.getRound());
+        break;
+      case "knockerCount":
+        this.onKnockerCount(game);
+        break;
+      case "onlyOneRound":
+        this.onOnlyOneRound(game);
         break;
       case "currentTurnNumber":
-        this.onCurrentTurnNumber((Player) source);
+        game.getPlayerDetails()
+              .stream()
+              .filter(playerDetail -> playerDetail.getTurnNumber() == game.getCurrentTurnNumber())
+              .findFirst()
+              .ifPresent(playerDetail -> this.onCurrentTurnNumber(playerDetail.getPlayer()));
         break;
       case "winner":
-        this.onWinner(((Game) source).getWinner());
+        this.onWinner(game.getWinner());
         break;
     }
+  }
+  
+  @Override
+  public CardsMediator getCardsMediator() {
+    return this.cardsMediator;
+  }
+  
+  @Override
+  public void setCardsMediator(CardsMediator cardsMediator) {
+    this.cardsMediator = cardsMediator;
+  }
+  
+  @Override
+  public void onBoard(Game game) {
+    this.getDealerAnimation().setBoard(game.getBoard());
+    this.getHighCardMediator().setPlayersDetails(game.getPlayerDetails());
+    this.getHighCardMediator().register(this.getLayout());
+  }
+  
+  private HighCardMediator getHighCardMediator() {
+    return this.highCardMediator;
+  }
+  
+  @Override
+  public void setHighCardMediator(HighCardMediator highCardMediator) {
+    this.highCardMediator = highCardMediator;
   }
   
   private void updateLifeView(String text) {
@@ -231,23 +263,47 @@ public class GameMediatorImpl implements GameMediator {
     EventBus.getDefault().post(new WinnerEvent(game.getCards(), game.getPlayerDetails(), this.getLayout()));
   }
   
-  public LifeView getLifeView() {
+  private LifeView getLifeView() {
     return this.lifeView;
   }
   
-  public UsernameView getUsernameView() {
+  private UsernameView getUsernameView() {
     return this.usernameView;
   }
   
-  public RoundView getRoundView() {
+  private RoundView getRoundView() {
     return this.roundView;
   }
   
-  public WinnerView getWinnerView() {
+  private WinnerView getWinnerView() {
     return this.winnerView;
   }
   
-  public KnockView getKnockView() {
+  private KnockView getKnockView() {
     return this.knockView;
+  }
+  
+  private DealerController getDealerController() {
+    return dealerController;
+  }
+  
+  private Cards getCurrentPlayerCards(List<Cards> cardsList) {
+    return cardsList
+                 .stream()
+                 .filter(Cards::isPlayerCards)
+                 .filter(cards -> cards.getPlayer()
+                                        .map(Player::getUsername)
+                                        .stream()
+                                        .anyMatch(username -> username.equals(getCurrentPlayer().getPlayer().getUsername())))
+                 .findFirst()
+                 .orElse(null);
+  }
+  
+  private Cards getBoardCards(List<Cards> cardsList) {
+    return cardsList
+                 .stream()
+                 .filter(Cards::isCommunity)
+                 .findFirst()
+                 .orElse(null);
   }
 }

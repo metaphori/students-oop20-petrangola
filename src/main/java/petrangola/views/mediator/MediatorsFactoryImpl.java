@@ -1,6 +1,7 @@
 package main.java.petrangola.views.mediator;
 
 import main.java.petrangola.controllers.game.GameController;
+import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.views.GameObjectViewFactory;
@@ -16,27 +17,12 @@ public class MediatorsFactoryImpl implements MediatorsFactory {
   }
   
   @Override
-  public DealerMediator createDealerMediator() {
-    return new DealerMediatorImpl(null);
+  public GameMediator createGameMediator(LayoutBuilder layoutBuilder, GameController gameController, DealerController dealerController) {
+    return new GameMediatorImpl(layoutBuilder, gameController, dealerController);
   }
   
   @Override
-  public GameMediator createGameMediator(LayoutBuilder layoutBuilder, GameController gameController) {
-    return new GameMediatorImpl(layoutBuilder, gameController);
-  }
-  
-  @Override
-  public PlayerMediator createPlayerMediator() {
-    return null;
-  }
-  
-  @Override
-  public PlayerDetailMediator createPlayerDetailMediator() {
-    return null;
-  }
-  
-  @Override
-  public HighCardMediator createHighCardMediator(List<PlayerDetail> playerDetails) {
-    return new HighCardMediatorImpl(playerDetails);
+  public HighCardMediator createHighCardMediator() {
+    return new HighCardMediatorImpl();
   }
 }

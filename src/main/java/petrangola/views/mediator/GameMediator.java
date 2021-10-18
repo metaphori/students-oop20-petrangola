@@ -37,6 +37,12 @@ public interface GameMediator extends Mediator, UpdatableMediator {
   void onWinner(String winnerName);
   
   /**
+   *
+   * @param game
+   */
+  void onBoard(Game game);
+  
+  /**
    * @param game
    */
   void onOnlyOneRound(Game game);
@@ -53,16 +59,7 @@ public interface GameMediator extends Mediator, UpdatableMediator {
   
   /**
    *
+   * @return
    */
-  void setDealerMediator(DealerMediator dealerMediator);
-  
-  /**
-   * @param playerMediator
-   */
-  void setPlayerMediator(PlayerMediator playerMediator);
-  
-  /**
-   * @param playerDetailMediator
-   */
-  void setPlayerDetailMediator(PlayerDetailMediator playerDetailMediator);
+  CardsMediator getCardsMediator();
 }

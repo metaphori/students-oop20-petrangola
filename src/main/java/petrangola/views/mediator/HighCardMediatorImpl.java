@@ -15,19 +15,22 @@ import java.util.stream.Collectors;
 
 public class HighCardMediatorImpl implements HighCardMediator {
   private static final int THRESHOLD_NPC = 6;
-  final ResourceService resourceService = new ResourceServiceImpl();
-  private final List<PlayerDetail> playersDetails;
+  private final ResourceService resourceService = new ResourceServiceImpl();
+  private List<PlayerDetail> playersDetails;
   private int npcIndex = 0;
   
   
-  public HighCardMediatorImpl(List<PlayerDetail> playersDetails) {
-    this.playersDetails = playersDetails;
+  public HighCardMediatorImpl() {
   }
   
   @Override
   public void register(Pane layout) {
     final List<FlowPane> npcPanes = getNPCHighCardPanes(layout);
     final Pane userPane = getUserHighCardPane(layout);
+  
+    Pane userCardsPane = (Pane) layout.lookup(GameStyleClass.USER_CARDS.getAsStyleClass());
+    userCardsPane.setManaged(false);
+    userCardsPane.setVisible(false);
     
     this.playersDetails
           .stream()
@@ -64,5 +67,10 @@ public class HighCardMediatorImpl implements HighCardMediator {
   @Override
   public Pane getUserHighCardPane(Pane layout) {
     return (Pane) layout.lookup(GameStyleClass.USER_HIGH_CARD.getAsStyleClass());
+  }
+  
+  @Override
+  public void setPlayersDetails(List<PlayerDetail> playersDetails) {
+    this.playersDetails = playersDetails;
   }
 }
