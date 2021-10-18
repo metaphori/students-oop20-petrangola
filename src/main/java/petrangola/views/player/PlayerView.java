@@ -1,22 +1,11 @@
 package main.java.petrangola.views.player;
 
 
+import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.player.Player;
-import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
 
 public interface PlayerView extends GameObjectView {
-  /**
-   *
-   */
-  void showAction();
-  
-  /**
-   * @return
-   */
-  AbstractButtonFX getExchangeButton();
-  
   /**
    * @return
    */
@@ -34,8 +23,7 @@ public interface PlayerView extends GameObjectView {
   
   /**
    *
-   * @param cardsExchanged
-   * @param exchangeButton
+   * @return
    */
-  void enableExchangeButton(CardsExchanged cardsExchanged, ExchangeButton exchangeButton);
+  PlayerController getPlayerController();
 }

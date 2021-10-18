@@ -7,10 +7,8 @@ import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.cards.CardView;
-import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import main.java.petrangola.views.cards.UpdatableCombination;
 import main.java.petrangola.views.events.NextRoundEvent;
 import main.java.petrangola.views.events.NextTurnEvent;
 import main.java.petrangola.views.player.buttons.ExchangeButton;
@@ -20,19 +18,16 @@ import org.greenrobot.eventbus.EventBus;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-public class AbstractPlayerViewImpl implements PlayerView {
-  protected final Game game;
-  
+public abstract class AbstractPlayerViewImpl implements PlayerView {
   private final PlayerDetail playerDetail;
   private final PlayerController playerController;
   private final Pane layout;
   
-  private AbstractButtonFX exchangeButton;
-  private AbstractButtonFX knockButton;
+  private ExchangeButton exchangeButton;
+  private KnockButton knockButton;
   private CardsView<Group> cardsView;
   
   public AbstractPlayerViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, Pane layout) {
-    this.game = game;
     this.playerDetail = playerDetail;
     this.playerController = playerController;
     this.layout = layout;
@@ -49,14 +44,6 @@ public class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public void showAction() {
-    if (this.isUserPlayer()) {
-      this.exchangeButton.setDisable(false);
-      this.knockButton.setDisable(false);
-    }
-  }
-  
-  @Override
   public CardsView<Group> getCardsView() {
     return this.cardsView;
   }
@@ -67,7 +54,7 @@ public class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public AbstractButtonFX getExchangeButton() {
+  public ExchangeButton getExchangeButton() {
     if (this.isUserPlayer()) {
       return this.exchangeButton;
     }
@@ -76,7 +63,7 @@ public class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public AbstractButtonFX getKnockButton() {
+  public KnockButton getKnockButton() {
     if (this.isUserPlayer()) {
       return this.knockButton;
     }
@@ -90,64 +77,45 @@ public class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public void enableExchangeButton(CardsExchanged cardsExchanged, ExchangeButton exchangeButton) {
-    cardsExchanged
-          .getBoardCards()
-          .ifPresent(boardCards -> {
-            cardsExchanged
-                  .getPlayerCards()
-                  .ifPresent(playerCards -> exchangeButton.setDisable(!cardsExchanged.areExchangeable(boardCards, playerCards)));
-          });
-  }
-  
-  @Override
   public void updateCards(List<Cards> cardsList) {
-    cardsList.forEach(cards -> {
-      if (cards.getPlayer().equals(getPlayer())) {
-        getCardsView().setCards(cards);
-        getCardsView().update(cards);
+    cardsList.forEach(cards -> cards.getPlayer().ifPresent(player -> {
+      if (!player.equals(getPlayer())) {
+        return;
       }
-    });
+      
+      this.removeListenerModel(getCardsView().getCards());
+      this.getCardsView().setCards(cards);
+      this.getCardsView().update(cards);
+      this.addListenerToModel(cards);
+    }));
   }
   
   @Override
   public void toggleUserButton(Player player) {
-    if (!player.isNPC()) {
-      this.getExchangeButton().get().setVisible(true);
-      this.getKnockButton().get().setVisible(true);
-    } else {
-      this.getExchangeButton().get().setVisible(false);
-      this.getKnockButton().get().setVisible(false);
-    }
+    toggleButtonVisibility(player.isNPC());
   }
   
-  @Override
-  public void clearChosenCards() {
-    this.getExchangeButton().setData(null);
-    this.getCardsView().getCardViews().forEach(CardView::clearChosen);
+  public void toggleButtonVisibility(boolean hide) {
+    this.getExchangeButton().setDisable(hide);
+    this.getKnockButton().setDisable(hide);
+    this.getExchangeButton().get().setVisible(!hide);
+    this.getKnockButton().get().setVisible(!hide);
   }
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {
       case "updatedCombination":
-        if (!getPlayer().isNPC()) {
-          final UserView userView = ((UserView) this);
-          userView.addCards((Cards) evt.getSource());
-          this.getExchangeButton().setData(userView.getCardsExchanged());
-          this.enableExchangeButton(userView.getCardsExchanged(), (ExchangeButton) getExchangeButton());
+        if (this.isUserPlayer()) {
+          ((UpdatableCombination) this).onUpdatedCombination(this.getExchangeButton(), (Cards) evt.getSource());
         }
         
         break;
       case "firstExchange":
-        EventBus.getDefault().post(new NextRoundEvent());
-        EventBus.getDefault().post(new NextTurnEvent());
+        this.onFirstExchange((List<Cards>) evt.getNewValue());
         break;
       case "exchange":
-        this.clearChosenCards();
-        this.updateCards((List<Cards>) evt.getNewValue());
-        EventBus.getDefault().post(new NextTurnEvent());
-        
+        this.onExchange((List<Cards>) evt.getNewValue());
         break;
       case "playerLives":
         
@@ -155,7 +123,8 @@ public class AbstractPlayerViewImpl implements PlayerView {
     }
   }
   
-  protected PlayerController getPlayerController() {
+  @Override
+  public PlayerController getPlayerController() {
     return this.playerController;
   }
   
@@ -165,5 +134,20 @@ public class AbstractPlayerViewImpl implements PlayerView {
   
   private boolean isUserPlayer() {
     return !this.getPlayer().isNPC();
+  }
+  
+  private void onExchange(List<Cards> cardsList) {
+    if (this.isUserPlayer()) {
+      this.clearChosenCards();
+    }
+    
+    this.updateCards(cardsList);
+    EventBus.getDefault().post(new NextTurnEvent());
+  }
+  
+  private void onFirstExchange(List<Cards> cardsList) {
+    this.updateCards(cardsList);
+    EventBus.getDefault().post(new NextRoundEvent());
+    EventBus.getDefault().post(new NextTurnEvent());
   }
 }
