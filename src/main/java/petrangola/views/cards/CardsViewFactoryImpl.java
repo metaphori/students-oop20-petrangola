@@ -25,7 +25,6 @@ public class CardsViewFactoryImpl implements CardsViewFactory {
     return new CardsViewImpl(this.service, cards, position, true);
   }
   
-  // TODO: if nothing changes, just make one method called "simple"
   @Override
   public CardsView<Group> createBoardCards(Cards cards, Pair<Vertical, Horizontal> position) {
     cards.getCombination().getCards().stream().skip(2).forEach(card -> card.setCovered(true));

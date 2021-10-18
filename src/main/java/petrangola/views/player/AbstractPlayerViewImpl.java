@@ -92,7 +92,7 @@ public abstract class AbstractPlayerViewImpl implements PlayerView {
   
   @Override
   public void toggleUserButton(Player player) {
-    toggleButtonVisibility(player.isNPC());
+    this.toggleButtonVisibility(player.isNPC());
   }
   
   public void toggleButtonVisibility(boolean hide) {

@@ -34,7 +34,7 @@ public class UserViewImpl extends AbstractPlayerViewImpl implements UserView {
     this.registerActions(layout);
   }
   
-  private void registerCards(Pane layout, LayoutBuilder layoutBuilder) {
+  protected void registerCards(Pane layout, LayoutBuilder layoutBuilder) {
     final HBox cardsHBox = new HBox();
     final Pane userCardsPane = (Pane) layout.lookup(GameStyleClass.USER_CARDS.getAsStyleClass());
     userCardsPane.setManaged(true);
@@ -52,7 +52,7 @@ public class UserViewImpl extends AbstractPlayerViewImpl implements UserView {
     userCardsPane.getChildren().add(cardsHBox);
   }
   
-  private void registerActions(Pane layout) {
+  protected void registerActions(Pane layout) {
     final HBox actionsHBox = new HBox();
     final Pane userActionsPane = (Pane) layout.lookup(GameStyleClass.USER_ACTIONS.getAsStyleClass());
     final AbstractButtonFX exchangeButton = this.getExchangeButton();

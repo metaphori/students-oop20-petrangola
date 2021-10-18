@@ -30,7 +30,6 @@ public class DealerAnimationImpl extends AbstractPlayerAnimation implements Deal
   public EventHandler<ActionEvent> showDealerName() {
     return actionEvent -> {
       final Pane usernamePane = (Pane) getLayout().lookup(GameStyleClass.USERNAME.getAsStyleClass());
-      
       this.dealerTextView.setCurrentDealerName(getDealerController().getDealer().getUsername());
       this.dealerTextView.show();
       

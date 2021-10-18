@@ -101,6 +101,7 @@ public class GameMediatorImpl implements GameMediator {
     this.cardsMediator.showNPCCards();
     this.updateWinnerView(winnerName);
     this.unregister(getLayout());
+    this.cardsMediator.unregister(getLayout());
   }
   
   @Override

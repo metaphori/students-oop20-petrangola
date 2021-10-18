@@ -166,7 +166,7 @@ public class CardsMediatorImpl implements CardsMediator {
   
   @Override
   public void toggleUserButton(CurrentPlayer currentPlayer) {
-    getPlayerView(currentPlayer).ifPresent(gameObjectView -> ((PlayerView) gameObjectView).toggleUserButton(currentPlayer.getPlayer()));
+    getUserDealerView().ifPresent(gameObjectView -> gameObjectView.toggleUserButton(currentPlayer.getPlayer()));
   }
   
   @Override
@@ -205,6 +205,9 @@ public class CardsMediatorImpl implements CardsMediator {
     
     final Pane boardPane = (Pane) layout.lookup(GameStyleClass.BOARD_CARDS.getAsStyleClass());
     boardPane.getChildren().clear();
+  
+    final Pane userActionsPane = (Pane) layout.lookup(GameStyleClass.USER_ACTIONS.getAsStyleClass());
+    userActionsPane.getChildren().clear();
   }
   
   private List<GameObjectView> getViewList() {

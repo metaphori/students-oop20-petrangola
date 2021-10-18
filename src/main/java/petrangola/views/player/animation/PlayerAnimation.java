@@ -13,10 +13,22 @@ public interface PlayerAnimation {
    */
   PlayerAnimation addKeyFrame(Duration millis, EventHandler<ActionEvent> event);
   
+  /**
+   *
+   * @return
+   */
   PlayerAnimation play();
   
+  /**
+   *
+   * @return
+   */
   PlayerAnimation pause();
   
+  /**
+   *
+   * @return
+   */
   Timeline getTimeline();
   
 }

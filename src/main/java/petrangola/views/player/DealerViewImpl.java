@@ -15,7 +15,7 @@ import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.player.buttons.AcceptDealtCardsButton;
 import main.java.petrangola.views.player.buttons.TakeBoardCardsButton;
 
-public class DealerViewImpl extends AbstractPlayerViewImpl implements DealerView {
+public class DealerViewImpl extends UserViewImpl implements DealerView {
   private AbstractButtonFX acceptDealtCardsButton;
   private AbstractButtonFX firstExchangeButton;
   private GameController gameController;
@@ -105,39 +105,5 @@ public class DealerViewImpl extends AbstractPlayerViewImpl implements DealerView
     } else {
       dealerButtonsPane.getChildren().clear();
     }
-  }
-  
-  private void registerCards(Pane layout, LayoutBuilder layoutBuilder) {
-    final HBox cardsHBox = new HBox();
-    final Pane userCardsPane = (Pane) layout.lookup(GameStyleClass.USER_CARDS.getAsStyleClass());
-    userCardsPane.setManaged(true);
-    userCardsPane.setVisible(true);
-    // hide highCard Pane
-    final Pane highCardPane = (Pane) layout.lookup(GameStyleClass.USER_HIGH_CARD.getAsStyleClass());
-    highCardPane.setManaged(false);
-    highCardPane.setVisible(false);
-    
-    final Pos cardsViewPosition = layoutBuilder.getPos(this.getCardsView().getPosition());
-    cardsHBox.setAlignment(cardsViewPosition);
-    cardsHBox.setSpacing(8);
-    cardsHBox.getChildren().addAll(this.getCardsView().get().getChildren());
-    
-    userCardsPane.getChildren().add(cardsHBox);
-  }
-  
-  private void registerActions(Pane layout) {
-    final HBox actionsHBox = new HBox();
-    final Pane userActionsPane = (Pane) layout.lookup(GameStyleClass.USER_ACTIONS.getAsStyleClass());
-    final AbstractButtonFX exchangeButton = this.getExchangeButton();
-    final AbstractButtonFX knockButton = this.getKnockButton();
-    
-    exchangeButton.get().setDisable(true);
-    knockButton.get().setDisable(false);
-    
-    actionsHBox.getChildren().addAll(exchangeButton.get(), knockButton.get());
-    actionsHBox.setSpacing(24);
-    actionsHBox.setAlignment(Pos.CENTER);
-    
-    userActionsPane.getChildren().add(actionsHBox);
   }
 }
