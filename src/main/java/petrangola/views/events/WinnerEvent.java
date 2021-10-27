@@ -1,26 +1,26 @@
 package main.java.petrangola.views.events;
 
-import javafx.scene.layout.Pane;
 import main.java.petrangola.models.cards.*;
+import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.services.CombinationChecker;
 import main.java.petrangola.utlis.Name;
 import main.java.petrangola.utlis.Pair;
+import main.java.petrangola.views.mediator.GameMediator;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class WinnerEvent implements Event {
-  private final List<Cards> cardsList;
-  private final List<PlayerDetail> playerDetails;
-  private final Pane layout;
+  private final Game game;
+  private final GameMediator gameMediator;
   
-  public WinnerEvent(final List<Cards> cardsList, List<PlayerDetail> playerDetails, Pane layout) {
-    this.cardsList = cardsList;
-    this.playerDetails = playerDetails;
-    this.layout = layout;
+  public WinnerEvent(final Game game, final GameMediator gameMediator) {
+    this.game = game;
+    this.gameMediator = gameMediator;
   }
   
   public List<Pair<String, Combination>> getBestCombinations() {
@@ -34,46 +34,36 @@ public class WinnerEvent implements Event {
                  .collect(Collectors.toList());
   }
   
-  public List<Cards> getCardsList() {
-    return this.cardsList;
-  }
-  
-  public List<PlayerDetail> getPlayerDetails() {
-    return this.playerDetails;
-  }
-  
-  public Pane getLayout() {
-    return this.layout;
-  }
-  
   public void takeLifeIfPossible() {
-    List<Pair<Player, Integer>> nonPetrangolaList = getCardsList()
-                                                          .stream()
-                                                          .filter(Cards::isPlayerCards)
-                                                          .filter(cards -> cards.getPlayer().isPresent())
-                                                          .map(cards -> new Pair<>(cards.getPlayer().get(), cards.getCombination()))
-                                                          .filter(pair -> !CombinationChecker.isAnyKindOfPetrangola(pair.getY().getCards()))
-                                                          .map(pair -> new Pair<>(pair.getX(), pair.getY().getBest().getY()))
-                                                          .collect(Collectors.toList());
+    final int size = (int) getCardsList().stream().filter(Cards::isPlayerCards).count();
     
-    int min = nonPetrangolaList
-                    .stream()
-                    .min(Comparator.comparingInt(Pair::getY))
-                    .map(Pair::getY)
-                    .orElse(-1);
+    List<Pair<Player, Integer>> nonPetrangolaList = this.getPlayerValuePairs(List.of(pair -> !CombinationChecker.isAnyKindOfPetrangola(pair.getY().getCards())));
+    
+    int min = this.getMin(nonPetrangolaList);
+    
+    if (min == -1) {
+      nonPetrangolaList = getPlayerValuePairs(List.of());
+      min = this.getMin(nonPetrangolaList);
+    }
+    
+    final int theActualMin = min;
+    
+    nonPetrangolaList.removeIf(pair -> pair.getY() > theActualMin);
     
     
-    nonPetrangolaList
-          .stream()
-          .filter(pair -> pair.getY() <= min)
-          .collect(Collectors.toList())
-          .forEach(pair -> getPlayerDetails().forEach(playerDetail -> {
-            if (!playerDetail.getPlayer().equals(pair.getX())) {
-              return;
-            }
-            
-            playerDetail.lifeHandler(true);
-          }));
+    final boolean allMatch = nonPetrangolaList.stream().allMatch(pair -> pair.getY().equals(theActualMin));
+    
+    if (size > 2 || nonPetrangolaList.size() == 1 || !allMatch) {
+      nonPetrangolaList.forEach(pair -> {
+        this.getPlayersDetails().forEach(playerDetail -> {
+          if (!playerDetail.getPlayer().equals(pair.getX())) {
+            return;
+          }
+          
+          playerDetail.lifeHandler(true);
+        });
+      });
+    }
   }
   
   public void giveLifeIfPossible() {
@@ -88,7 +78,7 @@ public class WinnerEvent implements Event {
           })
           .findFirst()
           .ifPresent(pair -> {
-            getPlayerDetails().forEach(playerDetail -> {
+            this.getPlayersDetails().forEach(playerDetail -> {
               if (!playerDetail.getPlayer().equals(pair.getX())) {
                 return;
               }
@@ -96,5 +86,44 @@ public class WinnerEvent implements Event {
               playerDetail.lifeHandler(false);
             });
           });
+  }
+  
+  public List<Cards> getCardsList() {
+    return getGame().getCards();
+  }
+  
+  public List<PlayerDetail> getPlayersDetails() {
+    return this.getGame()
+                 .getPlayersDetails()
+                 .stream()
+                 .filter(PlayerDetail::isStillAlive)
+                 .collect(Collectors.toList());
+  }
+  
+  public Game getGame() {
+    return this.game;
+  }
+  
+  public GameMediator getGameMediator() {
+    return this.gameMediator;
+  }
+  
+  private List<Pair<Player, Integer>> getPlayerValuePairs(List<Predicate<? super Pair<Player, Combination>>> predicates) {
+    return getCardsList()
+                 .stream()
+                 .filter(Cards::isPlayerCards)
+                 .filter(cards -> cards.getPlayer().isPresent())
+                 .map(cards -> new Pair<>(cards.getPlayer().get(), cards.getCombination()))
+                 .filter(pair -> predicates.stream().anyMatch(predicate -> predicate.test(pair)))
+                 .map(pair -> new Pair<>(pair.getX(), pair.getY().getBest().getY()))
+                 .collect(Collectors.toList());
+  }
+  
+  private Integer getMin(List<Pair<Player, Integer>> nonPetrangolaList) {
+    return nonPetrangolaList
+                 .stream()
+                 .min(Comparator.comparingInt(Pair::getY))
+                 .map(Pair::getY)
+                 .orElse(-1);
   }
 }

@@ -24,27 +24,15 @@ public class BestCombinationComparatorImpl implements BestCombinationsComparator
       return Integer.compare(o1.getY(), o2.getY());
     }
     
-    if (CombinationChecker.isTris(o1.getX()) && CombinationChecker.isFlush(o2.getX())) {
-      return Integer.compare(o1.getY(), o2.getY());
-    }
-  
-    if (CombinationChecker.isFlush(o1.getX()) && CombinationChecker.isTris(o2.getX())) {
+    if (CombinationChecker.isAnyKindOfPetrangola(o1.getX()) && CombinationChecker.isAnyKindOfPetrangola(o2.getX())) {
       return Integer.compare(o1.getY(), o2.getY());
     }
     
-    if (CombinationChecker.isFlush(o1.getX())) {
+    if (CombinationChecker.isAnyKindOfPetrangola(o1.getX())) {
       return O1_GREATER;
     }
     
-    if (CombinationChecker.isFlush(o2.getX())) {
-      return O2_GREATER;
-    }
-    
-    if (CombinationChecker.isTris(o1.getX())) {
-      return O1_GREATER;
-    }
-    
-    if (CombinationChecker.isTris(o2.getX())) {
+    if (CombinationChecker.isAnyKindOfPetrangola(o2.getX())) {
       return O2_GREATER;
     }
   

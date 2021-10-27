@@ -1,17 +1,22 @@
 package main.java.petrangola.views.events;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.models.cards.Combination;
 import main.java.petrangola.utlis.Pair;
+import main.java.petrangola.views.ViewFX;
+import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.game.RankingView;
 import main.java.petrangola.views.game.RankingViewImpl;
+import main.java.petrangola.views.game.buttons.ReplayButton;
+import main.java.petrangola.views.mediator.CardsMediator;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Collections;
 import java.util.List;
 
 public class EventManagerImpl implements EventManager {
@@ -40,24 +45,35 @@ public class EventManagerImpl implements EventManager {
   
   @Subscribe
   public void onWinnerEvent(WinnerEvent event) {
-    List<Pair<String, Combination>> bestCombinations = event.getBestCombinations();
-    Collections.reverse(bestCombinations);
-    
+    final List<Pair<String, Combination>> bestCombinations = event.getBestCombinations();
+    final CardsMediator cardsMediator = event.getGameMediator().getCardsMediator();
+  
+    event.getGameMediator().unregister(cardsMediator.getLayout());
     event.takeLifeIfPossible();
     event.giveLifeIfPossible();
     
     final RankingView rankingView = new RankingViewImpl(new TableView<>());
     rankingView.get().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     rankingView.setBestCombinations(bestCombinations);
-    rankingView.setPlayerDetails(event.getPlayerDetails());
+    rankingView.setPlayersDetails(event.getPlayersDetails());
     rankingView.loadRows();
     
-    final Pane pane = (Pane) event.getLayout().lookup(GameStyleClass.RANKING.getAsStyleClass());
-    rankingView.get().prefWidthProperty().bind(pane.widthProperty());
-    pane.getChildren().clear();
-    pane.getChildren().add(rankingView.get());
+    final Pane rankingPane = (Pane) cardsMediator.getLayout().lookup(GameStyleClass.RANKING.getAsStyleClass());
+    rankingView.get().prefWidthProperty().bind(rankingPane.widthProperty());
+    ViewFX.addOrUpdate(rankingPane, rankingView.get());
     
-    this.gameController.setWinner(bestCombinations.get(0).getX());
+    final Pane userActionsPane = (Pane) cardsMediator.getLayout().lookup(GameStyleClass.USER_ACTIONS.getAsStyleClass());
+    final AbstractButtonFX replayButton = new ReplayButton(event.getGame(), event.getGameMediator());
+    final HBox hBox = (HBox) userActionsPane.getParent();
+    hBox.setAlignment(Pos.BOTTOM_CENTER);
+    ViewFX.addOrUpdate(userActionsPane, replayButton.get());
+    
+    this.gameController.setWinner(bestCombinations.get(bestCombinations.size() - 1).getX());
+  }
+  
+  @Subscribe
+  public void onReplayEvent(ReplayEvent event) {
+    // empty
   }
   
   @Override
