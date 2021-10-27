@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface MediatorsFactory {
   
-  CardsMediator createCardsMediator(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playerDetails);
+  CardsMediator createCardsMediator(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playersDetails);
   
   GameMediator createGameMediator(LayoutBuilder layoutBuilder, GameController gameController, DealerController dealerController);
   

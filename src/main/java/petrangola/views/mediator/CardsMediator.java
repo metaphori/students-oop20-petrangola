@@ -2,9 +2,14 @@ package main.java.petrangola.views.mediator;
 
 import javafx.scene.layout.Pane;
 import main.java.petrangola.controllers.game.GameController;
+import main.java.petrangola.models.game.Game;
+import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.player.CurrentPlayer;
+import main.java.petrangola.views.player.GameObjectView;
+
+import java.util.List;
 
 public interface CardsMediator extends Mediator {
   /**
@@ -26,11 +31,6 @@ public interface CardsMediator extends Mediator {
    * @param currentPlayer
    */
   void setCurrentPlayerCards(CurrentPlayer currentPlayer);
-  
-  /**
-   * @param currentPlayer
-   */
-  void toggleUserButton(CurrentPlayer currentPlayer);
   
   /**
    *
@@ -61,4 +61,23 @@ public interface CardsMediator extends Mediator {
    * @param currentPlayer
    */
   void npcExchangeCards(Player currentPlayer);
+  
+  /**
+   *
+   * @return
+   */
+  List<GameObjectView> getViewList();
+  
+  /**
+   *
+   * @return
+   */
+  Pane getLayout();
+  
+  /**
+   *
+   * @param playersDetails
+   * @param oldDealer
+   */
+  void updatePlayerViews(Game playersDetails, Dealer oldDealer);
 }

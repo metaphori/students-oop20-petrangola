@@ -7,24 +7,28 @@ import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.Player;
+import main.java.petrangola.models.player.PlayerDetail;
+import main.java.petrangola.views.ViewFX;
+import main.java.petrangola.views.animation.player.DealerAnimation;
+import main.java.petrangola.views.animation.player.DealerAnimationImpl;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
+import main.java.petrangola.views.events.NextRoundEvent;
 import main.java.petrangola.views.events.NextTurnEvent;
 import main.java.petrangola.views.events.WinnerEvent;
 import main.java.petrangola.views.game.*;
 import main.java.petrangola.views.player.*;
-import main.java.petrangola.views.player.animation.DealerAnimation;
-import main.java.petrangola.views.player.animation.DealerAnimationImpl;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class GameMediatorImpl implements GameMediator {
-  private final CurrentPlayer currentPlayer = new CurrentPlayerImpl();
+  private static final String EXCHANGE = ".Exchange";
+  private static final String KNOCK = ".Knock";
   
-  private final LifeView lifeView = new LifeViewImpl(new Text());
+  private final CurrentPlayer currentPlayer = new CurrentPlayerImpl();
   private final UsernameView usernameView = new UsernameViewImpl(new Text());
   private final RoundView roundView = new RoundViewImpl(new Text());
   private final WinnerView winnerView = new WinnerViewImpl(new Text());
@@ -45,14 +49,23 @@ public class GameMediatorImpl implements GameMediator {
   }
   
   @Override
-  public void onDealer(Dealer dealer) {
-    getGameController().setTurnNumbers();
+  public void onDealer(Game game) {
+    this.getGameController().setTurnNumbers();
+  
+    this.getCurrentPlayer().setPlayer(game.getDealer());
     
-    getCurrentPlayer().setPlayer(dealer);
-    getDealerController().setDealer(dealer);
+    this.getDealerController().setDealer(game.getDealer());
     
-    getDealerAnimation().setDealerController(getDealerController());
-    getDealerAnimation()
+    List<PlayerDetail> playersDetails = game.getPlayersDetails()
+                                              .stream()
+                                              .filter(PlayerDetail::isStillAlive)
+                                              .collect(Collectors.toList());
+    
+    this.getDealerAnimation().setPlayersDetails(playersDetails);
+    
+    this.getDealerAnimation().cleanUp();
+    this.getDealerAnimation().setDealerController(getDealerController());
+    this.getDealerAnimation()
           .addKeyFrame(Duration.millis(600), getDealerAnimation().showDealerName())
           .addKeyFrame(Duration.millis(2600), getDealerAnimation().hideHighCards(getHighCardMediator()))
           .addKeyFrame(Duration.millis(3000), getDealerAnimation().dealCards())
@@ -60,7 +73,9 @@ public class GameMediatorImpl implements GameMediator {
   }
   
   @Override
-  public void onRound(int round) {
+  public void onRound(Game game) {
+    int round = game.getRound();
+    
     if (round == 1) {
       getCardsMediator().hideDealerView(getLayout());
       getCardsMediator().showBoardCards();
@@ -68,14 +83,28 @@ public class GameMediatorImpl implements GameMediator {
     }
     
     this.updateRoundTextView(String.valueOf(round));
+    
+    if (game.getLastKnocker() != null && !game.getLastKnocker().isEmpty() && round > 1) {
+      this.launchWinnerEvent(game);
+    }
   }
   
   @Override
-  public void onCurrentTurnNumber(Player player) {
+  public void onCurrentTurnNumber(Game game, Player player) {
+    if (game.isOnlyOneRound() && this.gameController.isLastKnockerPlayerTurn()) {
+      this.launchWinnerEvent(game);
+      return;
+    }
+    
+    if (this.gameController.isLastPlayerTurn()) {
+      EventBus.getDefault().post(new NextRoundEvent());
+    }
+    
     this.getCurrentPlayer().setPlayer(player);
-    this.getCardsMediator().setCurrentPlayerCards(getCurrentPlayer());
-    this.getCardsMediator().toggleUserButton(getCurrentPlayer());
-    this.updateUsernameView(getCurrentPlayer().getPlayer().getUsername());
+    this.getCardsMediator().setCurrentPlayerCards(this.getCurrentPlayer());
+    this.updateUsernameView(this.getCurrentPlayer().getPlayer().getUsername());
+    
+    GameObjectView.toggleVisibilityUserButton(this.getLayout(), List.of(EXCHANGE, KNOCK), player.isNPC());
     
     if (player.isNPC()) {
       this.getCardsMediator().npcExchangeCards(player);
@@ -86,48 +115,35 @@ public class GameMediatorImpl implements GameMediator {
   public void onKnockerCount(Game game) {
     if (this.gameController.checkKnocks()) {
       this.launchWinnerEvent(game);
-    } else {
-      EventBus.getDefault().post(new NextTurnEvent());
+      return;
     }
-  }
-  
-  @Override
-  public void onLastKnocker() {
-    // empty
+    
+    updateKnockView(String.valueOf(game.getKnockerCount()));
+    
+    EventBus.getDefault().post(new NextTurnEvent());
   }
   
   @Override
   public void onWinner(String winnerName) {
-    this.cardsMediator.showNPCCards();
-    this.updateWinnerView(winnerName);
-    this.unregister(getLayout());
     this.cardsMediator.unregister(getLayout());
-  }
-  
-  @Override
-  public void onOnlyOneRound(Game game) {
-    if (this.gameController.isLastPlayerTurn()) {
-      this.launchWinnerEvent(game);
-    }
+    this.cardsMediator.showNPCCards(); // I'm not gonna delete this, the animation that is responsible for that would take too much time to be implemented now
+    this.updateWinnerView(winnerName);
   }
   
   
   @Override
   public void register(Pane layout) {
     final Pane userPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
-    userPane.getChildren().add(getUsernameView().get());
-    
-    final Pane lifeView = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
-    lifeView.getChildren().add(getLifeView().get());
+    ViewFX.addOrUpdate(userPane, getUsernameView().get());
     
     final Pane roundPane = (Pane) layout.lookup(GameStyleClass.ROUND.getAsStyleClass());
-    roundPane.getChildren().add(getRoundView().get());
+    ViewFX.addOrUpdate(roundPane, getRoundView().get());
     
     final Pane knockPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
-    knockPane.getChildren().add(getKnockView().get());
+    ViewFX.addOrUpdate(knockPane, getKnockView().get());
     
     final Pane winnerPane = (Pane) layout.lookup(GameStyleClass.WINNER.getAsStyleClass());
-    winnerPane.getChildren().add(getWinnerView().get());
+    ViewFX.addOrUpdate(winnerPane, getWinnerView().get());
   }
   
   @Override
@@ -135,17 +151,15 @@ public class GameMediatorImpl implements GameMediator {
     final Pane userPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
     userPane.getChildren().clear();
     
-    final Pane lifeView = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
-    lifeView.getChildren().clear();
-    
     final Pane roundPane = (Pane) layout.lookup(GameStyleClass.ROUND.getAsStyleClass());
+    roundPane.getChildren().forEach(System.out::println);
     roundPane.getChildren().clear();
     
-    final Pane knockPane = (Pane) layout.lookup(GameStyleClass.USERNAME.getAsStyleClass());
+    final Pane knockPane = (Pane) layout.lookup(GameStyleClass.KNOCKS.getAsStyleClass());
     knockPane.getChildren().clear();
-    
-    final Pane winnerPane = (Pane) layout.lookup(GameStyleClass.WINNER.getAsStyleClass());
-    winnerPane.getChildren().clear();
+  
+    final Pane lifePane = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
+    lifePane.getChildren().clear();
   }
   
   @Override
@@ -156,44 +170,62 @@ public class GameMediatorImpl implements GameMediator {
       case "dealtCards":
         List<Cards> cardsList = game.getCards();
         
-        if (getCurrentPlayer().getPlayer().isNPC()) {
+        this.getCurrentPlayer().setPlayer(game.getDealer());
+        
+        if (game.getDealer().isNPC()) {
           this.getDealerController().cherryPickingCombination(this.getBoardCards(cardsList), this.getCurrentPlayerCards(cardsList));
         }
         
         break;
       case "cards":
         this.getCardsMediator().setLayoutBuilder(this.layoutBuilder);
-        this.getCardsMediator().register(getLayout());
-        this.getCardsMediator().showDealerView(getLayout());
-      case "playerDetails":
-        // No inspection uncheck for the sole reason that I know for sure the source is a List<PlayerDetails>
-        //noinspection unchecked
-        this.getDealerAnimation().setPlayerDetails(game.getPlayerDetails());
+        
+        if (!game.getCards().isEmpty()) {
+          this.getCardsMediator().register(getLayout());
+          this.getCardsMediator().showDealerView(getLayout());
+        }
+        
+        break;
+      case "playersDetails":
+        List<PlayerDetail> playersDetails = game.getPlayersDetails()
+                                                  .stream()
+                                                  .filter(PlayerDetail::isStillAlive)
+                                                  .collect(Collectors.toList());
+        
+        this.getDealerAnimation().setPlayersDetails(playersDetails);
         break;
       case "board":
         this.onBoard(game);
         break;
       case "dealer":
-        this.onDealer(game.getDealer());
+        this.onDealer(game);
         break;
       case "round":
-        this.onRound(game.getRound());
+        this.onRound(game);
         break;
       case "knockerCount":
-        this.onKnockerCount(game);
-        break;
-      case "onlyOneRound":
-        this.onOnlyOneRound(game);
+        if (isWinnerNotSet(game)) {
+          this.onKnockerCount(game);
+        }
+        
         break;
       case "currentTurnNumber":
-        game.getPlayerDetails()
+        if (game.getCards().isEmpty()) {
+          break;
+        }
+        
+        game.getPlayersDetails()
               .stream()
+              .filter(PlayerDetail::isStillAlive)
               .filter(playerDetail -> playerDetail.getTurnNumber() == game.getCurrentTurnNumber())
               .findFirst()
-              .ifPresent(playerDetail -> this.onCurrentTurnNumber(playerDetail.getPlayer()));
+              .ifPresent(playerDetail -> this.onCurrentTurnNumber(game, playerDetail.getPlayer()));
         break;
       case "winner":
-        this.onWinner(game.getWinner());
+        if (!game.getWinner().isEmpty()) {
+          this.onWinner(game.getWinner());
+        }
+        
         break;
     }
   }
@@ -211,7 +243,7 @@ public class GameMediatorImpl implements GameMediator {
   @Override
   public void onBoard(Game game) {
     this.getDealerAnimation().setBoard(game.getBoard());
-    this.getHighCardMediator().setPlayersDetails(game.getPlayerDetails());
+    this.getHighCardMediator().setPlayersDetails(game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).collect(Collectors.toList()));
     this.getHighCardMediator().register(this.getLayout());
   }
   
@@ -222,10 +254,6 @@ public class GameMediatorImpl implements GameMediator {
   @Override
   public void setHighCardMediator(HighCardMediator highCardMediator) {
     this.highCardMediator = highCardMediator;
-  }
-  
-  private void updateLifeView(String text) {
-    this.lifeView.updateOrCreateTextViewFX(getLayout(), GameStyleClass.LIFE.getAsStyleClass(), text);
   }
   
   private void updateUsernameView(String text) {
@@ -261,11 +289,7 @@ public class GameMediatorImpl implements GameMediator {
   }
   
   private void launchWinnerEvent(Game game) {
-    EventBus.getDefault().post(new WinnerEvent(game.getCards(), game.getPlayerDetails(), this.getLayout()));
-  }
-  
-  private LifeView getLifeView() {
-    return this.lifeView;
+    EventBus.getDefault().post(new WinnerEvent(game, this));
   }
   
   private UsernameView getUsernameView() {
@@ -306,5 +330,9 @@ public class GameMediatorImpl implements GameMediator {
                  .filter(Cards::isCommunity)
                  .findFirst()
                  .orElse(null);
+  }
+  
+  private boolean isWinnerNotSet(Game game) {
+    return game.getWinner() == null || game.getWinner().isEmpty();
   }
 }

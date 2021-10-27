@@ -1,34 +1,29 @@
 package main.java.petrangola.views.mediator;
 
 import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.Player;
 
 public interface GameMediator extends Mediator, UpdatableMediator {
   /**
-   * @param dealer
+   * @param game
    */
-  void onDealer(Dealer dealer);
+  void onDealer(Game game);
   
   /**
-   * @param round
+   * @param game
    */
-  void onRound(int round);
+  void onRound(Game game);
   
   /**
+   * @param game
    * @param player
    */
-  void onCurrentTurnNumber(Player player);
+  void onCurrentTurnNumber(Game game, Player player);
   
   /**
    * @param game
    */
   void onKnockerCount(Game game);
-  
-  /**
-   *
-   */
-  void onLastKnocker();
   
   /***
    *
@@ -37,15 +32,9 @@ public interface GameMediator extends Mediator, UpdatableMediator {
   void onWinner(String winnerName);
   
   /**
-   *
    * @param game
    */
   void onBoard(Game game);
-  
-  /**
-   * @param game
-   */
-  void onOnlyOneRound(Game game);
   
   /**
    * @param highCardMediator
@@ -53,13 +42,12 @@ public interface GameMediator extends Mediator, UpdatableMediator {
   void setHighCardMediator(HighCardMediator highCardMediator);
   
   /**
-   * @param cardsMediator
-   */
-  void setCardsMediator(CardsMediator cardsMediator);
-  
-  /**
-   *
    * @return
    */
   CardsMediator getCardsMediator();
+  
+  /**
+   * @param cardsMediator
+   */
+  void setCardsMediator(CardsMediator cardsMediator);
 }

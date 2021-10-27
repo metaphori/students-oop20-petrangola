@@ -5,6 +5,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import main.java.petrangola.controllers.game.GameController;
 import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.models.game.Game;
+import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Pair;
@@ -12,19 +14,15 @@ import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.GameObjectViewFactory;
 import main.java.petrangola.views.board.BoardView;
-import main.java.petrangola.views.cards.CardsExchanged;
-import main.java.petrangola.views.cards.CardsExchangedImpl;
-import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.cards.CardsViewFactory;
+import main.java.petrangola.views.cards.*;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.player.*;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CardsMediatorImpl implements CardsMediator {
@@ -47,11 +45,11 @@ public class CardsMediatorImpl implements CardsMediator {
   
   private int npcIndex = 0;
   
-  public CardsMediatorImpl(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playerDetails) {
+  public CardsMediatorImpl(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playersDetails) {
     this.gameObjectViewFactory = gameObjectViewFactory;
     this.cardsViewFactory = cardsViewFactory;
     this.cardsList = cardsList;
-    this.playersDetails = playerDetails;
+    this.playersDetails = playersDetails;
     
     this.init();
   }
@@ -67,6 +65,7 @@ public class CardsMediatorImpl implements CardsMediator {
       cards.getPlayer().ifPresent(player -> {
         this.playersDetails
               .stream()
+              .filter(PlayerDetail::isStillAlive)
               .filter(playerDetail -> playerDetail.getPlayer().equals(player))
               .findFirst()
               .ifPresent(playerDetail -> {
@@ -165,32 +164,32 @@ public class CardsMediatorImpl implements CardsMediator {
   }
   
   @Override
-  public void toggleUserButton(CurrentPlayer currentPlayer) {
-    getUserDealerView().ifPresent(gameObjectView -> gameObjectView.toggleUserButton(currentPlayer.getPlayer()));
-  }
-  
-  @Override
   public void hideDealerView(Pane layout) {
-    getUserDealerView().ifPresent(dealerView -> dealerView.hideView(layout));
+    getUserDealerView().ifPresent(dealerView -> {
+      final DealerView tempDealerView = (DealerView) dealerView;
+      tempDealerView.hideView(layout);
+    });
   }
   
   @Override
   public void showDealerView(Pane layout) {
     getUserDealerView().ifPresent(dealerView -> {
-      dealerView.setGameController(getGameController());
-      dealerView.init(getBoardView().getCardsView().getCards());
-      dealerView.showView(layout);
+      final DealerView tempDealerView = (DealerView) dealerView;
+      tempDealerView.setGameController(getGameController());
+      tempDealerView.init(getBoardView().getCardsView().getCards());
+      tempDealerView.showView(layout);
     });
   }
   
   @Override
   public void register(Pane layout) {
-    Objects.requireNonNull(this.getUserPlayerView()).register(layout, getLayoutBuilder());
+    PlayerView userPlayerView = this.getUserPlayerView();
+    userPlayerView.register(layout, this.getLayoutBuilder());
     
-    this.getNPCViews().forEach(npcView -> npcView.register(layout, getLayoutBuilder()));
+    this.getNPCViews().forEach(npcView -> npcView.register(layout, this.getLayoutBuilder()));
     
     this.getBoardView().register(layout, getLayoutBuilder());
-    this.getBoardView().setExchangeButton((ExchangeButton) Objects.requireNonNull(this.getUserPlayerView()).getExchangeButton());
+    this.getBoardView().setExchangeButton(((UpdatableCombination) userPlayerView).getExchangeButton());
   }
   
   @Override
@@ -205,13 +204,60 @@ public class CardsMediatorImpl implements CardsMediator {
     
     final Pane boardPane = (Pane) layout.lookup(GameStyleClass.BOARD_CARDS.getAsStyleClass());
     boardPane.getChildren().clear();
-  
-    final Pane userActionsPane = (Pane) layout.lookup(GameStyleClass.USER_ACTIONS.getAsStyleClass());
-    userActionsPane.getChildren().clear();
   }
   
-  private List<GameObjectView> getViewList() {
+  @Override
+  public List<GameObjectView> getViewList() {
     return this.viewList;
+  }
+  
+  @Override
+  public Pane getLayout() {
+    return this.getLayoutBuilder().getLayout();
+  }
+  
+  @Override
+  public void updatePlayerViews(Game game, Dealer oldDealer) {
+    final List<PlayerDetail> tempPlayersDetails = game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).collect(Collectors.toList());
+    final List<GameObjectView> tempPlayerViews = getViewList().stream().filter(gameObjectView -> !gameObjectView.isBoardView()).collect(Collectors.toList());
+    final Dealer newDealer = game.getDealer();
+    
+    getViewList().forEach(view -> {
+      view.removeListenerModel(view.getCardsView().getCards());
+      game.getPlayers().forEach(view::removeListenerModel);
+    });
+    
+    tempPlayerViews.forEach(gameObjectView -> {
+      if (gameObjectView.getCardsView().getCards().getPlayer().isPresent()) {
+        gameObjectView.removeListenerModel(gameObjectView.getCardsView().getCards().getPlayer().get());
+        tempPlayersDetails
+              .stream()
+              .filter(playerDetail -> gameObjectView
+                                            .getCardsView()
+                                            .getCards()
+                                            .getPlayer()
+                                            .get()
+                                            .equals(playerDetail.getPlayer()))
+              .findFirst()
+              .ifPresent(gameObjectView::removeListenerModel);
+      }
+    });
+    
+    if (oldDealer.isNPC() && !newDealer.isNPC()) {
+      getView(tempPlayerViews, GameObjectView.isUserView()).ifPresent(view -> {
+        getPlayerDetail(tempPlayersDetails, newDealer).ifPresent(playerDetail -> {
+          this.createDealerOrUserOnNewGame(view, playerDetail, game.getCards(), true);
+        });
+      });
+    }
+    
+    if (!oldDealer.isNPC() && newDealer.isNPC()) {
+      getView(tempPlayerViews, GameObjectView.isDealerView()).ifPresent(view -> {
+        getPlayerDetail(tempPlayersDetails, oldDealer).ifPresent(playerDetail -> {
+          this.createDealerOrUserOnNewGame(view, playerDetail, game.getCards(), false);
+        });
+      });
+    }
   }
   
   private Optional<GameObjectView> getPlayerView(CurrentPlayer currentPlayer) {
@@ -224,40 +270,37 @@ public class CardsMediatorImpl implements CardsMediator {
   }
   
   private PlayerView getUserPlayerView() {
-    return this.getUserView().isPresent() ?
-                 this.getUserView().get() :
-                 (this.getUserDealerView().isPresent() ?
-                        this.getUserDealerView().get() : null);
+    return this.getUserView().orElse(this.getUserDealerView().orElse(null));
   }
   
-  private Optional<UserView> getUserView() {
+  private Optional<PlayerView> getUserView() {
     return getViewList()
                  .stream()
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().isCommunity())
-                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().isPresent())
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().getPlayer().get().isNPC())
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().getPlayer().get().isDealer())
-                 .map(gameObjectView -> (UserView) gameObjectView)
-                 .findFirst();
+                 .filter(GameObjectView.isNotBoard())
+                 .filter(GameObjectView.playerIsPresent())
+                 .filter(GameObjectView.playerIsNotNPC())
+                 .filter(GameObjectView.playerIsNotDealer())
+                 .findFirst()
+                 .map(gameObjectView -> (PlayerView) gameObjectView);
   }
   
-  private Optional<DealerView> getUserDealerView() {
+  private Optional<PlayerView> getUserDealerView() {
     return getViewList()
                  .stream()
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().isCommunity())
-                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().isPresent())
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().getPlayer().get().isNPC())
-                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().get().isDealer())
-                 .map(gameObjectView -> (DealerView) gameObjectView)
-                 .findFirst();
+                 .filter(GameObjectView.isNotBoard())
+                 .filter(GameObjectView.playerIsPresent())
+                 .filter(GameObjectView.playerIsNotNPC())
+                 .filter(GameObjectView.playerIsDealer())
+                 .findFirst()
+                 .map(gameObjectView -> (PlayerView) gameObjectView);
   }
   
   private List<NPCView> getNPCViews() {
     return getViewList()
                  .stream()
-                 .filter(gameObjectView -> !gameObjectView.getCardsView().getCards().isCommunity())
-                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().isPresent())
-                 .filter(gameObjectView -> gameObjectView.getCardsView().getCards().getPlayer().get().isNPC())
+                 .filter(GameObjectView.isNotBoard())
+                 .filter(GameObjectView.playerIsPresent())
+                 .filter(GameObjectView.playerIsNPC())
                  .map(gameObjectView -> (NPCView) gameObjectView)
                  .collect(Collectors.toList());
   }
@@ -289,6 +332,7 @@ public class CardsMediatorImpl implements CardsMediator {
           .ifPresent(npcView -> {
             final Cards boardCards = getBoardView().getCardsView().getCards();
             final Cards npcCards = npcView.getCardsView().getCards();
+            
             npcView.getPlayerController().exchangeCards(currentPlayer, boardCards, npcCards);
           });
   }
@@ -299,5 +343,44 @@ public class CardsMediatorImpl implements CardsMediator {
   
   private GameObjectViewFactory getGameObjectViewFactory() {
     return this.gameObjectViewFactory;
+  }
+  
+  private Optional<GameObjectView> getView(List<GameObjectView> playerViews, Predicate<? super GameObjectView> viewPredicate) {
+    return playerViews.stream().filter(viewPredicate).findFirst();
+  }
+  
+  private Optional<PlayerDetail> getPlayerDetail(List<PlayerDetail> playersDetails, Dealer dealer) {
+    return playersDetails
+                 .stream()
+                 .filter(PlayerDetail::isStillAlive)
+                 .filter(playerDetail -> playerDetail.getPlayer().getUsername().equals(dealer.getUsername()))
+                 .findFirst();
+  }
+  
+  private void createDealerOrUserOnNewGame(GameObjectView view, PlayerDetail playerDetail, List<Cards> cardsList, boolean isCreateDealer) {
+    getViewList().remove(view);
+    
+    cardsList
+          .stream()
+          .filter(Cards::isPlayerCards)
+          .filter(cards -> cards.getPlayer().isPresent())
+          .filter(cards -> playerDetail.getPlayer().equals(cards.getPlayer().get()))
+          .findFirst()
+          .ifPresent(cards -> {
+            Pair<GameObjectView, CardsView<Group>> pair;
+            
+            if (isCreateDealer) {
+              pair = createDealer(playerDetail, cards);
+            } else {
+              pair = createUser(playerDetail, cards);
+            }
+            
+            pair.getX().setCardsView(pair.getY());
+            pair.getX().addListenerToModel(cards);
+            pair.getX().addListenerToModel(playerDetail);
+            pair.getX().addListenerToModel(playerDetail.getPlayer());
+            
+            getViewList().add(pair.getX());
+          });
   }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 
 public class MediatorsFactoryImpl implements MediatorsFactory {
   @Override
-  public CardsMediator createCardsMediator(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playerDetails) {
-    return new CardsMediatorImpl(gameObjectViewFactory, cardsViewFactory, cardsList, playerDetails);
+  public CardsMediator createCardsMediator(GameObjectViewFactory gameObjectViewFactory, CardsViewFactory cardsViewFactory, List<Cards> cardsList, List<PlayerDetail> playersDetails) {
+    return new CardsMediatorImpl(gameObjectViewFactory, cardsViewFactory, cardsList, playersDetails);
   }
   
   @Override

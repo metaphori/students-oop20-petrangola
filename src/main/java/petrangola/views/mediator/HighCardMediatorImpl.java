@@ -6,11 +6,13 @@ import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.services.ResourceService;
 import main.java.petrangola.services.ResourceServiceImpl;
 import main.java.petrangola.utlis.Pair;
+import main.java.petrangola.views.ViewFX;
 import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardViewImpl;
 import main.java.petrangola.views.game.GameStyleClass;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HighCardMediatorImpl implements HighCardMediator {
@@ -27,13 +29,14 @@ public class HighCardMediatorImpl implements HighCardMediator {
   public void register(Pane layout) {
     final List<FlowPane> npcPanes = getNPCHighCardPanes(layout);
     final Pane userPane = getUserHighCardPane(layout);
-  
+    
     Pane userCardsPane = (Pane) layout.lookup(GameStyleClass.USER_CARDS.getAsStyleClass());
     userCardsPane.setManaged(false);
     userCardsPane.setVisible(false);
     
     this.playersDetails
           .stream()
+          .filter(PlayerDetail::isStillAlive)
           .map(playerDetail -> new Pair<>(playerDetail.getPlayer(), playerDetail.getHighCard()))
           .forEachOrdered(pair -> {
             final Pane pane;
@@ -46,14 +49,14 @@ public class HighCardMediatorImpl implements HighCardMediator {
               pane = userPane;
             }
             
-            pane.getChildren().add(cardView.get());
+            ViewFX.addOrUpdate(pane, cardView.get());
           });
   }
   
   @Override
   public void unregister(Pane layout) {
     getNPCHighCardPanes(layout).forEach(pane -> pane.getChildren().clear());
-    getUserHighCardPane(layout).getChildren().remove(0);
+    getUserHighCardPane(layout).getChildren().removeIf(Objects::nonNull);
   }
   
   @Override
