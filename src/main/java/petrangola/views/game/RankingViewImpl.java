@@ -57,16 +57,19 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
             final Combination combination = pair.getY();
             final String cards = combination.getCards().stream().map(Card::getFullName).collect(Collectors.joining(" , "));
             final int combinationValue = combination.getBest().getY();
-            final boolean isPetrangola = CombinationChecker.isFlush(combination.getBest().getX()) || CombinationChecker.isTris(combination.getBest().getX());
+            final boolean isPetrangola = CombinationChecker.isAnyKindOfPetrangola(combination.getBest().getX());
             
             return new RankedPlayerImpl(username, cards, combinationValue, isPetrangola);
           })
-          .peek(rankedPlayer -> getPlayersDetails()
-                                      .stream()
-                                      .filter(playerDetail -> rankedPlayer.getUsername().equals(playerDetail.getPlayer().getUsername()))
-                                      .findFirst()
-                                      .ifPresent(playerDetail -> rankedPlayer.setPlayerLives(playerDetail.getPlayerLives()))
-          ).forEachOrdered(data::add);
+          .peek(rankedPlayer -> {
+                  getPlayersDetails()
+                        .stream()
+                        .filter(PlayerDetail::isStillAlive)
+                        .filter(playerDetail -> rankedPlayer.getUsername().equals(playerDetail.getPlayer().getUsername()))
+                        .findFirst()
+                        .ifPresent(playerDetail -> rankedPlayer.setPlayerLives(playerDetail.getPlayerLives()));
+          })
+          .forEachOrdered(data::add);
     
     
     super.getColumnHeadersPairs().forEach(pair -> {
@@ -89,7 +92,7 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
   }
   
   @Override
-  public void setPlayerDetails(List<PlayerDetail> playersDetails) {
+  public void setPlayersDetails(List<PlayerDetail> playersDetails) {
     this.playersDetails = playersDetails;
   }
   
@@ -171,7 +174,7 @@ public class RankingViewImpl extends TableImpl<RankedPlayer> implements RankingV
     
     @Override
     public int getPlayerLives() {
-      return this.playerLives.get();
+      return this.playerLives != null ?  this.playerLives.get() : 0;
     }
     
     @Override
