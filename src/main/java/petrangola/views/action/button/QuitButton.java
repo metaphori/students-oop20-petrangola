@@ -5,6 +5,8 @@ import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
+import java.util.Objects;
+
 public class QuitButton extends AbstractButtonFX {
   private static final String QUIT = "Quit";
   private final ActionController actionController;
@@ -43,5 +45,18 @@ public class QuitButton extends AbstractButtonFX {
   @Override
   public void setListeners() {
     super.get().setOnMouseClicked(mouseEvent -> this.actionController.quit());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof QuitButton)) return false;
+    QuitButton that = (QuitButton) o;
+    return actionController.equals(that.actionController);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(actionController);
   }
 }

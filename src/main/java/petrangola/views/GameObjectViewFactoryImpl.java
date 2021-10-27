@@ -9,6 +9,8 @@ import main.java.petrangola.views.board.BoardView;
 import main.java.petrangola.views.board.BoardViewImpl;
 import main.java.petrangola.views.player.*;
 
+import java.util.Objects;
+
 public class GameObjectViewFactoryImpl implements GameObjectViewFactory {
   private final Game game;
   private final PlayerController playerController;
@@ -56,5 +58,18 @@ public class GameObjectViewFactoryImpl implements GameObjectViewFactory {
   
   private Pane getLayout() {
     return this.layout;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof GameObjectViewFactoryImpl)) return false;
+    GameObjectViewFactoryImpl that = (GameObjectViewFactoryImpl) o;
+    return getGame().equals(that.getGame()) && getPlayerController().equals(that.getPlayerController()) && getDealerController().equals(that.getDealerController()) && getLayout().equals(that.getLayout());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getGame(), getPlayerController(), getDealerController(), getLayout());
   }
 }

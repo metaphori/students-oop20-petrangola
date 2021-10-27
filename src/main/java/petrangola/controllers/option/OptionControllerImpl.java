@@ -5,6 +5,8 @@ import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.ViewFactoryImpl;
 
+import java.util.Objects;
+
 
 public class OptionControllerImpl implements OptionController {
   private final Option option;
@@ -35,4 +37,16 @@ public class OptionControllerImpl implements OptionController {
     this.viewFactory.createGameView(option);
   }
   
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof OptionControllerImpl)) return false;
+    OptionControllerImpl that = (OptionControllerImpl) o;
+    return option.equals(that.option) && viewFactory.equals(that.viewFactory);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(option, viewFactory);
+  }
 }

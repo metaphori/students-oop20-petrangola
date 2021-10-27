@@ -15,6 +15,7 @@ import main.java.petrangola.views.player.buttons.ExchangeButton;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
+import java.util.Objects;
 
 public class BoardViewImpl implements BoardView {
   private CardsExchanged cardsExchanged;
@@ -113,5 +114,18 @@ public class BoardViewImpl implements BoardView {
   @Override
   public void setExchangeButton(ExchangeButton exchangeButton) {
     this.exchangeButton = exchangeButton;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof BoardViewImpl)) return false;
+    BoardViewImpl boardView = (BoardViewImpl) o;
+    return Objects.equals(getCardsExchanged(), boardView.getCardsExchanged()) && getCardsView().equals(boardView.getCardsView()) && Objects.equals(getExchangeButton(), boardView.getExchangeButton());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getCardsExchanged(), getCardsView(), getExchangeButton());
   }
 }

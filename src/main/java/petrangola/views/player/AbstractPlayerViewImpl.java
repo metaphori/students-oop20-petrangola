@@ -16,6 +16,7 @@ import main.java.petrangola.views.game.GameStyleClass;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractPlayerViewImpl implements PlayerView {
   private final PlayerAnimation playerAnimation = new PlayerAnimationImpl();
@@ -127,5 +128,18 @@ public abstract class AbstractPlayerViewImpl implements PlayerView {
   private void onFirstExchange(List<Cards> cardsList) {
     this.updateCards(cardsList);
     this.getPlayerAnimation().onFirstExchange(this.getPlayer());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AbstractPlayerViewImpl)) return false;
+    AbstractPlayerViewImpl that = (AbstractPlayerViewImpl) o;
+    return getPlayerAnimation().equals(that.getPlayerAnimation()) && playerDetail.equals(that.playerDetail) && getPlayerController().equals(that.getPlayerController()) && getLayout().equals(that.getLayout()) && getLifeView().equals(that.getLifeView()) && Objects.equals(getCardsView(), that.getCardsView());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getPlayerAnimation(), playerDetail, getPlayerController(), getLayout(), getLifeView(), getCardsView());
   }
 }

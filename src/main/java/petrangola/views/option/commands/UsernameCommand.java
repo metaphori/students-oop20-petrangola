@@ -3,6 +3,8 @@ package main.java.petrangola.views.option.commands;
 import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.views.components.textFieldView.SimpleTextFieldView;
 
+import java.util.Objects;
+
 public class UsernameCommand extends AbstractOptionCommand {
   private final SimpleTextFieldView<String> usernameView;
   
@@ -14,5 +16,18 @@ public class UsernameCommand extends AbstractOptionCommand {
   @Override
   public void execute() {
     this.optionController.setUsername(this.usernameView.getValue());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UsernameCommand)) return false;
+    UsernameCommand that = (UsernameCommand) o;
+    return usernameView.equals(that.usernameView);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(usernameView);
   }
 }

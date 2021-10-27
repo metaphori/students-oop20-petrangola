@@ -21,6 +21,7 @@ import main.java.petrangola.views.player.*;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -152,7 +153,6 @@ public class GameMediatorImpl implements GameMediator {
     userPane.getChildren().clear();
     
     final Pane roundPane = (Pane) layout.lookup(GameStyleClass.ROUND.getAsStyleClass());
-    roundPane.getChildren().forEach(System.out::println);
     roundPane.getChildren().clear();
     
     final Pane knockPane = (Pane) layout.lookup(GameStyleClass.KNOCKS.getAsStyleClass());
@@ -334,5 +334,18 @@ public class GameMediatorImpl implements GameMediator {
   
   private boolean isWinnerNotSet(Game game) {
     return game.getWinner() == null || game.getWinner().isEmpty();
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof GameMediatorImpl)) return false;
+    GameMediatorImpl that = (GameMediatorImpl) o;
+    return getCurrentPlayer().equals(that.getCurrentPlayer()) && getUsernameView().equals(that.getUsernameView()) && getRoundView().equals(that.getRoundView()) && getWinnerView().equals(that.getWinnerView()) && getKnockView().equals(that.getKnockView()) && layoutBuilder.equals(that.layoutBuilder) && getGameController().equals(that.getGameController()) && getDealerController().equals(that.getDealerController()) && getDealerAnimation().equals(that.getDealerAnimation()) && Objects.equals(getCardsMediator(), that.getCardsMediator()) && Objects.equals(getHighCardMediator(), that.getHighCardMediator());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getCurrentPlayer(), getUsernameView(), getRoundView(), getWinnerView(), getKnockView(), layoutBuilder, getGameController(), getDealerController(), getDealerAnimation(), getCardsMediator(), getHighCardMediator());
   }
 }

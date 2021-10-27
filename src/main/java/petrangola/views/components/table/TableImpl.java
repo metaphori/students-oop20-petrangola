@@ -6,6 +6,7 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.views.components.AbstractComponentFX;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class TableImpl<T> extends AbstractComponentFX<TableView<T>> implements TableFX<T> {
   private final List<Pair<String, String>> columnHeadersPairs;
@@ -22,5 +23,18 @@ public abstract class TableImpl<T> extends AbstractComponentFX<TableView<T>> imp
   @Override
   public void addRows(List<T> list) {
     this.get().setItems((ObservableList<T>) list);
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof TableImpl)) return false;
+    TableImpl<?> table = (TableImpl<?>) o;
+    return getColumnHeadersPairs().equals(table.getColumnHeadersPairs());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getColumnHeadersPairs());
   }
 }

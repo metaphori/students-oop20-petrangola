@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EventManagerImpl implements EventManager {
   private final GameController gameController;
@@ -84,5 +85,18 @@ public class EventManagerImpl implements EventManager {
   @Override
   public void cleanup() {
     EventBus.getDefault().unregister(this);
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof EventManagerImpl)) return false;
+    EventManagerImpl that = (EventManagerImpl) o;
+    return gameController.equals(that.gameController);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(gameController);
   }
 }

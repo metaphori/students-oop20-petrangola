@@ -11,6 +11,7 @@ import main.java.petrangola.views.mediator.GameMediator;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -125,5 +126,18 @@ public class WinnerEvent implements Event {
                  .min(Comparator.comparingInt(Pair::getY))
                  .map(Pair::getY)
                  .orElse(-1);
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof WinnerEvent)) return false;
+    WinnerEvent that = (WinnerEvent) o;
+    return getGame().equals(that.getGame()) && getGameMediator().equals(that.getGameMediator());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getGame(), getGameMediator());
   }
 }

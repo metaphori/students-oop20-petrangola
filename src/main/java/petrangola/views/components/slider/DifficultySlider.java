@@ -5,6 +5,8 @@ import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.option.commands.DifficultyCommand;
 
+import java.util.Objects;
+
 public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<DifficultyLevel> {
   private final DifficultyCommand command;
   private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
@@ -86,5 +88,18 @@ public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<D
         return getDoubleFromString(text);
       }
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DifficultySlider)) return false;
+    DifficultySlider that = (DifficultySlider) o;
+    return command.equals(that.command) && difficultyLevel == that.difficultyLevel;
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(command, difficultyLevel);
   }
 }

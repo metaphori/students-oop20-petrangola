@@ -66,12 +66,12 @@ public class UserImpl implements User {
     if (this == o) return true;
     if (!(o instanceof UserImpl)) return false;
     UserImpl user = (UserImpl) o;
-    return getUsername().equals(user.getUsername());
+    return isDealer() == user.isDealer() && getUsername().equals(user.getUsername()) && getSupport().equals(user.getSupport());
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(getUsername(), getSupport());
+    return Objects.hash(getUsername(), getSupport(), isDealer());
   }
   
   @Override

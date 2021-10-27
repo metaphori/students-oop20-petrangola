@@ -162,15 +162,12 @@ public class GameImpl implements Game {
     if (this == o) return true;
     if (!(o instanceof GameImpl)) return false;
     GameImpl game = (GameImpl) o;
-    return getRound() == game.getRound() && getCurrentTurnNumber() == game.getCurrentTurnNumber() &&
-                 getKnockerCount() == game.getKnockerCount() && getPlayers().equals(game.getPlayers()) &&
-                 getLastKnocker().equals(game.getLastKnocker()) && getDealer().equals(game.getDealer()) &&
-                 getWinner().equals(game.getWinner());
+    return getRound() == game.getRound() && getCurrentTurnNumber() == game.getCurrentTurnNumber() && getKnockerCount() == game.getKnockerCount() && isOnlyOneRound() == game.isOnlyOneRound() && getSupport().equals(game.getSupport()) && getPlayersDetails().equals(game.getPlayersDetails()) && getPlayers().equals(game.getPlayers()) && getCards().equals(game.getCards()) && getBoard().equals(game.getBoard()) && getDealer().equals(game.getDealer()) && getLastKnocker().equals(game.getLastKnocker()) && getWinner().equals(game.getWinner());
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(getPlayers(), getRound(), getCurrentTurnNumber(), getKnockerCount(), getLastKnocker(), getDealer(), getWinner());
+    return Objects.hash(getSupport(), getPlayersDetails(), getPlayers(), getCards(), getBoard(), getDealer(), getRound(), getCurrentTurnNumber(), getKnockerCount(), getLastKnocker(), getWinner(), isOnlyOneRound());
   }
   
   @Override

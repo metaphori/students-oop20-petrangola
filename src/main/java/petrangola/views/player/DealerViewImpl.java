@@ -16,6 +16,8 @@ import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.player.buttons.AcceptDealtCardsButton;
 import main.java.petrangola.views.player.buttons.TakeBoardCardsButton;
 
+import java.util.Objects;
+
 public class DealerViewImpl extends UserViewImpl implements DealerView {
   private AbstractButtonFX acceptDealtCardsButton;
   private AbstractButtonFX firstExchangeButton;
@@ -121,5 +123,19 @@ public class DealerViewImpl extends UserViewImpl implements DealerView {
     } else {
       dealerButtonsPane.getChildren().clear();
     }
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DealerViewImpl)) return false;
+    if (!super.equals(o)) return false;
+    DealerViewImpl that = (DealerViewImpl) o;
+    return Objects.equals(getAcceptDealtCardsButton(), that.getAcceptDealtCardsButton()) && Objects.equals(getFirstExchangeButton(), that.getFirstExchangeButton()) && Objects.equals(getGameController(), that.getGameController()) && Objects.equals(getCardsExchanged(), that.getCardsExchanged());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), getAcceptDealtCardsButton(), getFirstExchangeButton(), getGameController(), getCardsExchanged());
   }
 }

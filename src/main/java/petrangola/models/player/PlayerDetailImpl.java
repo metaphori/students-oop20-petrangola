@@ -72,12 +72,12 @@ public class PlayerDetailImpl implements PlayerDetail {
     if (this == o) return true;
     if (!(o instanceof PlayerDetailImpl)) return false;
     PlayerDetailImpl that = (PlayerDetailImpl) o;
-    return getTurnNumber() == that.getTurnNumber() && getPlayerLives() == that.getPlayerLives() && getPlayer().equals(that.getPlayer()) && getHighCard().equals(that.getHighCard());
+    return getTurnNumber() == that.getTurnNumber() && getPlayerLives() == that.getPlayerLives() && getSupport().equals(that.getSupport()) && getPlayer().equals(that.getPlayer()) && getHighCard().equals(that.getHighCard());
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(getTurnNumber(), getPlayer(), getPlayerLives(), getHighCard());
+    return Objects.hash(getSupport(), getPlayer(), getTurnNumber(), getPlayerLives(), getHighCard());
   }
   
   @Override

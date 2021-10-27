@@ -6,6 +6,7 @@ import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.PlayerDetail;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DealerControllerImpl extends PlayerControllerImpl implements DealerController {
   private Dealer dealer;
@@ -29,5 +30,18 @@ public class DealerControllerImpl extends PlayerControllerImpl implements Dealer
   
   public void setDealer(Dealer dealer) {
     this.dealer = dealer;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DealerControllerImpl)) return false;
+    DealerControllerImpl that = (DealerControllerImpl) o;
+    return getDealer().equals(that.getDealer());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getDealer());
   }
 }

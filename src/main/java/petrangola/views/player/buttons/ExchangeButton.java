@@ -8,6 +8,8 @@ import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.player.commands.ExchangeCommand;
 
+import java.util.Objects;
+
 public class ExchangeButton extends AbstractButtonFX {
   private static final String EXCHANGE = "Exchange";
   private final ExchangeCommand command;
@@ -55,5 +57,19 @@ public class ExchangeButton extends AbstractButtonFX {
         this.command.execute();
       }
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ExchangeButton)) return false;
+    if (!super.equals(o)) return false;
+    ExchangeButton that = (ExchangeButton) o;
+    return command.equals(that.command);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), command);
   }
 }

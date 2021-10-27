@@ -10,6 +10,7 @@ import main.java.petrangola.views.events.Event;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class AbstractAnimation implements Animation {
   private final Timeline timeline = new Timeline();
@@ -22,7 +23,7 @@ public class AbstractAnimation implements Animation {
         try {
           Thread.sleep(millis);
         } catch (InterruptedException e) {
-          System.out.println(e.getMessage());
+          System.out.println(e.getMessage()); // I didn't handle it
         }
         
         return null;
@@ -57,5 +58,18 @@ public class AbstractAnimation implements Animation {
   @Override
   public Timeline getTimeline() {
     return this.timeline;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AbstractAnimation)) return false;
+    AbstractAnimation that = (AbstractAnimation) o;
+    return Objects.equals(getTimeline(), that.getTimeline());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getTimeline());
   }
 }

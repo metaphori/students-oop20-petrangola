@@ -98,12 +98,12 @@ public class NPCImpl implements NPC {
     if (this == o) return true;
     if (!(o instanceof NPCImpl)) return false;
     NPCImpl npc = (NPCImpl) o;
-    return id == npc.id && getDifficultyLevel() == npc.getDifficultyLevel();
+    return isDealer() == npc.isDealer() && id == npc.id && getSupport().equals(npc.getSupport()) && getDifficultyLevel() == npc.getDifficultyLevel();
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(getSupport(), getDifficultyLevel(), id);
+    return Objects.hash(isDealer(), getSupport(), getDifficultyLevel(), id);
   }
   
   @Override

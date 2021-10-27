@@ -7,6 +7,8 @@ import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.style.StyleBuilder;
 import main.java.petrangola.views.components.style.StyleBuilderImpl;
 
+import java.util.Objects;
+
 public abstract class AbstractButtonFX extends AbstractComponentFX<Button> implements SimpleButton<Button> {
   private final StyleBuilder styleBuilder = new StyleBuilderImpl();
   private DTO data;
@@ -54,5 +56,19 @@ public abstract class AbstractButtonFX extends AbstractComponentFX<Button> imple
   @Override
   public void setData(DTO data) {
     this.data = data;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AbstractButtonFX)) return false;
+    if (!super.equals(o)) return false;
+    AbstractButtonFX that = (AbstractButtonFX) o;
+    return getStyleBuilder().equals(that.getStyleBuilder()) && Objects.equals(getData(), that.getData());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), getStyleBuilder(), getData());
   }
 }

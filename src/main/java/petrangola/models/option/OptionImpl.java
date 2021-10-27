@@ -1,6 +1,8 @@
 package main.java.petrangola.models.option;
 
 import java.beans.PropertyChangeSupport;
+import java.util.Objects;
+
 import main.java.petrangola.utlis.DifficultyLevel;
 
 public class OptionImpl implements Option {
@@ -51,5 +53,18 @@ public class OptionImpl implements Option {
   @Override
   public PropertyChangeSupport getSupport() {
     return this.support;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof OptionImpl)) return false;
+    OptionImpl option = (OptionImpl) o;
+    return getOpponentsSize() == option.getOpponentsSize() && getSupport().equals(option.getSupport()) && getDifficultyLevel() == option.getDifficultyLevel() && getUsername().equals(option.getUsername());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getSupport(), getOpponentsSize(), getDifficultyLevel(), getUsername());
   }
 }

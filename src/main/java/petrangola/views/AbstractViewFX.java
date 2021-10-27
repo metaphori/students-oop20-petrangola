@@ -8,6 +8,8 @@ import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 
+import java.util.Objects;
+
 public abstract class AbstractViewFX extends Group {
   private final LayoutBuilder layoutBuilder;
   private final Stage stage;
@@ -49,5 +51,18 @@ public abstract class AbstractViewFX extends Group {
   
   public LayoutBuilder getLayoutBuilder() {
     return this.layoutBuilder;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AbstractViewFX)) return false;
+    AbstractViewFX that = (AbstractViewFX) o;
+    return getLayoutBuilder().equals(that.getLayoutBuilder()) && getStage().equals(that.getStage()) && getLayout().equals(that.getLayout());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getLayoutBuilder(), getStage(), getLayout());
   }
 }

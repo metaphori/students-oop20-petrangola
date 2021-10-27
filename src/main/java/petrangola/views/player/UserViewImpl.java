@@ -17,6 +17,7 @@ import main.java.petrangola.views.player.buttons.KnockButton;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
+import java.util.Objects;
 
 public class UserViewImpl extends AbstractPlayerViewImpl implements UserView {
   private final ExchangeButton exchangeButton;
@@ -124,5 +125,19 @@ public class UserViewImpl extends AbstractPlayerViewImpl implements UserView {
     
     ViewFX.addOrUpdate(userActionsPane, actionsHBox);
     ViewFX.addOrUpdateAll(actionsHBox, exchangeButton.get(), knockButton.get());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UserViewImpl)) return false;
+    if (!super.equals(o)) return false;
+    UserViewImpl userView = (UserViewImpl) o;
+    return getExchangeButton().equals(userView.getExchangeButton()) && getKnockButton().equals(userView.getKnockButton()) && Objects.equals(getCardsExchanged(), userView.getCardsExchanged());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), getExchangeButton(), getKnockButton(), getCardsExchanged());
   }
 }

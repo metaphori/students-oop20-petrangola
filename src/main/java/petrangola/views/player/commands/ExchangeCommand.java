@@ -6,6 +6,7 @@ import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.Command;
 import main.java.petrangola.views.cards.CardsExchanged;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ExchangeCommand implements Command {
@@ -44,5 +45,18 @@ public class ExchangeCommand implements Command {
     final int sizeBoardCards = boardCards.get().getCombination().getChosenCards().size();
     
     return sizeBoardCards > 0 && sizeBoardCards == sizePlayerCards;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ExchangeCommand)) return false;
+    ExchangeCommand that = (ExchangeCommand) o;
+    return playerController.equals(that.playerController) && player.equals(that.player) && Objects.equals(cardsExchanged, that.cardsExchanged);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(playerController, player, cardsExchanged);
   }
 }

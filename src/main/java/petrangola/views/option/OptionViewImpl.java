@@ -20,6 +20,7 @@ import main.java.petrangola.views.components.textFieldView.UsernameTextFieldView
 import main.java.petrangola.views.option.buttons.PlayButton;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Objects;
 
 public class OptionViewImpl extends AbstractViewFX implements OptionView {
   private final Option option = new OptionImpl();
@@ -70,5 +71,18 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
   
   private boolean checkDifficultyLevel() {
     return this.option.getDifficultyLevel() != null;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof OptionViewImpl)) return false;
+    OptionViewImpl that = (OptionViewImpl) o;
+    return option.equals(that.option) && optionController.equals(that.optionController) && playButton.equals(that.playButton);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(option, optionController, playButton);
   }
 }

@@ -6,6 +6,8 @@ import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
+import java.util.Objects;
+
 public class StartButton extends AbstractButtonFX {
   private static final String START = "Start";
   private final ActionController actionController;
@@ -44,5 +46,18 @@ public class StartButton extends AbstractButtonFX {
   @Override
   public void setListeners() {
     super.get().setOnMouseClicked(mouseEvent -> this.actionController.start());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof StartButton)) return false;
+    StartButton that = (StartButton) o;
+    return actionController.equals(that.actionController);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(actionController);
   }
 }

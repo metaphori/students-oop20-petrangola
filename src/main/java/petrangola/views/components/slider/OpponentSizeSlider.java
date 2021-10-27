@@ -3,6 +3,8 @@ package main.java.petrangola.views.components.slider;
 import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.views.option.commands.OpponentsSizeCommand;
 
+import java.util.Objects;
+
 public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider<Integer> {
   private final OpponentsSizeCommand command;
   private int value = 1;
@@ -36,5 +38,18 @@ public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider
       setValueFromSlider(newValue.intValue());
       command.execute();
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof OpponentSizeSlider)) return false;
+    OpponentSizeSlider that = (OpponentSizeSlider) o;
+    return value == that.value && command.equals(that.command);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(command, value);
   }
 }

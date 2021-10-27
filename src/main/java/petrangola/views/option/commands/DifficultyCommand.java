@@ -4,6 +4,8 @@ import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.components.slider.SimpleSlider;
 
+import java.util.Objects;
+
 public class DifficultyCommand extends AbstractOptionCommand {
   private final SimpleSlider<DifficultyLevel> difficultyLevelView;
   
@@ -15,5 +17,18 @@ public class DifficultyCommand extends AbstractOptionCommand {
   @Override
   public void execute() {
     this.getOptionController().setDifficulty(this.difficultyLevelView.getValueFromSlider());
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DifficultyCommand)) return false;
+    DifficultyCommand that = (DifficultyCommand) o;
+    return difficultyLevelView.equals(that.difficultyLevelView);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(difficultyLevelView);
   }
 }

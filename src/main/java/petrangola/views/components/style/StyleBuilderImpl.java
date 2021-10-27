@@ -3,6 +3,7 @@ package main.java.petrangola.views.components.style;
 import main.java.petrangola.utlis.UserAction;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class StyleBuilderImpl implements StyleBuilder {
@@ -24,5 +25,18 @@ public class StyleBuilderImpl implements StyleBuilder {
     }
     
     return styles;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof StyleBuilderImpl)) return false;
+    StyleBuilderImpl that = (StyleBuilderImpl) o;
+    return stylesMap.equals(that.stylesMap);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(stylesMap);
   }
 }

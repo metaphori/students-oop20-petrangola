@@ -12,6 +12,7 @@ import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.components.ViewNode;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CardsViewImpl implements CardsView<Group> {
@@ -91,5 +92,18 @@ public class CardsViewImpl implements CardsView<Group> {
   @Override
   public Group get() {
     return new Group(this.cardsViews.stream().map(ViewNode::get).toArray(ImageView[]::new));
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardsViewImpl)) return false;
+    CardsViewImpl cardsView = (CardsViewImpl) o;
+    return service.equals(cardsView.service) && getCards().equals(cardsView.getCards()) && cardsViews.equals(cardsView.cardsViews) && getPosition().equals(cardsView.getPosition());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(service, getCards(), cardsViews, getPosition());
   }
 }

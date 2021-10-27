@@ -20,6 +20,7 @@ import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.player.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
@@ -382,5 +383,18 @@ public class CardsMediatorImpl implements CardsMediator {
             
             getViewList().add(pair.getX());
           });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardsMediatorImpl)) return false;
+    CardsMediatorImpl that = (CardsMediatorImpl) o;
+    return npcIndex == that.npcIndex && cardsExchanged.equals(that.cardsExchanged) && getViewList().equals(that.getViewList()) && getGameObjectViewFactory().equals(that.getGameObjectViewFactory()) && getCardsViewFactory().equals(that.getCardsViewFactory()) && cardsList.equals(that.cardsList) && playersDetails.equals(that.playersDetails) && Objects.equals(getGameController(), that.getGameController()) && Objects.equals(getLayoutBuilder(), that.getLayoutBuilder());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(cardsExchanged, getViewList(), getGameObjectViewFactory(), getCardsViewFactory(), cardsList, playersDetails, getGameController(), getLayoutBuilder(), npcIndex);
   }
 }

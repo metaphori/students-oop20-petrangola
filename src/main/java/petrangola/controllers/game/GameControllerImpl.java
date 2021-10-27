@@ -7,10 +7,7 @@ import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.*;
 import main.java.petrangola.utlis.DifficultyLevel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -163,5 +160,18 @@ public class GameControllerImpl implements GameController {
   @Override
   public boolean isLastPlayerTurn() {
     return this.game.getCurrentTurnNumber() == 0;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof GameControllerImpl)) return false;
+    GameControllerImpl that = (GameControllerImpl) o;
+    return playerFactory.equals(that.playerFactory) && game.equals(that.game);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(playerFactory, game);
   }
 }

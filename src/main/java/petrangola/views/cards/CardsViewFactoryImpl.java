@@ -8,6 +8,8 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 
+import java.util.Objects;
+
 public class CardsViewFactoryImpl implements CardsViewFactory {
   private final ResourceService service = new ResourceServiceImpl();
   
@@ -39,5 +41,18 @@ public class CardsViewFactoryImpl implements CardsViewFactory {
     final boolean areListenerDisabled = cards.getPlayer().get().isNPC();
     
     return new CardsViewImpl(this.service, cards, position, areListenerDisabled);
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardsViewFactoryImpl)) return false;
+    CardsViewFactoryImpl that = (CardsViewFactoryImpl) o;
+    return service.equals(that.service);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(service);
   }
 }

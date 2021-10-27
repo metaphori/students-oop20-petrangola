@@ -4,6 +4,8 @@ import javafx.scene.control.TextField;
 import main.java.petrangola.controllers.option.OptionController;
 import main.java.petrangola.views.option.commands.UsernameCommand;
 
+import java.util.Objects;
+
 public class UsernameTextFieldView extends AbstractTextField implements SimpleTextFieldView<String> {
   private final UsernameCommand command;
   
@@ -24,5 +26,18 @@ public class UsernameTextFieldView extends AbstractTextField implements SimpleTe
       setValue(t1);
       this.command.execute();
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UsernameTextFieldView)) return false;
+    UsernameTextFieldView that = (UsernameTextFieldView) o;
+    return command.equals(that.command);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(command);
   }
 }

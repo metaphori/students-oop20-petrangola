@@ -4,6 +4,8 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 
+import java.util.Objects;
+
 public class ViewNodeImpl<E> implements ViewNode<E> {
   private final E node;
   private Pair<Vertical, Horizontal> position;
@@ -25,5 +27,18 @@ public class ViewNodeImpl<E> implements ViewNode<E> {
   @Override
   public E get() {
     return this.node;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ViewNodeImpl)) return false;
+    ViewNodeImpl<?> viewNode = (ViewNodeImpl<?>) o;
+    return node.equals(viewNode.node) && getPosition().equals(viewNode.getPosition());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(node, getPosition());
   }
 }

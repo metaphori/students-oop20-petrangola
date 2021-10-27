@@ -3,6 +3,7 @@ package main.java.petrangola.views.cards;
 import main.java.petrangola.models.cards.Cards;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -31,5 +32,18 @@ public class CardsExchangedImpl implements CardsExchanged {
     }
     
     return cardsList.stream().filter(predicate).findFirst();
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardsExchangedImpl)) return false;
+    CardsExchangedImpl that = (CardsExchangedImpl) o;
+    return cardsList.equals(that.cardsList);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(cardsList);
   }
 }

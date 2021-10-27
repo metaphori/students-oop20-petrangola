@@ -56,12 +56,12 @@ public class DealerImpl implements Dealer {
     if (this == o) return true;
     if (!(o instanceof DealerImpl)) return false;
     DealerImpl dealer = (DealerImpl) o;
-    return getPlayer().equals(dealer.getPlayer());
+    return getSupport().equals(dealer.getSupport()) && getPlayer().equals(dealer.getPlayer());
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(getPlayer());
+    return Objects.hash(getSupport(), getPlayer());
   }
   
   private Player getPlayer() {

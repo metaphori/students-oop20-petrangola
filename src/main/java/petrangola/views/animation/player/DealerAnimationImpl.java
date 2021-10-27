@@ -15,6 +15,7 @@ import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.mediator.HighCardMediator;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DealerAnimationImpl extends AbstractAnimation implements DealerAnimation {
   private final DealerTextView dealerTextView = new DealerTextViewImpl(new Text());
@@ -88,5 +89,19 @@ public class DealerAnimationImpl extends AbstractAnimation implements DealerAnim
   
   private Pane getLayout() {
     return this.layout;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DealerAnimationImpl)) return false;
+    if (!super.equals(o)) return false;
+    DealerAnimationImpl that = (DealerAnimationImpl) o;
+    return dealerTextView.equals(that.dealerTextView) && getLayout().equals(that.getLayout()) && getDealerController().equals(that.getDealerController()) && getPlayersDetails().equals(that.getPlayersDetails()) && getBoard().equals(that.getBoard());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), dealerTextView, getLayout(), getDealerController(), getPlayersDetails(), getBoard());
   }
 }

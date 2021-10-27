@@ -76,4 +76,17 @@ public class HighCardMediatorImpl implements HighCardMediator {
   public void setPlayersDetails(List<PlayerDetail> playersDetails) {
     this.playersDetails = playersDetails;
   }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof HighCardMediatorImpl)) return false;
+    HighCardMediatorImpl that = (HighCardMediatorImpl) o;
+    return npcIndex == that.npcIndex && resourceService.equals(that.resourceService) && Objects.equals(playersDetails, that.playersDetails);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(resourceService, playersDetails, npcIndex);
+  }
 }

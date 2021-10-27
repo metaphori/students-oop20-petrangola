@@ -6,6 +6,8 @@ import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
+import java.util.Objects;
+
 public class PlayButton extends AbstractButtonFX {
   private static final String PLAY = "Play";
   private final OptionController optionController;
@@ -45,5 +47,19 @@ public class PlayButton extends AbstractButtonFX {
   @Override
   public void setListeners() {
     super.get().setOnMouseClicked(mouseEvent -> this.optionController.play((Option) super.getData()));
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof PlayButton)) return false;
+    if (!super.equals(o)) return false;
+    PlayButton that = (PlayButton) o;
+    return optionController.equals(that.optionController);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), optionController);
   }
 }

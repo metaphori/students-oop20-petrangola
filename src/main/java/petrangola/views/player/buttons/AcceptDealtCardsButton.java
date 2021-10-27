@@ -6,6 +6,8 @@ import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
+import java.util.Objects;
+
 public class AcceptDealtCardsButton extends AbstractButtonFX {
   private static final String FIRST_CHANGE = "Take your cards";
   private final GameController gameController;
@@ -46,5 +48,19 @@ public class AcceptDealtCardsButton extends AbstractButtonFX {
       this.gameController.roundHandler();
       this.gameController.nextTurnNumberHandler();
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AcceptDealtCardsButton)) return false;
+    if (!super.equals(o)) return false;
+    AcceptDealtCardsButton that = (AcceptDealtCardsButton) o;
+    return gameController.equals(that.gameController);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), gameController);
   }
 }

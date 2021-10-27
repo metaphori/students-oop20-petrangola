@@ -7,6 +7,8 @@ import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
+import java.util.Objects;
+
 public class TakeBoardCardsButton extends AbstractButtonFX {
   private static final String FIRST_CHANGE = "Take board cards";
   
@@ -54,5 +56,19 @@ public class TakeBoardCardsButton extends AbstractButtonFX {
       this.gameController.onlyOneRound();
       this.dealerController.cherryPickingCombination(this.boardCards, this.ownCards);
     });
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof TakeBoardCardsButton)) return false;
+    if (!super.equals(o)) return false;
+    TakeBoardCardsButton that = (TakeBoardCardsButton) o;
+    return gameController.equals(that.gameController) && dealerController.equals(that.dealerController) && boardCards.equals(that.boardCards) && ownCards.equals(that.ownCards);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), gameController, dealerController, boardCards, ownCards);
   }
 }

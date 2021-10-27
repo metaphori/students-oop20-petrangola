@@ -10,6 +10,8 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
 
+import java.util.Objects;
+
 public class CardViewImpl implements CardView {
   private static final String CARD_COVER = "/card_back";
   private static final String EXTENSION = ".png";
@@ -144,5 +146,18 @@ public class CardViewImpl implements CardView {
     if (this.isChosen()) {
       this.toggleChosen();
     }
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardViewImpl)) return false;
+    CardViewImpl cardView = (CardViewImpl) o;
+    return isChosen() == cardView.isChosen() && service.equals(cardView.service) && getCard().equals(cardView.getCard()) && getPosition().equals(cardView.getPosition()) && imageView.equals(cardView.imageView);
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(service, getCard(), getPosition(), isChosen(), imageView);
   }
 }

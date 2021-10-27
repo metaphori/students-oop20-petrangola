@@ -10,10 +10,7 @@ import main.java.petrangola.utlis.position.Position;
 import main.java.petrangola.utlis.position.Vertical;
 import main.java.petrangola.views.ViewFX;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LayoutBuilderImpl implements LayoutBuilder {
@@ -140,5 +137,18 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   @Override
   public Pane getLayout() {
     return this.layout;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof LayoutBuilderImpl)) return false;
+    LayoutBuilderImpl that = (LayoutBuilderImpl) o;
+    return Objects.equals(getPositionsMap(), that.getPositionsMap()) && getLayout().equals(that.getLayout());
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getPositionsMap(), getLayout());
   }
 }
