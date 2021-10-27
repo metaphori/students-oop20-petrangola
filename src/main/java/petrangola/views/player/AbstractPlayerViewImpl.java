@@ -2,40 +2,34 @@ package main.java.petrangola.views.player;
 
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Player;
 import main.java.petrangola.models.player.PlayerDetail;
+import main.java.petrangola.views.ViewFX;
+import main.java.petrangola.views.animation.player.PlayerAnimation;
+import main.java.petrangola.views.animation.player.PlayerAnimationImpl;
 import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.cards.UpdatableCombination;
-import main.java.petrangola.views.events.NextRoundEvent;
-import main.java.petrangola.views.events.NextTurnEvent;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
-import main.java.petrangola.views.player.buttons.KnockButton;
-import org.greenrobot.eventbus.EventBus;
+import main.java.petrangola.views.game.GameStyleClass;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 public abstract class AbstractPlayerViewImpl implements PlayerView {
+  private final PlayerAnimation playerAnimation = new PlayerAnimationImpl();
   private final PlayerDetail playerDetail;
   private final PlayerController playerController;
   private final Pane layout;
+  private final LifeView lifeView = new LifeViewImpl(new Text());
   
-  private ExchangeButton exchangeButton;
-  private KnockButton knockButton;
   private CardsView<Group> cardsView;
   
   public AbstractPlayerViewImpl(final PlayerController playerController, final Game game, final PlayerDetail playerDetail, Pane layout) {
     this.playerDetail = playerDetail;
     this.playerController = playerController;
     this.layout = layout;
-    
-    if (this.isUserPlayer()) {
-      this.exchangeButton = new ExchangeButton(playerController, playerDetail.getPlayer());
-      this.knockButton = new KnockButton(playerController, game);
-    }
   }
   
   @Override
@@ -51,24 +45,6 @@ public abstract class AbstractPlayerViewImpl implements PlayerView {
   @Override
   public void setCardsView(CardsView<Group> cardsView) {
     this.cardsView = cardsView;
-  }
-  
-  @Override
-  public ExchangeButton getExchangeButton() {
-    if (this.isUserPlayer()) {
-      return this.exchangeButton;
-    }
-    
-    return null;
-  }
-  
-  @Override
-  public KnockButton getKnockButton() {
-    if (this.isUserPlayer()) {
-      return this.knockButton;
-    }
-    
-    return null;
   }
   
   @Override
@@ -91,36 +67,39 @@ public abstract class AbstractPlayerViewImpl implements PlayerView {
   }
   
   @Override
-  public void toggleUserButton(Player player) {
-    this.toggleButtonVisibility(player.isNPC());
+  public boolean isUser() {
+    return false;
   }
   
-  public void toggleButtonVisibility(boolean hide) {
-    this.getExchangeButton().setDisable(hide);
-    this.getKnockButton().setDisable(hide);
-    this.getExchangeButton().get().setVisible(!hide);
-    this.getKnockButton().get().setVisible(!hide);
+  @Override
+  public boolean isBoardView() {
+    return false;
+  }
+  
+  @Override
+  public boolean isDealer() {
+    return false;
   }
   
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {
-      case "updatedCombination":
-        if (this.isUserPlayer()) {
-          ((UpdatableCombination) this).onUpdatedCombination(this.getExchangeButton(), (Cards) evt.getSource());
-        }
-        
-        break;
       case "firstExchange":
         this.onFirstExchange((List<Cards>) evt.getNewValue());
         break;
       case "exchange":
         this.onExchange((List<Cards>) evt.getNewValue());
         break;
-      case "playerLives":
-        
-        break;
     }
+  }
+  
+  @Override
+  public void updateLifeView(int playerLives) {
+    final Pane lifePane = (Pane) layout.lookup(GameStyleClass.LIFE.getAsStyleClass());
+    
+    ViewFX.addOrUpdate(lifePane, getLifeView().get());
+    
+    getLifeView().updateOrCreateTextViewFX(getLayout(), GameStyleClass.LIFE.getAsStyleClass(), String.valueOf(playerLives));
   }
   
   @Override
@@ -132,22 +111,21 @@ public abstract class AbstractPlayerViewImpl implements PlayerView {
     return this.layout;
   }
   
-  private boolean isUserPlayer() {
-    return !this.getPlayer().isNPC();
+  private LifeView getLifeView() {
+    return this.lifeView;
   }
   
-  private void onExchange(List<Cards> cardsList) {
-    if (this.isUserPlayer()) {
-      this.clearChosenCards();
-    }
-    
+  protected PlayerAnimation getPlayerAnimation() {
+    return this.playerAnimation;
+  }
+  
+  protected void onExchange(List<Cards> cardsList) {
     this.updateCards(cardsList);
-    EventBus.getDefault().post(new NextTurnEvent());
+    this.getPlayerAnimation().onExchange(this.getPlayer(), cardsList);
   }
   
   private void onFirstExchange(List<Cards> cardsList) {
     this.updateCards(cardsList);
-    EventBus.getDefault().post(new NextRoundEvent());
-    EventBus.getDefault().post(new NextTurnEvent());
+    this.getPlayerAnimation().onFirstExchange(this.getPlayer());
   }
 }

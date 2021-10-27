@@ -8,6 +8,7 @@ import main.java.petrangola.controllers.player.DealerController;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.PlayerDetail;
+import main.java.petrangola.views.ViewFX;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
@@ -23,6 +24,16 @@ public class DealerViewImpl extends UserViewImpl implements DealerView {
   
   public DealerViewImpl(final DealerController dealerController, final Game game, final PlayerDetail playerDetail, final Pane layout) {
     super(dealerController, game, playerDetail, layout);
+  }
+  
+  @Override
+  public boolean isDealer() {
+    return true;
+  }
+  
+  @Override
+  public boolean isUser() {
+    return false;
   }
   
   @Override
@@ -46,20 +57,15 @@ public class DealerViewImpl extends UserViewImpl implements DealerView {
   
   @Override
   public void showView(final Pane layout) {
-    super.toggleButtonVisibility(true);
+    this.setUserActionVisibility(false);
     this.dealerButtonsHandler(false, layout);
   }
   
   @Override
   public void hideView(final Pane layout) {
-    super.toggleButtonVisibility(false);
+    this.setUserActionVisibility(true);
     this.dealerButtonsHandler(true, layout);
     this.registerActions(layout);
-  }
-  
-  @Override
-  public void setGameController(GameController gameController) {
-    this.gameController = gameController;
   }
   
   @Override
@@ -75,6 +81,16 @@ public class DealerViewImpl extends UserViewImpl implements DealerView {
   @Override
   public void setCardsExchanged(CardsExchanged cardsExchanged) {
     this.cardsExchanged = cardsExchanged;
+  }
+  
+  @Override
+  public void setGameController(GameController gameController) {
+    this.gameController = gameController;
+  }
+  
+  private void setUserActionVisibility(boolean isVisible) {
+    this.getExchangeButton().get().setVisible(isVisible);
+    this.getKnockButton().get().setVisible(isVisible);
   }
   
   private GameController getGameController() {
@@ -100,8 +116,8 @@ public class DealerViewImpl extends UserViewImpl implements DealerView {
       dealerButtonHBox.setAlignment(Pos.CENTER);
       dealerButtonHBox.setSpacing(8);
       
-      dealerButtonHBox.getChildren().addAll(acceptDealtCardsButton.get(), firstExchangeButton.get());
-      dealerButtonsPane.getChildren().add(dealerButtonHBox);
+      ViewFX.addOrUpdateAll(dealerButtonHBox, acceptDealtCardsButton.get(), firstExchangeButton.get());
+      ViewFX.addOrUpdate(dealerButtonsPane, dealerButtonHBox);
     } else {
       dealerButtonsPane.getChildren().clear();
     }

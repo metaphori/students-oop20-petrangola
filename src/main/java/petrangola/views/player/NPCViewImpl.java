@@ -8,6 +8,7 @@ import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Vertical;
+import main.java.petrangola.views.ViewFX;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.game.GameStyleClass;
 
@@ -29,6 +30,7 @@ public class NPCViewImpl extends AbstractPlayerViewImpl implements NPCView {
     final int index = position.getY().equals(Horizontal.RIGHT) ? 1 : 0;
     
     sidePanes.get(index).setAlignment(layoutBuilder.getPos(position));
-    sidePanes.get(index).getChildren().add(this.getCardsView().get());
+    
+    ViewFX.addOrUpdate(sidePanes.get(index), this.getCardsView().get());
   }
 }
