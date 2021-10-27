@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.utlis.position.Position;
 import main.java.petrangola.views.components.layout.LayoutBuilder;
 import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
 
@@ -14,29 +13,34 @@ public abstract class AbstractViewFX extends Group {
   private final Stage stage;
   private final Pane layout;
   
-  public AbstractViewFX(final Stage stage, final Pane layout, Position[] positions) {
+  public AbstractViewFX(final Stage stage, final Pane layout) {
     this.stage = stage;
     this.layout = layout;
     
-    this.stage.setResizable(true);
-    this.stage.setScene(new Scene(this, ViewConstants.WIDTH.getLength(), ViewConstants.HEIGHT.getLength()));
-    this.stage.setWidth(getScene().getWidth());
-    this.stage.setHeight(getScene().getHeight());
-    this.stage.show();
-    
     this.setNeedsLayout(true);
     
-    getLayout().prefWidthProperty().bind(getScene().widthProperty());
-    getLayout().prefHeightProperty().bind(getScene().heightProperty());
+    this.getStage().setResizable(true);
+    this.getStage().setScene(new Scene(this, ViewConstants.WIDTH.getLength(), ViewConstants.HEIGHT.getLength()));
+    this.getStage().setWidth(this.getScene().getWidth());
+    this.getStage().setHeight(this.getScene().getHeight());
+    this.getStage().show();
+    this.getStage().minWidthProperty().bind(this.getScene().heightProperty().divide(1.5));
+    this.getStage().minHeightProperty().bind(this.getScene().widthProperty().divide(1.5));
     
-    getRoot().getChildren().clear();
-    getRoot().getChildren().addAll(getLayout());
+    this.getLayout().prefWidthProperty().bind(this.getScene().widthProperty());
+    this.getLayout().prefHeightProperty().bind(this.getScene().heightProperty());
     
-    this.layoutBuilder = new LayoutBuilderImpl(getLayout(), positions);
+    ViewFX.addOrUpdate(this.getRoot(), this.getLayout());
+    
+    this.layoutBuilder = new LayoutBuilderImpl(this.getLayout());
+  }
+  
+  public Stage getStage() {
+    return this.stage;
   }
   
   public Group getRoot() {
-    return (Group) this.stage.getScene().getRoot();
+    return (Group) this.getStage().getScene().getRoot();
   }
   
   public Pane getLayout() {

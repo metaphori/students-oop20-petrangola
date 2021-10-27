@@ -8,20 +8,17 @@ import main.java.petrangola.views.option.OptionView;
 public interface ViewFactory {
   /**
    *
-   * @return
    * @param option
    */
-  GameView createGameView(final Option option);
+  void createGameView(final Option option);
   
   /**
    *
-   * @return
    */
-  OptionView createOptionView();
+  void createOptionView();
   
   /**
    *
-   * @return
    */
-  ActionView createActionView();
+  void createActionView();
 }

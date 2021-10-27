@@ -18,8 +18,8 @@ import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.player.Dealer;
+import main.java.petrangola.models.player.PlayerDetail;
 import main.java.petrangola.utlis.Background;
-import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.GameObjectViewFactory;
 import main.java.petrangola.views.GameObjectViewFactoryImpl;
@@ -44,11 +44,12 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   private GameMediator gameMediator;
   private HighCardMediator highCardsMediator;
+  private CardsMediator cardsMediator;
   
   public GameViewImpl(Stage stage, Option option) {
-    super(stage, new HBox(), Horizontal.values());
+    super(stage, new HBox());
     
-    addListenerToModel(this.game);
+    this.addListenerToModel(this.game);
     
     this.registerEvents();
     this.initLayout();
@@ -82,7 +83,7 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   private void init(Option option) {
     this.getGameController().createPlayers(option.getUsername(), option.getDifficultyLevel(), option.getOpponentsSize());
-    this.getGameController().createPlayerDetails();
+    this.getGameController().createPlayersDetails();
     this.getGameController().createHighCards();
     this.getGameController().createBoard();
     this.getGameController().setDealer();
@@ -133,21 +134,20 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
       case "cards":
         this.onCards();
         break;
-      case "playerDetails":
+      case "playersDetails":
         this.setHighCardMediator();
         break;
     }
   }
   
   private void onCards() {
-    CardsMediator cardsMediator = this.getMediatorsFactory().createCardsMediator(this.getGameObjectViewFactory(), this.getCardsViewFactory(), this.getGame().getCards(), this.getGame().getPlayerDetails());
-    cardsMediator.setGameController(this.getGameController());
-    
-    this.getGameMediator().setCardsMediator(cardsMediator);
+    this.cardsMediator = this.getMediatorsFactory().createCardsMediator(this.getGameObjectViewFactory(), this.getCardsViewFactory(), this.getGame().getCards(), this.getGame().getPlayersDetails());
+    this.getCardsMediator().setGameController(this.getGameController());
+    this.getGameMediator().setCardsMediator(this.getCardsMediator());
   }
   
   private void setHighCardMediator() {
-    if (game.getPlayerDetails().stream().noneMatch(playerDetail -> playerDetail.getHighCard() != null)) {
+    if (game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).noneMatch(playerDetail -> playerDetail.getHighCard() != null)) {
       this.highCardsMediator = this.getMediatorsFactory().createHighCardMediator();
       this.getGameMediator().setHighCardMediator(this.getHighCardsMediator());
     }
@@ -179,6 +179,10 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   private HighCardMediator getHighCardsMediator() {
     return this.highCardsMediator;
+  }
+  
+  private CardsMediator getCardsMediator() {
+    return this.cardsMediator;
   }
   
   private MediatorsFactory getMediatorsFactory() {
