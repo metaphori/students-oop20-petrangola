@@ -1,9 +1,23 @@
 package main.java.petrangola.views.cards;
 
+import javafx.scene.Group;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.views.player.buttons.ExchangeButton;
 
 public interface UpdatableCombination {
+  CardsView<Group> getCardsView();
+  /**
+   * @return
+   */
+  ExchangeButton getExchangeButton();
+  /**
+   *
+   */
+  default void clearChosenCards() {
+    this.getExchangeButton().setData(null);
+    this.getCardsView().getCardViews().forEach(CardView::clearChosen);
+  }
+  
   /**
    * @return
    */

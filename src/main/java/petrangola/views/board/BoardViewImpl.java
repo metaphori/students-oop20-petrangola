@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.java.petrangola.models.cards.Cards;
+import main.java.petrangola.views.ViewFX;
 import main.java.petrangola.views.cards.CardView;
 import main.java.petrangola.views.cards.CardsExchanged;
 import main.java.petrangola.views.cards.CardsView;
@@ -51,15 +52,15 @@ public class BoardViewImpl implements BoardView {
   
   @Override
   public void register(Pane layout, LayoutBuilder layoutBuilder) {
-    final HBox hBox = new HBox();
+    final HBox centraHBox = new HBox();
     final Pane centralPane = (Pane) layout.lookup(GameStyleClass.BOARD_CARDS.getAsStyleClass());
     final Pos pos = layoutBuilder.getPos(this.getCardsView().getPosition());
     
-    hBox.setAlignment(pos);
-    hBox.setSpacing(8);
-    hBox.getChildren().addAll(this.getCardsView().get().getChildren());
-    
-    centralPane.getChildren().add(hBox);
+    centraHBox.setAlignment(pos);
+    centraHBox.setSpacing(8);
+  
+    ViewFX.addOrUpdate(centralPane, centraHBox);
+    ViewFX.addOrUpdateAll(centraHBox, this.getCardsView().get().getChildren());
   }
   
   @Override
@@ -92,6 +93,21 @@ public class BoardViewImpl implements BoardView {
   @Override
   public ExchangeButton getExchangeButton() {
     return this.exchangeButton;
+  }
+  
+  @Override
+  public boolean isBoardView() {
+    return true;
+  }
+  
+  @Override
+  public boolean isDealer() {
+    return false;
+  }
+  
+  @Override
+  public boolean isUser() {
+    return false;
   }
   
   @Override
