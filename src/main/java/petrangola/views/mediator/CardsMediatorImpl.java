@@ -218,16 +218,17 @@ public class CardsMediatorImpl implements CardsMediator {
   }
   
   @Override
-  public void updatePlayerViews(Game game, Dealer oldDealer) {
+  public void updatePlayerViews(Game game, Player oldDealer, Player newDealer) {
     final List<PlayerDetail> tempPlayersDetails = game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).collect(Collectors.toList());
     final List<GameObjectView> tempPlayerViews = getViewList().stream().filter(gameObjectView -> !gameObjectView.isBoardView()).collect(Collectors.toList());
-    final Dealer newDealer = game.getDealer();
     
-    getViewList().forEach(view -> {
+    // remove cards and players listeners
+    this.getViewList().forEach(view -> {
       view.removeListenerModel(view.getCardsView().getCards());
       game.getPlayers().forEach(view::removeListenerModel);
     });
     
+    // removing playerDetails listeners
     tempPlayerViews.forEach(gameObjectView -> {
       if (gameObjectView.getCardsView().getCards().getPlayer().isPresent()) {
         gameObjectView.removeListenerModel(gameObjectView.getCardsView().getCards().getPlayer().get());
@@ -350,7 +351,7 @@ public class CardsMediatorImpl implements CardsMediator {
     return playerViews.stream().filter(viewPredicate).findFirst();
   }
   
-  private Optional<PlayerDetail> getPlayerDetail(List<PlayerDetail> playersDetails, Dealer dealer) {
+  private Optional<PlayerDetail> getPlayerDetail(List<PlayerDetail> playersDetails, Player dealer) {
     return playersDetails
                  .stream()
                  .filter(PlayerDetail::isStillAlive)

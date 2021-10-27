@@ -17,7 +17,6 @@ public interface ObservableModel {
    * @param newValue
    */
   default void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-    System.out.println("property name: " + propertyName + "  oldValue: " + oldValue + "  newValue: " + newValue);
     getSupport().firePropertyChange(propertyName, oldValue, newValue);
   }
   

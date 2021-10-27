@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.DealerImpl;
+import main.java.petrangola.models.player.Player;
 import main.java.petrangola.views.game.GameStyleClass;
 import main.java.petrangola.views.mediator.CardsMediator;
 import main.java.petrangola.views.mediator.GameMediator;
@@ -12,17 +13,31 @@ import java.util.List;
 
 public class ReplayEvent implements Event {
   public ReplayEvent(final Game game, final GameMediator gameMediator) {
-    final Dealer oldDealer = game.getDealer();
+    final Dealer previousDealer = game.getDealer();
     final CardsMediator cardsMediator = gameMediator.getCardsMediator();
     
     this.setWinnerAsDealer(game, gameMediator);
     this.resetGameParam(game);
     this.unregisterViews(cardsMediator.getLayout());
-    this.updatePlayerViews(game, cardsMediator, oldDealer);
+    
+    this.updatePlayerViews(game, cardsMediator, previousDealer);
   }
   
-  private void updatePlayerViews(Game game, CardsMediator cardsMediator, Dealer oldDealer) {
-    cardsMediator.updatePlayerViews(game, oldDealer);
+  private void updatePlayerViews(Game game, CardsMediator cardsMediator, Dealer previousDealer) {
+    Player oldDealer = null;
+    Player newDealer = null;
+    
+    for (Player player : game.getPlayers()) {
+      if (player.getUsername().equals(game.getDealer().getUsername())) {
+        newDealer = player;
+      }
+      
+      if (player.getUsername().equals(previousDealer.getUsername())) {
+        oldDealer = player;
+      }
+    }
+    
+    cardsMediator.updatePlayerViews(game, oldDealer, newDealer);
   }
   
   private void resetGameParam(Game game) {

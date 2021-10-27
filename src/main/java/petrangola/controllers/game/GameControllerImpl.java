@@ -41,7 +41,7 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void createHighCards() {
-    final int playersSize = this.game.getPlayers().size();
+    final int playersSize = (int) this.game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).count();
     final List<Card> cards = new CardFactoryImpl()
                                    .createDeck()
                                    .stream()
@@ -108,7 +108,7 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public boolean checkKnocks() {
-    final int size = this.game.getPlayers().size();
+    final int size = (int) this.game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).count();
     final int knockerCount = this.game.getKnockerCount();
     
     if (size > 4) {

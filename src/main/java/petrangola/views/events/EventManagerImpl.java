@@ -48,7 +48,7 @@ public class EventManagerImpl implements EventManager {
   public void onWinnerEvent(WinnerEvent event) {
     final List<Pair<String, Combination>> bestCombinations = event.getBestCombinations();
     final CardsMediator cardsMediator = event.getGameMediator().getCardsMediator();
-  
+    
     event.getGameMediator().unregister(cardsMediator.getLayout());
     event.takeLifeIfPossible();
     event.giveLifeIfPossible();
