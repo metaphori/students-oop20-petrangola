@@ -2,20 +2,24 @@ package main.java.petrangola.views.player.buttons;
 
 import main.java.petrangola.controllers.player.PlayerController;
 import main.java.petrangola.models.game.Game;
+import main.java.petrangola.models.player.Player;
 import main.java.petrangola.utlis.UserAction;
 import main.java.petrangola.utlis.ViewConstants;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 
 public class KnockButton extends AbstractButtonFX {
   private static final String KNOCK = "Knock";
+  private final Player player;
   private final Game game;
   private final PlayerController playerController;
   
-  public KnockButton(PlayerController playerController, Game game) {
+  public KnockButton(PlayerController playerController, Player player, Game game) {
     super(KNOCK);
+    this.player = player;
     this.game = game;
     this.playerController = playerController;
     this.setDisable(true);
+    this.get().getStyleClass().add(KNOCK);
   }
   
   @Override
@@ -43,6 +47,6 @@ public class KnockButton extends AbstractButtonFX {
   
   @Override
   public void setListeners() {
-    super.get().setOnMouseClicked(mouseEvent -> this.playerController.knock(this.game));
+    super.get().setOnMouseClicked(mouseEvent -> this.playerController.knock(this.game, this.player));
   }
 }

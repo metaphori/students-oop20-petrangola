@@ -16,6 +16,7 @@ public class ExchangeButton extends AbstractButtonFX {
     super(EXCHANGE);
     this.command = new ExchangeCommand(playerController, player);
     this.setDisable(true);
+    this.get().getStyleClass().add(EXCHANGE);
   }
   
   @Override
