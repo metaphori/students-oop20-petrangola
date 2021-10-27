@@ -3,13 +3,14 @@ package main.java.petrangola.controllers.game;
 import main.java.petrangola.models.board.BoardImpl;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.CardFactoryImpl;
-import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.*;
 import main.java.petrangola.utlis.DifficultyLevel;
-import main.java.petrangola.utlis.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,8 +38,8 @@ public class GameControllerImpl implements GameController {
   }
   
   @Override
-  public void createPlayerDetails() {
-    this.game.setPlayerDetails(this.game.getPlayers().stream().map(PlayerDetailImpl::new).collect(Collectors.toList()));
+  public void createPlayersDetails() {
+    this.game.setPlayersDetails(this.game.getPlayers().stream().map(PlayerDetailImpl::new).collect(Collectors.toList()));
   }
   
   @Override
@@ -54,13 +55,22 @@ public class GameControllerImpl implements GameController {
     IntStream
           .range(0, playersSize)
           .boxed()
-          .forEach(index -> this.game.getPlayerDetails().get(index).setHighCard(cards.get(index)));
+          .forEach(index -> this.game
+                                  .getPlayersDetails()
+                                  .stream()
+                                  .filter(PlayerDetail::isStillAlive)
+                                  .collect(Collectors.toList())
+                                  .get(index)
+                                  .setHighCard(cards.get(index)));
   }
   
   @Override
   public void setDealer() {
     this.game
-          .getPlayerDetails()
+          .getPlayersDetails()
+          .stream()
+          .filter(PlayerDetail::isStillAlive)
+          .collect(Collectors.toList())
           .stream()
           .collect(Collectors.toMap(PlayerDetail::getPlayer, playerDetail -> playerDetail.getHighCard().getValue()))
           .entrySet()
@@ -78,32 +88,25 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void setTurnNumbers() {
-    List<PlayerDetail> playerDetails = new ArrayList<>(this.game.getPlayerDetails());
+    List<PlayerDetail> playersDetails = this.game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).collect(Collectors.toList());
+    
     int distance = 0;
     
-    for (int index = 0; index <= playerDetails.size() - 1; index++) {
-      if (playerDetails.get(index).getPlayer().isDealer()) {
+    for (int index = 0; index <= playersDetails.size() - 1; index++) {
+      if (playersDetails.get(index).getPlayer().isDealer()) {
         distance = index;
         break;
       }
     }
     
-    Collections.rotate(playerDetails, -distance);
+    Collections.rotate(playersDetails, -distance);
     
-    IntStream.range(0, playerDetails.size()).boxed().forEachOrdered(index -> playerDetails.get(index).setTurnNumber(index));
+    IntStream.range(0, playersDetails.size()).boxed().forEachOrdered(index -> playersDetails.get(index).setTurnNumber(index));
   }
   
   @Override
   public void setWinner(String winner) {
-    this.game
-          .getCards()
-          .stream()
-          .filter(Cards::isPlayerCards)
-          .filter(cards -> cards.getPlayer().isPresent())
-          .map(cards -> new Pair<>(cards.getCombination().getBest().getY(), cards.getPlayer().get()))
-          .max(Comparator.comparingInt(Pair::getX))
-          .map(Pair::getY)
-          .ifPresent(player -> this.game.setWinner(player.getUsername()));
+    this.game.setWinner(winner);
   }
   
   @Override
@@ -119,21 +122,11 @@ public class GameControllerImpl implements GameController {
   }
   
   @Override
-  public Player getCurrentPlayer() {
-    return this.game
-                 .getPlayerDetails()
-                 .stream()
-                 .filter(playerDetails -> playerDetails.getTurnNumber() == this.game.getCurrentTurnNumber())
-                 .findFirst()
-                 .map(PlayerDetail::getPlayer)
-                 .orElse(null);
-  }
-  
-  @Override
   public void nextTurnNumberHandler() {
     int nextTurnNumber = this.game.getCurrentTurnNumber() + 1;
+    int playersListSize = (int) this.game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).count();
     
-    if (this.game.getPlayerDetails().size() - 1 == this.game.getCurrentTurnNumber()) {
+    if (playersListSize - 1 == this.game.getCurrentTurnNumber()) {
       nextTurnNumber = 0;
     }
     
@@ -148,7 +141,7 @@ public class GameControllerImpl implements GameController {
   
   @Override
   public void onlyOneRound() {
-    this.game.onlyOneRound();
+    this.game.setOnlyOneRound(true);
   }
   
   @Override
@@ -158,15 +151,17 @@ public class GameControllerImpl implements GameController {
   }
   
   @Override
-  public boolean isLastPlayerTurn() {
-    int currentTurnNumber = this.game.getCurrentTurnNumber();
-    
+  public boolean isLastKnockerPlayerTurn() {
     return this.game
-                 .getPlayerDetails()
+                 .getPlayersDetails()
                  .stream()
-                 .filter(playerDetail -> playerDetail.getTurnNumber() < currentTurnNumber)
-                 .max(Comparator.comparingInt(PlayerDetail::getPlayerLives))
-                 .stream()
-                 .anyMatch(playerDetail -> currentTurnNumber == playerDetail.getTurnNumber());
+                 .filter(PlayerDetail::isStillAlive)
+                 .filter(playerDetail -> !playerDetail.getPlayer().getUsername().equals(this.game.getLastKnocker()))
+                 .anyMatch(playerDetail -> playerDetail.getTurnNumber() == this.game.getCurrentTurnNumber());
+  }
+  
+  @Override
+  public boolean isLastPlayerTurn() {
+    return this.game.getCurrentTurnNumber() == 0;
   }
 }

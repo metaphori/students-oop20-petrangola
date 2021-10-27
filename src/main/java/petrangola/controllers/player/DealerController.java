@@ -11,7 +11,7 @@ public interface DealerController extends PlayerController {
   /**
    *
    */
-  void dealCards(List<PlayerDetail> playerDetails, Board board);
+  void dealCards(List<PlayerDetail> playersDetails, Board board, String classA);
   
   /**
    *

@@ -14,8 +14,9 @@ public class PlayerControllerImpl implements PlayerController {
   }
   
   @Override
-  public void knock(final Game game) {
+  public void knock(final Game game, Player player) {
     game.setKnockerCount(game.getKnockerCount() + 1);
+    game.setLastKnocker(player.getUsername());
   }
   
   @Override

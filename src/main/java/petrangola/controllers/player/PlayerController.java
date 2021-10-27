@@ -16,8 +16,9 @@ public interface PlayerController extends Controller {
   
   /**
    * @param game
+   * @param player
    */
-  void knock(final Game game);
+  void knock(final Game game, Player player);
   
   /**
    * @param playerDetail

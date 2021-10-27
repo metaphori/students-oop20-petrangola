@@ -1,7 +1,6 @@
 package main.java.petrangola.controllers.game;
 
 import main.java.petrangola.controllers.Controller;
-import main.java.petrangola.models.player.Player;
 import main.java.petrangola.utlis.DifficultyLevel;
 
 public interface GameController extends Controller {
@@ -18,7 +17,7 @@ public interface GameController extends Controller {
   /**
    *
    */
-  void createPlayerDetails();
+  void createPlayersDetails();
   
   /**
    *
@@ -46,11 +45,6 @@ public interface GameController extends Controller {
   boolean checkKnocks();
   
   /**
-   * @return
-   */
-  Player getCurrentPlayer();
-  
-  /**
    *
    */
   void nextTurnNumberHandler();
@@ -71,6 +65,12 @@ public interface GameController extends Controller {
   void addKnock(String username);
   
   /**
+   * @return
+   */
+  boolean isLastKnockerPlayerTurn();
+  
+  /**
+   *
    * @return
    */
   boolean isLastPlayerTurn();

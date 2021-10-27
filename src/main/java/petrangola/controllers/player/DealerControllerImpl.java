@@ -14,8 +14,8 @@ public class DealerControllerImpl extends PlayerControllerImpl implements Dealer
   }
   
   @Override
-  public void dealCards(List<PlayerDetail> playerDetails, Board board) {
-    this.dealer.dealCards(playerDetails, board);
+  public void dealCards(List<PlayerDetail> playersDetails, Board board, String classA) {
+    this.dealer.dealCards(playersDetails, board);
   }
   
   @Override
