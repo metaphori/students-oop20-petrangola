@@ -31,19 +31,18 @@ public interface ObservableModel {
   
   /**
    *
-   * @param propertyName
-   * @param listener
+   * @param pcl
    */
-  default void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-    getSupport().addPropertyChangeListener(propertyName, listener);
+  default void removePropertyChangeListener(PropertyChangeListener pcl) {
+    getSupport().removePropertyChangeListener(pcl);
   }
   
   /**
    *
-   * @param pcl
+   * @param propertyName
+   * @param listener
    */
-  default void removePropertyChangeLister(PropertyChangeListener pcl) {
-    getSupport().removePropertyChangeListener(pcl);
+  default void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+    getSupport().removePropertyChangeListener(propertyName, listener);
   }
-  
 }

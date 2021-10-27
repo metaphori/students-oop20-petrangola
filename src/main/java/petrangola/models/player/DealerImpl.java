@@ -1,13 +1,10 @@
 package main.java.petrangola.models.player;
 
 import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.cards.*;
-import main.java.petrangola.models.game.GameObject;
+import main.java.petrangola.models.cards.Cards;
 
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class DealerImpl implements Dealer {
@@ -20,20 +17,8 @@ public class DealerImpl implements Dealer {
   }
   
   @Override
-  public void dealCards(List<PlayerDetail> playerDetails, Board board) {
-    final CardFactory cardFactory = new CardFactoryImpl();
-    final CardsFactory cardsFactory = new CardsFactoryImpl();
-    final CombinationFactory combinationFactory = new CombinationFactoryImpl();
-    final Map<GameObject, Combination> cardsToDeal = new HashMap<>();
-    final List<Combination> combinations = combinationFactory.createCombinations(cardFactory.createDeck(), playerDetails.size());
-    
-    for (int index = 0; index < playerDetails.size(); index++) {
-      cardsToDeal.put(playerDetails.get(index).getPlayer(), combinations.get(index));
-    }
-  
-    cardsToDeal.put(board, combinations.get(combinations.size() - 1));
-    
-    firePropertyChange("dealtCards", null, cardsFactory.createCards(cardsToDeal));
+  public void dealCards(List<PlayerDetail> playersDetails, Board board) {
+    firePropertyChange("dealtCards", null, getCardsToDeal(playersDetails, board));
   }
   
   @Override

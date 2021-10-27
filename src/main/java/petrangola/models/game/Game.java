@@ -30,12 +30,16 @@ public interface Game extends ObservableModel {
     */
    void setBoard(Board board);
    
-   List<PlayerDetail> getPlayerDetails();
+   /**
+    *
+    * @return
+    */
+   List<PlayerDetail> getPlayersDetails();
    
    /**
     *
     */
-   void setPlayerDetails(List<PlayerDetail> playerDetails);
+   void setPlayersDetails(List<PlayerDetail> playersDetails);
    
    /**
     *
@@ -122,9 +126,13 @@ public interface Game extends ObservableModel {
    void setWinner(String winner);
    
    /**
-    *
-    * set to true if the dealer has taken the board cards
+    * @param isOnlyOneRound - set to true if the dealer has taken the board cards
     */
-   void onlyOneRound();
+   void setOnlyOneRound(boolean isOnlyOneRound);
    
+   /**
+    *
+    * @return
+    */
+   boolean isOnlyOneRound();
 }

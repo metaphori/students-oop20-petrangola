@@ -6,13 +6,13 @@ import main.java.petrangola.models.cards.Combination;
 import main.java.petrangola.services.CombinationChecker;
 import main.java.petrangola.utlis.DeckConstants;
 import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.events.KnockEvent;
-import org.greenrobot.eventbus.EventBus;
 import org.paukov.combinatorics3.Generator;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class BestChoice extends AbstractChoiceStrategy {
@@ -36,7 +36,7 @@ public class BestChoice extends AbstractChoiceStrategy {
                                         .collect(Collectors.toList());
     
     if (playerCards.getPlayer().isPresent() && maxCombination.equals(playerCards.getCombination().getCards())) {
-      EventBus.getDefault().post(new KnockEvent(playerCards.getPlayer().get()));
+      return List.of();
     }
     
     playerCards.getCombination().replaceCards(maxCombination, playerCards.getCombination().getCards());
@@ -48,43 +48,33 @@ public class BestChoice extends AbstractChoiceStrategy {
   private List<Card> getMaxCombinationListOfCards(List<Card> cardList) {
     List<List<Card>> combinations = generateAllCombinations(cardList);
     
-    Optional<List<Card>> tris = combinations
-                                      .stream()
-                                      .filter(CombinationChecker::isTris)
-                                      .findAny();
+    Optional<List<Card>> tris = combinations.stream().filter(CombinationChecker::isTris).findAny();
     
     if (tris.isPresent()) {
       return tris.get();
     }
     
-    Optional<List<Card>> flush = combinations
-                                       .stream()
-                                       .filter(CombinationChecker::isFlush)
-                                       .findAny();
+    Optional<List<Card>> flush = combinations.stream().filter(CombinationChecker::isFlush).findAny();
     
     if (flush.isPresent()) {
       return flush.get();
     }
     
-    Optional<List<Card>> flushWithAceLow = combinations
-                                                 .stream()
-                                                 .filter(CombinationChecker::isAceLow)
-                                                 .findAny();
+    Optional<List<Card>> flushWithAceLow = combinations.stream().filter(CombinationChecker::isAceLow).findAny();
     
-    return flushWithAceLow.orElseGet(() -> combinations
-                                                 .stream()
-                                                 .map(cards -> new Pair<>(cards, cards.stream()
-                                                                                       .collect(Collectors.groupingBy(Card::getSuit))
-                                                                                       .entrySet()
-                                                                                       .stream()
-                                                                                       .map(entry -> new Pair<>(entry.getKey(), entry.getValue().stream().mapToInt(Card::getValue).sum()))
-                                                                                       .max(Comparator.comparingInt(Pair::getY))
-                                                                                       .get()
-                                                                                       .getY()))
-                                                 .max(Comparator.comparingInt(Pair::getY))
-                                                 .get()
-                                                 .getX());
+    if (flushWithAceLow.isPresent()) {
+      return flushWithAceLow.get();
+    }
     
+    List<Card> list = new ArrayList<>();
+    
+    combinations
+          .stream()
+          .map(cards -> new Pair<>(cards, getMaxCombination(cards)))
+          .max(Comparator.comparingInt(Pair::getY))
+          .ifPresent(pair -> list.addAll(pair.getX()));
+    
+    return list;
   }
   
   private List<List<Card>> generateAllCombinations(List<Card> cardList) {
@@ -92,5 +82,20 @@ public class BestChoice extends AbstractChoiceStrategy {
                  .simple(DeckConstants.DECK_SIZE.getValue())
                  .stream()
                  .collect(Collectors.toList());
+  }
+  
+  
+  private int getMaxCombination(List<Card> cards) {
+    AtomicInteger max = new AtomicInteger();
+    
+    cards.stream()
+          .collect(Collectors.groupingBy(Card::getSuit))
+          .entrySet()
+          .stream()
+          .map(entry -> new Pair<>(entry.getKey(), entry.getValue().stream().mapToInt(Card::getValue).sum()))
+          .max(Comparator.comparingInt(Pair::getY))
+          .ifPresent(pair -> max.set(pair.getY()));
+    
+    return max.get();
   }
 }

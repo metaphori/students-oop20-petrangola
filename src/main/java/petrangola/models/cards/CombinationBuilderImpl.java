@@ -7,7 +7,10 @@ import main.java.petrangola.utlis.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CombinationBuilderImpl implements CombinationBuilder {
@@ -28,17 +31,17 @@ public class CombinationBuilderImpl implements CombinationBuilder {
   public Combination build() {
     return new Combination() {
       final PropertyChangeSupport support = new PropertyChangeSupport(this);
-  
+      
       @Override
       public void addPropertyChangeListener() {
         cards.forEach(card -> card.addPropertyChangeListener(this));
       }
-  
+      
       @Override
       public PropertyChangeSupport getSupport() {
         return this.support;
       }
-  
+      
       @Override
       public void propertyChange(PropertyChangeEvent evt) {
         this.replaceUpdatedCard((Card) evt.getSource());
@@ -48,11 +51,11 @@ public class CombinationBuilderImpl implements CombinationBuilder {
         List<Card> cardList = new ArrayList<>(getCards());
         
         int index = cardList.indexOf(card);
-  
+        
         if (index != -1) {
           cardList.set(index, card);
           setCards(cardList);
-  
+          
           firePropertyChange("combination", null, this);
         }
       }
@@ -61,34 +64,33 @@ public class CombinationBuilderImpl implements CombinationBuilder {
       public void replaceCards(List<Card> cardsToPut, List<Card> cardsToReplace) {
         final List<Card> tempCards = new ArrayList<>(getCards());
         
+        getCards().forEach(card -> card.removePropertyChangeListener(this));
+        
         cardsToReplace.forEach(tempCards::remove);
         tempCards.addAll(cardsToPut);
-        
-        cards.forEach(card -> card.removePropertyChangeLister(this));
         
         setCards(tempCards);
         
         cards.forEach(card -> card.addPropertyChangeListener(this));
-        
       }
       
       public List<Card> getCards() {
         return cards;
       }
-  
+      
       @Override
       public List<Card> getChosenCards() {
         return cards.stream()
                      .filter(Card::isChosen)
                      .collect(Collectors.toList());
       }
-  
+      
       @Override
       public Pair<List<Card>, Integer> getBest() {
         List<Card> cards = new ArrayList<>(getCards());
         
         if (CombinationChecker.isTris(cards)) {
-          return new Pair<>(cards,cards.get(0).getValue() * DeckConstants.DECK_SIZE.getValue());
+          return new Pair<>(cards, cards.get(0).getValue() * DeckConstants.DECK_SIZE.getValue());
         }
         
         if (CombinationChecker.isAceLow(cards)) {

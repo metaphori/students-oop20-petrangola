@@ -8,6 +8,10 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public interface Combination extends Replaceable, ObservableModel, PropertyChangeListener {
+  
+  /**
+   *
+   */
   void addPropertyChangeListener();
   
   /**
@@ -21,7 +25,6 @@ public interface Combination extends Replaceable, ObservableModel, PropertyChang
   List<Card> getCards();
   
   /**
-   *
    * @return
    */
   List<Card> getChosenCards();

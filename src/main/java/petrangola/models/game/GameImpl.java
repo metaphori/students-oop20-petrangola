@@ -11,7 +11,7 @@ import main.java.petrangola.models.player.PlayerDetail;
 
 public class GameImpl implements Game {
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-  private List<PlayerDetail> playerDetails;
+  private List<PlayerDetail> playersDetails;
   private List<Player> players;
   private List<Cards> cards;
   private Board board;
@@ -21,6 +21,7 @@ public class GameImpl implements Game {
   private int knockerCount;
   private String lastKnocker;
   private String winner;
+  private boolean isOnlyOneRound;
   
   public GameImpl() {}
   
@@ -49,15 +50,15 @@ public class GameImpl implements Game {
   }
   
   @Override
-  public List<PlayerDetail> getPlayerDetails() {
-    return this.playerDetails;
+  public List<PlayerDetail> getPlayersDetails() {
+    return this.playersDetails;
   }
   
   @Override
-  public void setPlayerDetails(List<PlayerDetail> playerDetails) {
-    final List<PlayerDetail> oldValue = this.playerDetails;
-    this.playerDetails = playerDetails;
-    firePropertyChange("playerDetails", oldValue, playerDetails);
+  public void setPlayersDetails(List<PlayerDetail> playersDetails) {
+    final List<PlayerDetail> oldValue = this.playersDetails;
+    this.playersDetails = playersDetails;
+    firePropertyChange("playersDetails", oldValue, playersDetails);
   }
   
   @Override
@@ -145,8 +146,15 @@ public class GameImpl implements Game {
   }
   
   @Override
-  public void onlyOneRound() {
-    firePropertyChange("onlyOneRound", false, true);
+  public void setOnlyOneRound(boolean isOnlyOneRound) {
+    final boolean oldValue = this.isOnlyOneRound;
+    this.isOnlyOneRound = isOnlyOneRound;
+    firePropertyChange("onlyOneRound", oldValue, isOnlyOneRound);
+  }
+  
+  @Override
+  public boolean isOnlyOneRound() {
+    return this.isOnlyOneRound;
   }
   
   @Override

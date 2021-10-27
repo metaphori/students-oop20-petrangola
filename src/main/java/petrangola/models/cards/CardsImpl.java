@@ -29,7 +29,7 @@ public class CardsImpl implements Cards {
   
   @Override
   public void setCombination(Combination combination) {
-    this.combination.removePropertyChangeLister(this);
+    this.combination.removePropertyChangeListener(this);
     this.combination = combination;
     this.combination.addPropertyChangeListener(this);
     firePropertyChange("updatedCombination", null, combination);

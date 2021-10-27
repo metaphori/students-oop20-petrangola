@@ -45,4 +45,10 @@ public interface PlayerDetail extends ObservableModel {
    * @return
    */
   Player getPlayer();
+  
+  /**
+   *
+   * @return
+   */
+  boolean isStillAlive();
 }

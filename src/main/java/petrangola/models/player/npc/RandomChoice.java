@@ -2,8 +2,6 @@ package main.java.petrangola.models.player.npc;
 
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.events.KnockEvent;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Random;
@@ -20,12 +18,12 @@ public class RandomChoice extends AbstractChoiceStrategy {
     final Card playerCard = playerCards.getCombination().getCards().get(indexToGive);
     final Card boardCard = boardCards.getCombination().getCards().get(indexToTake);
     
-    if (Math.random() < 0.5) {
-      playerCards.getCombination().replaceCards(List.of(boardCard), List.of(playerCard));
-      boardCards.getCombination().replaceCards(List.of(playerCard), List.of(boardCard));
-    } else {
-      playerCards.getPlayer().ifPresent(player -> EventBus.getDefault().post(new KnockEvent(player)));
+    if (Math.random() > 0.5) {
+      return List.of();
     }
+    
+    playerCards.getCombination().replaceCards(List.of(boardCard), List.of(playerCard));
+    boardCards.getCombination().replaceCards(List.of(playerCard), List.of(boardCard));
     
     return List.of(boardCards, playerCards);
   }

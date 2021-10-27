@@ -63,6 +63,11 @@ public class PlayerDetailImpl implements PlayerDetail {
   }
   
   @Override
+  public boolean isStillAlive() {
+    return this.playerLives > 0;
+  }
+  
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof PlayerDetailImpl)) return false;

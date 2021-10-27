@@ -79,8 +79,10 @@ public class NPCImpl implements NPC {
     } else {
       choiceStrategy = new BestChoice();
     }
+  
+    List<Cards> exchangedCards = choiceStrategy.chooseCards(List.of(boardCards, playerCards));
     
-    firePropertyChange("exchange", null, choiceStrategy.chooseCards(List.of(boardCards, playerCards)));
+    firePropertyChange("exchange", null, exchangedCards);
   }
   
   private double getDrawback() {
