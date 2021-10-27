@@ -1,5 +1,6 @@
 package main.java.petrangola.views.components.text;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import main.java.petrangola.views.components.AbstractComponentFX;
 
@@ -7,6 +8,7 @@ public abstract class TextViewImpl extends AbstractComponentFX<Text> implements 
   public TextViewImpl(Text component) {
     super(component);
     this.get().setVisible(false);
+    this.get().setFill(Paint.valueOf("white"));
   }
   
   @Override

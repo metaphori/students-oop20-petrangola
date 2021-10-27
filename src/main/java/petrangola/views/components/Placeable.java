@@ -1,4 +1,4 @@
-package main.java.petrangola.views.components.position;
+package main.java.petrangola.views.components;
 
 import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
@@ -6,14 +6,12 @@ import main.java.petrangola.utlis.position.Vertical;
 
 public interface Placeable {
   /**
-   * @param position
-   */
-  void setPosition(final Pair<Vertical, Horizontal> position);
-  
-  /**
-   *
    * @return
    */
   Pair<Vertical, Horizontal> getPosition();
   
+  /**
+   * @param position
+   */
+  void setPosition(Pair<Vertical, Horizontal> position);
 }

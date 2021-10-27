@@ -1,6 +1,5 @@
 package main.java.petrangola.views.game;
 
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -14,7 +13,6 @@ public class WinnerViewImpl extends TextViewImpl implements WinnerView {
     super(component);
     
     this.get().setTextAlignment(TextAlignment.CENTER);
-    this.get().setFill(Paint.valueOf("white"));
     this.get().setFont(Font.font("Arial Black", FontWeight.BOLD, 32));
   }
   

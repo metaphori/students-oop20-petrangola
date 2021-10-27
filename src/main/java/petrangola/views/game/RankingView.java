@@ -23,5 +23,5 @@ public interface RankingView extends TableFX<RankedPlayer> {
    *
    * @param playersDetails
    */
-  void setPlayerDetails(List<PlayerDetail> playersDetails);
+  void setPlayersDetails(List<PlayerDetail> playersDetails);
 }

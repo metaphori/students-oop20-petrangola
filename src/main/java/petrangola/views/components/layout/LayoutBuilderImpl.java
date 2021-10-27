@@ -8,6 +8,7 @@ import main.java.petrangola.utlis.Pair;
 import main.java.petrangola.utlis.position.Horizontal;
 import main.java.petrangola.utlis.position.Position;
 import main.java.petrangola.utlis.position.Vertical;
+import main.java.petrangola.views.ViewFX;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -19,12 +20,10 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   
   private final Map<Pos, Pair<Vertical, Horizontal>> positionsMap = new EnumMap<>(Pos.class);
   private final Pane layout;
-  private final Position[] layoutPosition;
   
   
-  public LayoutBuilderImpl(Pane layout, Position[] layoutPositions) {
+  public LayoutBuilderImpl(Pane layout) {
     this.layout = layout;
-    this.layoutPosition = layoutPositions;
     
     initPositionsMap();
   }
@@ -54,15 +53,15 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   @Override
   public LayoutBuilder addSimplePane(Pair<? extends Pane, String> panePair) {
     panePair.getX().getStyleClass().addAll(panePair.getY().split(Delimiter.COMMA.getText()));
-    
-    getLayout().getChildren().add(panePair.getX());
+  
+    ViewFX.addOrUpdate(getLayout(), panePair.getX());
     
     return this;
   }
   
   @Override
   public LayoutBuilder addNode(Node node) {
-    getLayout().getChildren().add(node);
+    ViewFX.addOrUpdate(getLayout(), node);
     
     return this;
   }
@@ -70,16 +69,16 @@ public class LayoutBuilderImpl implements LayoutBuilder {
   @Override
   public LayoutBuilder addNodeById(String Id, Node node) {
     Pane pane = (Pane) getLayout().lookup(Id);
-    
-    pane.getChildren().add(node);
+  
+    ViewFX.addOrUpdate(pane, node);
     
     return this;
   }
   
   
   private void addToLayout(Pane pane, List<? extends Pane> childNodes) {
-    pane.getChildren().addAll(childNodes);
-    getLayout().getChildren().add(pane);
+    ViewFX.addOrUpdateAll(pane, childNodes);
+    ViewFX.addOrUpdate(getLayout(), pane);
   }
   
   private Node setGrow(Node node) {
@@ -102,8 +101,8 @@ public class LayoutBuilderImpl implements LayoutBuilder {
         
         return childPane;
       }).collect(Collectors.toList());
-      
-      pair.getX().getChildren().addAll(children);
+  
+      ViewFX.addOrUpdateAll(pair.getX(), children);
       
       return pair.getX();
     }).collect(Collectors.toList());

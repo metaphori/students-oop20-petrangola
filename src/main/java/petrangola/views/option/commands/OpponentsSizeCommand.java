@@ -13,6 +13,6 @@ public class OpponentsSizeCommand extends AbstractOptionCommand {
   
   @Override
   public void execute() {
-    this.optionController.setOpponentsSize(this.opponentsSizeView.getValueFromSlider());
+    this.getOptionController().setOpponentsSize(this.opponentsSizeView.getValueFromSlider());
   }
 }

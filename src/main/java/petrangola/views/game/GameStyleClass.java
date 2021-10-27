@@ -13,10 +13,9 @@ public enum GameStyleClass {
   LIFE("life"),
   ROUND("round"),
   USERNAME("username"),
-  DEALER("dealer"),
   KNOCKS("knocks"),
   WINNER("winner"),
-  TOP_IDS(List.of(LIFE, ROUND, USERNAME, DEALER, KNOCKS, WINNER)),
+  TOP_IDS(List.of(LIFE, ROUND, USERNAME, KNOCKS, WINNER)),
   
   RANKING("ranking"),
   BOARD_CARDS("boardCards"),
@@ -26,7 +25,9 @@ public enum GameStyleClass {
   USER_ACTIONS("userActions"),
   USER_HIGH_CARD("userHighCard"),
   DEALER_BUTTONS("dealerButtons"),
-  BOTTOM_IDS(List.of(USER_CARDS, USER_ACTIONS, USER_HIGH_CARD, DEALER_BUTTONS));
+  BOTTOM_IDS(List.of(USER_CARDS, USER_ACTIONS, USER_HIGH_CARD, DEALER_BUTTONS)),
+  
+  REPLAY_CLASS("replay");
   
   private final String classes;
   

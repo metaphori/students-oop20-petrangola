@@ -2,6 +2,7 @@ package main.java.petrangola.views.components.text;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import main.java.petrangola.views.ViewFX;
 
 public interface TextViewFX extends TextView<Text> {
   /**
@@ -19,7 +20,6 @@ public interface TextViewFX extends TextView<Text> {
     this.show();
     
     final Pane pane = (Pane) layout.lookup(styleClass);
-    pane.getChildren().clear();
-    pane.getChildren().add(this.get());
+    ViewFX.addOrUpdate(pane, this.get());
   }
 }

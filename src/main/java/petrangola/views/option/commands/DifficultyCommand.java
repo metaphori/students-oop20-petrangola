@@ -14,6 +14,6 @@ public class DifficultyCommand extends AbstractOptionCommand {
   
   @Override
   public void execute() {
-    this.optionController.setDifficulty(this.difficultyLevelView.getValueFromSlider());
+    this.getOptionController().setDifficulty(this.difficultyLevelView.getValueFromSlider());
   }
 }
