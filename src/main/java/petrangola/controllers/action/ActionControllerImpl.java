@@ -1,21 +1,20 @@
 package main.java.petrangola.controllers.action;
 
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.views.ViewFactory;
-import main.java.petrangola.views.ViewFactoryImpl;
 
 import java.util.Objects;
 
 public class ActionControllerImpl implements ActionController {
-  private final ViewFactory viewFactory;
+  private ViewFactory viewFactory;
   
   public ActionControllerImpl() {
-    this.viewFactory = new ViewFactoryImpl(ViewFactoryImpl.getStage());
   }
   
   @Override
   public void start() {
-    this.viewFactory.createOptionView();
+    this.getViewFactory().createOptionView();
   }
   
   @Override
@@ -23,16 +22,30 @@ public class ActionControllerImpl implements ActionController {
     System.exit(0);
   }
   
+  private ViewFactory getViewFactory() {
+    return this.viewFactory;
+  }
+  
+  @Override
+  public void setViewFactory(ViewFactory viewFactory) {
+    this.viewFactory = viewFactory;
+  }
+  
+  @Override
+  public void setModel(ObservableModel model) {
+    // actionController has no model
+  }
+  
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof ActionControllerImpl)) return false;
     ActionControllerImpl that = (ActionControllerImpl) o;
-    return viewFactory.equals(that.viewFactory);
+    return Objects.equals(getViewFactory(), that.getViewFactory());
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(viewFactory);
+    return Objects.hash(getViewFactory());
   }
 }

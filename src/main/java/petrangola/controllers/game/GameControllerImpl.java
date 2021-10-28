@@ -1,5 +1,6 @@
 package main.java.petrangola.controllers.game;
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.board.BoardImpl;
 import main.java.petrangola.models.cards.Card;
 import main.java.petrangola.models.cards.CardFactoryImpl;
@@ -12,12 +13,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GameControllerImpl implements GameController {
-  private final PlayerFactory playerFactory;
-  private final Game game;
+  private PlayerFactory playerFactory;
+  private Game game;
   
-  public GameControllerImpl(Game model) {
-    this.game = model;
-    this.playerFactory = new PlayerFactoryImpl();
+  public GameControllerImpl() {
+  
+  }
+  
+  @Override
+  public void setPlayerFactory(PlayerFactory playerFactory) {
+    this.playerFactory = playerFactory;
   }
   
   @Override
@@ -43,22 +48,22 @@ public class GameControllerImpl implements GameController {
   public void createHighCards() {
     final int playersSize = (int) this.game.getPlayersDetails().stream().filter(PlayerDetail::isStillAlive).count();
     final List<Card> cards = new CardFactoryImpl()
-                                   .createDeck()
-                                   .stream()
-                                   .limit(playersSize)
-                                   .collect(Collectors.toList());
+          .createDeck()
+          .stream()
+          .limit(playersSize)
+          .collect(Collectors.toList());
     
     
     IntStream
           .range(0, playersSize)
           .boxed()
           .forEach(index -> this.game
-                                  .getPlayersDetails()
-                                  .stream()
-                                  .filter(PlayerDetail::isStillAlive)
-                                  .collect(Collectors.toList())
-                                  .get(index)
-                                  .setHighCard(cards.get(index)));
+                .getPlayersDetails()
+                .stream()
+                .filter(PlayerDetail::isStillAlive)
+                .collect(Collectors.toList())
+                .get(index)
+                .setHighCard(cards.get(index)));
   }
   
   @Override
@@ -150,11 +155,11 @@ public class GameControllerImpl implements GameController {
   @Override
   public boolean isLastKnockerPlayerTurn() {
     return this.game
-                 .getPlayersDetails()
-                 .stream()
-                 .filter(PlayerDetail::isStillAlive)
-                 .filter(playerDetail -> !playerDetail.getPlayer().getUsername().equals(this.game.getLastKnocker()))
-                 .anyMatch(playerDetail -> playerDetail.getTurnNumber() == this.game.getCurrentTurnNumber());
+          .getPlayersDetails()
+          .stream()
+          .filter(PlayerDetail::isStillAlive)
+          .filter(playerDetail -> !playerDetail.getPlayer().getUsername().equals(this.game.getLastKnocker()))
+          .anyMatch(playerDetail -> playerDetail.getTurnNumber() == this.game.getCurrentTurnNumber());
   }
   
   @Override
@@ -173,5 +178,10 @@ public class GameControllerImpl implements GameController {
   @Override
   public int hashCode() {
     return Objects.hash(playerFactory, game);
+  }
+  
+  @Override
+  public void setModel(ObservableModel game) {
+    this.game = (Game) game;
   }
 }

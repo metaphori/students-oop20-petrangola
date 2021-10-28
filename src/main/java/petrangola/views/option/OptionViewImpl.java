@@ -6,12 +6,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.petrangola.controllers.Controller;
 import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.controllers.option.OptionControllerImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.option.OptionImpl;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.views.AbstractViewFX;
+import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.components.AbstractComponentFX;
 import main.java.petrangola.views.components.button.AbstractButtonFX;
 import main.java.petrangola.views.components.slider.DifficultySlider;
@@ -20,37 +21,15 @@ import main.java.petrangola.views.components.textFieldView.UsernameTextFieldView
 import main.java.petrangola.views.option.buttons.PlayButton;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Objects;
 
 public class OptionViewImpl extends AbstractViewFX implements OptionView {
   private final Option option = new OptionImpl();
-  private final OptionController optionController = new OptionControllerImpl(option);
-  private final AbstractButtonFX playButton = new PlayButton(optionController);
+  private AbstractButtonFX playButton;
+  
+  private OptionController optionController;
   
   public OptionViewImpl(Stage stage) {
     super(stage, new VBox(24));
-    
-    final VBox layout = (VBox) getLayout();
-    
-    layout.setStyle("-fx-background-image: url('" + Background.MENU_2.getPath() + "');" +
-                          "-fx-background-repeat: no-repeat;" +
-                          "-fx-background-size: cover;" +
-                          "-fx-background-position: center center;");
-    
-    layout.setPadding(new Insets(24));
-    layout.setAlignment(Pos.CENTER);
-    
-    final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(optionController);
-    final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(optionController);
-    final AbstractComponentFX<TextField> userTextView = new UsernameTextFieldView(optionController);
-    
-    this.getLayoutBuilder()
-          .addNode(difficultySlider.get())
-          .addNode(opponentSizeSlider.get())
-          .addNode(userTextView.get())
-          .addNode(playButton.get());
-    
-    this.addListenerToModel(option);
   }
   
   @Override
@@ -71,5 +50,40 @@ public class OptionViewImpl extends AbstractViewFX implements OptionView {
   
   private boolean checkDifficultyLevel() {
     return this.option.getDifficultyLevel() != null;
+  }
+  
+  @Override
+  public void setController(Controller optionController) {
+    this.optionController = (OptionController) optionController;
+  }
+  
+  @Override
+  public void initView(ViewFactory viewFactory) {
+    this.optionController.setModel(this.option);
+    this.optionController.setViewFactory(viewFactory);
+    
+    final VBox layout = (VBox) getLayout();
+    
+    layout.setStyle("-fx-background-image: url('" + Background.MENU_2.getPath() + "');" +
+                          "-fx-background-repeat: no-repeat;" +
+                          "-fx-background-size: cover;" +
+                          "-fx-background-position: center center;");
+    
+    layout.setPadding(new Insets(24));
+    layout.setAlignment(Pos.CENTER);
+    
+    this.playButton = new PlayButton(this.optionController);
+    
+    final AbstractComponentFX<Slider> difficultySlider = new DifficultySlider(this.optionController);
+    final AbstractComponentFX<Slider> opponentSizeSlider = new OpponentSizeSlider(this.optionController);
+    final AbstractComponentFX<TextField> userTextView = new UsernameTextFieldView(this.optionController);
+    
+    this.getLayoutBuilder()
+          .addNode(difficultySlider.get())
+          .addNode(opponentSizeSlider.get())
+          .addNode(userTextView.get())
+          .addNode(playButton.get());
+    
+    this.addListenerToModel(option);
   }
 }

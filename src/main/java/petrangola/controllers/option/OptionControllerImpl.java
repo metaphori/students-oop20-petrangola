@@ -1,52 +1,53 @@
 package main.java.petrangola.controllers.option;
 
+import main.java.petrangola.models.ObservableModel;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.utlis.DifficultyLevel;
 import main.java.petrangola.views.ViewFactory;
-import main.java.petrangola.views.ViewFactoryImpl;
-
-import java.util.Objects;
 
 
 public class OptionControllerImpl implements OptionController {
-  private final Option option;
-  private final ViewFactory viewFactory;
+  private Option option;
+  private ViewFactory viewFactory;
   
-  public OptionControllerImpl(final Option option) {
-    this.option = option;
-    this.viewFactory = new ViewFactoryImpl(ViewFactoryImpl.getStage());
+  public OptionControllerImpl() {
   }
   
   @Override
   public void setOpponentsSize(int opponentsSize) {
-    this.option.setOpponentsSize(opponentsSize);
+    this.getOption().setOpponentsSize(opponentsSize);
   }
   
   @Override
   public void setDifficulty(DifficultyLevel difficulty) {
-    this.option.setDifficultyLevel(difficulty);
+    this.getOption().setDifficultyLevel(difficulty);
   }
   
   @Override
   public void setUsername(String username) {
-    this.option.setUsername(username);
+    this.getOption().setUsername(username);
   }
   
   
   public void play(final Option option) {
-    this.viewFactory.createGameView(option);
+    this.getViewFactory().createGameView(option);
   }
   
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof OptionControllerImpl)) return false;
-    OptionControllerImpl that = (OptionControllerImpl) o;
-    return option.equals(that.option) && viewFactory.equals(that.viewFactory);
+  public void setModel(ObservableModel option) {
+    this.option = (Option) option;
+  }
+  
+  private ViewFactory getViewFactory() {
+    return this.viewFactory;
   }
   
   @Override
-  public int hashCode() {
-    return Objects.hash(option, viewFactory);
+  public void setViewFactory(ViewFactory viewFactory) {
+    this.viewFactory = viewFactory;
+  }
+  
+  private Option getOption() {
+    return this.option;
   }
 }

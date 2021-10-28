@@ -1,9 +1,15 @@
 package main.java.petrangola.controllers.game;
 
-import main.java.petrangola.controllers.Controller;
+import main.java.petrangola.controllers.ViewController;
+import main.java.petrangola.models.player.PlayerFactory;
 import main.java.petrangola.utlis.DifficultyLevel;
 
-public interface GameController extends Controller {
+public interface GameController extends ViewController {
+  /**
+   * @param playerFactory
+   */
+  void setPlayerFactory(PlayerFactory playerFactory);
+  
   /**
    *
    */
@@ -70,7 +76,6 @@ public interface GameController extends Controller {
   boolean isLastKnockerPlayerTurn();
   
   /**
-   *
    * @return
    */
   boolean isLastPlayerTurn();

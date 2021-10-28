@@ -1,6 +1,8 @@
 package main.java.petrangola.controllers;
 
 
-public interface MenuController extends Controller {
+import main.java.petrangola.views.ViewFactory;
 
+public interface MenuController extends ViewController {
+  void setViewFactory(ViewFactory viewFactory);
 }

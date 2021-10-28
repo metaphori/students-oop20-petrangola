@@ -2,6 +2,7 @@ package main.java.petrangola;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.ViewFactoryImpl;
 
 public class Main extends Application {
@@ -9,7 +10,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Petrangola");
-        new ViewFactoryImpl(primaryStage).createActionView();
+        
+        ViewFactory viewFactory = new ViewFactoryImpl(primaryStage);
+        viewFactory.createActionView();
     }
 
 

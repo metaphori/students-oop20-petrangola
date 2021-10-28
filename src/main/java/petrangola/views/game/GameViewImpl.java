@@ -7,26 +7,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.petrangola.controllers.Controller;
 import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.controllers.game.GameControllerImpl;
 import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.controllers.player.DealerControllerImpl;
 import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.controllers.player.PlayerControllerImpl;
 import main.java.petrangola.models.cards.Cards;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.game.GameImpl;
 import main.java.petrangola.models.option.Option;
 import main.java.petrangola.models.player.Dealer;
 import main.java.petrangola.models.player.PlayerDetail;
+import main.java.petrangola.models.player.PlayerFactoryImpl;
 import main.java.petrangola.utlis.Background;
 import main.java.petrangola.views.AbstractViewFX;
 import main.java.petrangola.views.GameObjectViewFactory;
 import main.java.petrangola.views.GameObjectViewFactoryImpl;
+import main.java.petrangola.views.ViewFactory;
 import main.java.petrangola.views.cards.CardsViewFactory;
-import main.java.petrangola.views.cards.CardsViewFactoryImpl;
 import main.java.petrangola.views.events.EventManagerImpl;
-import main.java.petrangola.views.mediator.*;
+import main.java.petrangola.views.mediator.CardsMediator;
+import main.java.petrangola.views.mediator.GameMediator;
+import main.java.petrangola.views.mediator.HighCardMediator;
+import main.java.petrangola.views.mediator.MediatorsFactory;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
@@ -34,26 +36,19 @@ import java.util.List;
 public class GameViewImpl extends AbstractViewFX implements GameView {
   private final Game game = new GameImpl();
   
-  private final DealerController dealerController = new DealerControllerImpl();
-  private final PlayerController playerController = new PlayerControllerImpl();
-  private final GameController gameController = new GameControllerImpl(game);
-  
-  private final GameObjectViewFactory gameObjectViewFactory = new GameObjectViewFactoryImpl(game, playerController, dealerController, getLayout());
-  private final CardsViewFactory cardsViewFactory = new CardsViewFactoryImpl();
-  private final MediatorsFactory mediatorsFactory = new MediatorsFactoryImpl();
-  
+  private GameObjectViewFactory gameObjectViewFactory;
+  private CardsViewFactory cardsViewFactory;
+  private MediatorsFactory mediatorsFactory;
+  private DealerController dealerController;
+  private PlayerController playerController;
+  private GameController gameController;
   private GameMediator gameMediator;
   private HighCardMediator highCardsMediator;
   private CardsMediator cardsMediator;
+  private Option option;
   
-  public GameViewImpl(Stage stage, Option option) {
+  public GameViewImpl(Stage stage) {
     super(stage, new HBox());
-    
-    this.addListenerToModel(this.game);
-    
-    this.registerEvents();
-    this.initLayout();
-    this.init(option);
   }
   
   @Override
@@ -169,8 +164,18 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
     return this.cardsViewFactory;
   }
   
+  @Override
+  public void setCardsViewFactory(CardsViewFactory cardsViewFactory) {
+    this.cardsViewFactory = cardsViewFactory;
+  }
+  
   private DealerController getDealerController() {
     return this.dealerController;
+  }
+  
+  @Override
+  public void setDealerController(DealerController dealerController) {
+    this.dealerController = dealerController;
   }
   
   private GameMediator getGameMediator() {
@@ -187,5 +192,38 @@ public class GameViewImpl extends AbstractViewFX implements GameView {
   
   private MediatorsFactory getMediatorsFactory() {
     return this.mediatorsFactory;
+  }
+  
+  @Override
+  public void setMediatorsFactory(MediatorsFactory mediatorsFactory) {
+    this.mediatorsFactory = mediatorsFactory;
+  }
+  
+  @Override
+  public void setOption(Option option) {
+    this.option = option;
+  }
+  
+  @Override
+  public void setController(Controller gameController) {
+    this.gameController = (GameController) gameController;
+  }
+  
+  @Override
+  public void initView(ViewFactory viewFactory) {
+    this.gameController.setModel(this.game);
+    this.gameController.setPlayerFactory(new PlayerFactoryImpl());
+    this.gameObjectViewFactory = new GameObjectViewFactoryImpl(this.game, this.playerController, this.dealerController, this.getLayout());
+    
+    this.addListenerToModel(this.game);
+    
+    this.registerEvents();
+    this.initLayout();
+    this.init(this.option);
+  }
+  
+  @Override
+  public void setPlayerController(PlayerController playerController) {
+    this.playerController = playerController;
   }
 }
