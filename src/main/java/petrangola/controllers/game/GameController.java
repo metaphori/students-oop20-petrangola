@@ -1,10 +1,10 @@
 package main.java.petrangola.controllers.game;
 
-import main.java.petrangola.controllers.ViewController;
+import main.java.petrangola.controllers.ViewableController;
 import main.java.petrangola.models.player.PlayerFactory;
 import main.java.petrangola.utlis.DifficultyLevel;
 
-public interface GameController extends ViewController {
+public interface GameController extends ViewableController {
   /**
    * @param playerFactory
    */
