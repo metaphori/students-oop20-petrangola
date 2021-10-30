@@ -1,18 +1,18 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.animation.player.PlayerAnimation;
-import main.java.petrangola.views.animation.player.PlayerAnimationImpl;
-import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.game.GameStyleClass;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.cards.Cards;
+import petrangola.models.game.Game;
+import petrangola.models.player.Player;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.ViewFX;
+import petrangola.views.animation.player.PlayerAnimation;
+import petrangola.views.animation.player.PlayerAnimationImpl;
+import petrangola.views.cards.CardsView;
+import petrangola.views.game.GameStyleClass;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;

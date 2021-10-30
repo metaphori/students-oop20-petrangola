@@ -1,4 +1,4 @@
-package main.java.petrangola.models.player.npc;
+package petrangola.models.player.npc;
 
 
 public class EasyDrawback implements DrawbackStrategy {

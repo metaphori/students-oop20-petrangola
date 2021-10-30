@@ -1,20 +1,20 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.cards.CardsExchanged;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.player.buttons.AcceptDealtCardsButton;
-import main.java.petrangola.views.player.buttons.TakeBoardCardsButton;
+import petrangola.controllers.game.GameController;
+import petrangola.controllers.player.DealerController;
+import petrangola.models.cards.Cards;
+import petrangola.models.game.Game;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.ViewFX;
+import petrangola.views.cards.CardsExchanged;
+import petrangola.views.components.button.AbstractButtonFX;
+import petrangola.views.components.layout.LayoutBuilder;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.player.buttons.AcceptDealtCardsButton;
+import petrangola.views.player.buttons.TakeBoardCardsButton;
 
 import java.util.Objects;
 

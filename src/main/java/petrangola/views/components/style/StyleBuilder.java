@@ -1,6 +1,6 @@
-package main.java.petrangola.views.components.style;
+package petrangola.views.components.style;
 
-import main.java.petrangola.utlis.UserAction;
+import petrangola.utlis.UserAction;
 
 public interface StyleBuilder {
   /**

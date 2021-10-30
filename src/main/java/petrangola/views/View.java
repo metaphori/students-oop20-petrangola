@@ -1,6 +1,6 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
-import main.java.petrangola.models.ObservableModel;
+import petrangola.models.ObservableModel;
 
 import java.beans.PropertyChangeListener;
 

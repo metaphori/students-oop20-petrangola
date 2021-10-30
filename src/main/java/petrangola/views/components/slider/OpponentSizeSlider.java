@@ -1,7 +1,7 @@
-package main.java.petrangola.views.components.slider;
+package petrangola.views.components.slider;
 
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.views.option.commands.OpponentsSizeCommand;
+import petrangola.controllers.option.OptionController;
+import petrangola.views.option.commands.OpponentsSizeCommand;
 
 import java.util.Objects;
 

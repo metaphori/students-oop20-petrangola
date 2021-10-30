@@ -1,7 +1,7 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
-import main.java.petrangola.dto.DTO;
-import main.java.petrangola.models.cards.Cards;
+import petrangola.dto.DTO;
+import petrangola.models.cards.Cards;
 
 import java.util.Optional;
 

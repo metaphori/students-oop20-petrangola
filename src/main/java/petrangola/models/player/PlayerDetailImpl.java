@@ -1,8 +1,8 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;
-import main.java.petrangola.models.cards.Card;
+import petrangola.models.cards.Card;
 
 public class PlayerDetailImpl implements PlayerDetail {
   private static final int INITIAL_LIVES = 3;

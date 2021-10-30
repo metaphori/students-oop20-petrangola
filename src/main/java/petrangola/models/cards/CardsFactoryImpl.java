@@ -1,6 +1,6 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.models.game.GameObject;
+import petrangola.models.game.GameObject;
 
 import java.util.List;
 import java.util.Map;

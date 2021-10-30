@@ -1,6 +1,6 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
-import main.java.petrangola.controllers.Controller;
+import petrangola.controllers.Controller;
 
 public interface ControllableView extends View {
   /**

@@ -1,12 +1,12 @@
-package main.java.petrangola.views.components.layout;
+package petrangola.views.components.layout;
 
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
 
 import java.util.List;
 import java.util.Map;

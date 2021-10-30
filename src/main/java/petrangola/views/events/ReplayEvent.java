@@ -1,13 +1,13 @@
-package main.java.petrangola.views.events;
+package petrangola.views.events;
 
 import javafx.scene.layout.Pane;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Dealer;
-import main.java.petrangola.models.player.DealerImpl;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.mediator.CardsMediator;
-import main.java.petrangola.views.mediator.GameMediator;
+import petrangola.models.game.Game;
+import petrangola.models.player.Dealer;
+import petrangola.models.player.DealerImpl;
+import petrangola.models.player.Player;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.mediator.CardsMediator;
+import petrangola.views.mediator.GameMediator;
 
 import java.util.List;
 

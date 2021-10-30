@@ -1,6 +1,6 @@
-package main.java.petrangola.views.components.style;
+package petrangola.views.components.style;
 
-import main.java.petrangola.utlis.UserAction;
+import petrangola.utlis.UserAction;
 
 import java.util.Map;
 import java.util.Objects;

@@ -1,8 +1,8 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
 import javafx.scene.Group;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
+import petrangola.models.cards.Cards;
+import petrangola.views.player.buttons.ExchangeButton;
 
 public interface UpdatableCombination {
   CardsView<Group> getCardsView();

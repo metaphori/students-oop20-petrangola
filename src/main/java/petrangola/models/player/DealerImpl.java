@@ -1,7 +1,7 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.cards.Cards;
+import petrangola.models.board.Board;
+import petrangola.models.cards.Cards;
 
 import java.beans.PropertyChangeSupport;
 import java.util.List;

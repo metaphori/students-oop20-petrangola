@@ -1,8 +1,8 @@
-package main.java.petrangola.views.components.text;
+package petrangola.views.components.text;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import main.java.petrangola.views.ViewFX;
+import petrangola.views.ViewFX;
 
 public interface TextViewFX extends TextView<Text> {
   /**

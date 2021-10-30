@@ -1,8 +1,8 @@
-package main.java.petrangola.controllers.action;
+package petrangola.controllers.action;
 
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.views.ViewFactory;
+import petrangola.models.ObservableModel;
+import petrangola.views.ViewFactory;
 
 import java.util.Objects;
 

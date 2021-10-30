@@ -1,4 +1,4 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
 public interface RankedPlayer {
   /**

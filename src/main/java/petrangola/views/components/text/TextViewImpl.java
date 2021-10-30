@@ -1,8 +1,8 @@
-package main.java.petrangola.views.components.text;
+package petrangola.views.components.text;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import main.java.petrangola.views.components.AbstractComponentFX;
+import petrangola.views.components.AbstractComponentFX;
 
 public abstract class TextViewImpl extends AbstractComponentFX<Text> implements TextViewFX {
   public TextViewImpl(Text component) {

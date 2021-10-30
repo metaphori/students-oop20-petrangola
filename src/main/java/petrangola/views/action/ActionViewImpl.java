@@ -1,18 +1,18 @@
-package main.java.petrangola.views.action;
+package petrangola.views.action;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.petrangola.controllers.Controller;
-import main.java.petrangola.controllers.action.ActionController;
-import main.java.petrangola.utlis.Background;
-import main.java.petrangola.views.AbstractViewFX;
-import main.java.petrangola.views.ViewFactory;
-import main.java.petrangola.views.action.button.QuitButton;
-import main.java.petrangola.views.action.button.StartButton;
-import main.java.petrangola.views.components.AbstractComponentFX;
+import petrangola.controllers.Controller;
+import petrangola.controllers.action.ActionController;
+import petrangola.utlis.Background;
+import petrangola.views.AbstractViewFX;
+import petrangola.views.ViewFactory;
+import petrangola.views.action.button.QuitButton;
+import petrangola.views.action.button.StartButton;
+import petrangola.views.components.AbstractComponentFX;
 
 import java.beans.PropertyChangeEvent;
 

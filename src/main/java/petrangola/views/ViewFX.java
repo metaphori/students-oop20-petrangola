@@ -1,4 +1,4 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,8 +1,8 @@
-package main.java.petrangola.views.components.textFieldView;
+package petrangola.views.components.textFieldView;
 
 import javafx.scene.control.TextField;
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.views.option.commands.UsernameCommand;
+import petrangola.controllers.option.OptionController;
+import petrangola.views.option.commands.UsernameCommand;
 
 import java.util.Objects;
 

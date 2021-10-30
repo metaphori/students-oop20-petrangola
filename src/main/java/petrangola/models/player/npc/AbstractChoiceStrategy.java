@@ -1,6 +1,6 @@
-package main.java.petrangola.models.player.npc;
+package petrangola.models.player.npc;
 
-import main.java.petrangola.models.cards.Cards;
+import petrangola.models.cards.Cards;
 
 import java.util.List;
 import java.util.Optional;

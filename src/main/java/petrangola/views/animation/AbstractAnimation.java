@@ -1,4 +1,4 @@
-package main.java.petrangola.views.animation;
+package petrangola.views.animation;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
-import main.java.petrangola.views.events.Event;
+import petrangola.views.events.Event;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;

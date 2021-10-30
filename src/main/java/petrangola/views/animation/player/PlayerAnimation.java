@@ -1,8 +1,8 @@
-package main.java.petrangola.views.animation.player;
+package petrangola.views.animation.player;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.views.animation.Animation;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Player;
+import petrangola.views.animation.Animation;
 
 import java.util.List;
 

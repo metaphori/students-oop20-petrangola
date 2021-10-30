@@ -1,10 +1,10 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.board.BoardView;
-import main.java.petrangola.views.player.DealerView;
-import main.java.petrangola.views.player.NPCView;
-import main.java.petrangola.views.player.UserView;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.board.BoardView;
+import petrangola.views.player.DealerView;
+import petrangola.views.player.NPCView;
+import petrangola.views.player.UserView;
 
 public interface GameObjectViewFactory {
   /**

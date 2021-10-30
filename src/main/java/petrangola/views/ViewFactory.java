@@ -1,6 +1,6 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
-import main.java.petrangola.models.option.Option;
+import petrangola.models.option.Option;
 
 public interface ViewFactory {
   /**

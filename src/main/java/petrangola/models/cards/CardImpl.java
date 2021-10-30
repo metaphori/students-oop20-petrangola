@@ -1,8 +1,8 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.utlis.Delimiter;
-import main.java.petrangola.utlis.Name;
-import main.java.petrangola.utlis.Suit;
+import petrangola.utlis.Delimiter;
+import petrangola.utlis.Name;
+import petrangola.utlis.Suit;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;

@@ -1,19 +1,19 @@
-package main.java.petrangola.views.events;
+package petrangola.views.events;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.models.cards.Combination;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.game.RankingView;
-import main.java.petrangola.views.game.RankingViewImpl;
-import main.java.petrangola.views.game.buttons.ReplayButton;
-import main.java.petrangola.views.mediator.CardsMediator;
+import petrangola.controllers.game.GameController;
+import petrangola.models.cards.Combination;
+import petrangola.utlis.Pair;
+import petrangola.views.ViewFX;
+import petrangola.views.components.button.AbstractButtonFX;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.game.RankingView;
+import petrangola.views.game.RankingViewImpl;
+import petrangola.views.game.buttons.ReplayButton;
+import petrangola.views.mediator.CardsMediator;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

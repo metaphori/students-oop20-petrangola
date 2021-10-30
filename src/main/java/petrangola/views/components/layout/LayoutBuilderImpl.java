@@ -1,14 +1,14 @@
-package main.java.petrangola.views.components.layout;
+package petrangola.views.components.layout;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
-import main.java.petrangola.utlis.Delimiter;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Position;
-import main.java.petrangola.utlis.position.Vertical;
-import main.java.petrangola.views.ViewFX;
+import petrangola.utlis.Delimiter;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Position;
+import petrangola.utlis.position.Vertical;
+import petrangola.views.ViewFX;
 
 import java.util.*;
 import java.util.stream.Collectors;

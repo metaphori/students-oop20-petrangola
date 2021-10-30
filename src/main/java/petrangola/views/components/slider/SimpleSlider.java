@@ -1,4 +1,4 @@
-package main.java.petrangola.views.components.slider;
+package petrangola.views.components.slider;
 
 
 public interface SimpleSlider<T> {

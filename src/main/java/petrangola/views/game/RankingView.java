@@ -1,9 +1,9 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
-import main.java.petrangola.models.cards.Combination;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.components.table.TableFX;
+import petrangola.models.cards.Combination;
+import petrangola.models.player.PlayerDetail;
+import petrangola.utlis.Pair;
+import petrangola.views.components.table.TableFX;
 
 import java.util.List;
 

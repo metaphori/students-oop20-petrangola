@@ -1,7 +1,7 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
 
-import main.java.petrangola.views.components.text.TextViewFX;
+import petrangola.views.components.text.TextViewFX;
 
 public interface RoundView extends TextViewFX {
 }

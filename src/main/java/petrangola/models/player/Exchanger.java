@@ -1,6 +1,6 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
-import main.java.petrangola.models.cards.Cards;
+import petrangola.models.cards.Cards;
 
 public interface Exchanger {
   /**

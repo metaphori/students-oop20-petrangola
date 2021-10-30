@@ -1,6 +1,6 @@
-package main.java.petrangola.views.events;
+package petrangola.views.events;
 
-import main.java.petrangola.models.player.Player;
+import petrangola.models.player.Player;
 
 import java.util.Objects;
 

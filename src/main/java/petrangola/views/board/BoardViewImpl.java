@@ -1,17 +1,17 @@
-package main.java.petrangola.views.board;
+package petrangola.views.board;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.cards.CardView;
-import main.java.petrangola.views.cards.CardsExchanged;
-import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
+import petrangola.models.cards.Cards;
+import petrangola.views.ViewFX;
+import petrangola.views.cards.CardView;
+import petrangola.views.cards.CardsExchanged;
+import petrangola.views.cards.CardsView;
+import petrangola.views.components.layout.LayoutBuilder;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.player.buttons.ExchangeButton;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;

@@ -1,6 +1,6 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
-import main.java.petrangola.utlis.Delimiter;
+import petrangola.utlis.Delimiter;
 
 import java.util.List;
 import java.util.stream.Collectors;

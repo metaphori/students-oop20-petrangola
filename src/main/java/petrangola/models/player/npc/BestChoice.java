@@ -1,11 +1,11 @@
-package main.java.petrangola.models.player.npc;
+package petrangola.models.player.npc;
 
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.cards.Combination;
-import main.java.petrangola.services.CombinationChecker;
-import main.java.petrangola.utlis.DeckConstants;
-import main.java.petrangola.utlis.Pair;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Cards;
+import petrangola.models.cards.Combination;
+import petrangola.services.CombinationChecker;
+import petrangola.utlis.DeckConstants;
+import petrangola.utlis.Pair;
 import org.paukov.combinatorics3.Generator;
 
 import java.util.ArrayList;

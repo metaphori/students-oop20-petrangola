@@ -1,6 +1,6 @@
-package main.java.petrangola.views.action;
+package petrangola.views.action;
 
-import main.java.petrangola.views.ControllableView;
+import petrangola.views.ControllableView;
 
 public interface ActionView extends ControllableView {
 }

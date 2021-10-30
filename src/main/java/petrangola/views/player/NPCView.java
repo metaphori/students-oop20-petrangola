@@ -1,4 +1,4 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 
 public interface NPCView extends PlayerView {

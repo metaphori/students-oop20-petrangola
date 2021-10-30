@@ -1,7 +1,7 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.Player;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Player;
 
 public interface CurrentPlayer {
   

@@ -1,7 +1,7 @@
-package main.java.petrangola.services;
+package petrangola.services;
 
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.utlis.Name;
+import petrangola.models.cards.Card;
+import petrangola.utlis.Name;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,13 +1,13 @@
-package main.java.petrangola.views.events;
+package petrangola.views.events;
 
-import main.java.petrangola.models.cards.*;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.services.CombinationChecker;
-import main.java.petrangola.utlis.Name;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.mediator.GameMediator;
+import petrangola.models.cards.*;
+import petrangola.models.game.Game;
+import petrangola.models.player.Player;
+import petrangola.models.player.PlayerDetail;
+import petrangola.services.CombinationChecker;
+import petrangola.utlis.Name;
+import petrangola.utlis.Pair;
+import petrangola.views.mediator.GameMediator;
 
 import java.util.Comparator;
 import java.util.List;

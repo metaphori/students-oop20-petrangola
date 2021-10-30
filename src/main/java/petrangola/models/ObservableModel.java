@@ -1,4 +1,4 @@
-package main.java.petrangola.models;
+package petrangola.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

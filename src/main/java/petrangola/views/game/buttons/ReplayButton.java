@@ -1,12 +1,12 @@
-package main.java.petrangola.views.game.buttons;
+package petrangola.views.game.buttons;
 
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.utlis.UserAction;
-import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.events.ReplayEvent;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.mediator.GameMediator;
+import petrangola.models.game.Game;
+import petrangola.utlis.UserAction;
+import petrangola.utlis.ViewConstants;
+import petrangola.views.events.ReplayEvent;
+import petrangola.views.components.button.AbstractButtonFX;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.mediator.GameMediator;
 import org.greenrobot.eventbus.EventBus;
 
 public class ReplayButton extends AbstractButtonFX {

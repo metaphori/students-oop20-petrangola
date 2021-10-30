@@ -1,9 +1,9 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.services.CombinationChecker;
-import main.java.petrangola.utlis.DeckConstants;
-import main.java.petrangola.utlis.Name;
-import main.java.petrangola.utlis.Pair;
+import petrangola.services.CombinationChecker;
+import petrangola.utlis.DeckConstants;
+import petrangola.utlis.Name;
+import petrangola.utlis.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;

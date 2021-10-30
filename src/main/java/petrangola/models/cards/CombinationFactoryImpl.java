@@ -1,6 +1,6 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.utlis.DeckConstants;
+import petrangola.utlis.DeckConstants;
 
 import java.util.ArrayList;
 import java.util.List;

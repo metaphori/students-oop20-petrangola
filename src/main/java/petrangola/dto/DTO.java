@@ -1,4 +1,4 @@
-package main.java.petrangola.dto;
+package petrangola.dto;
 
 public interface DTO {
 }

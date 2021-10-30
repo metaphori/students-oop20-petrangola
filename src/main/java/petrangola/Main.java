@@ -1,9 +1,9 @@
-package main.java.petrangola;
+package petrangola;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.java.petrangola.views.ViewFactory;
-import main.java.petrangola.views.ViewFactoryImpl;
+import petrangola.views.ViewFactory;
+import petrangola.views.ViewFactoryImpl;
 
 public class Main extends Application {
 

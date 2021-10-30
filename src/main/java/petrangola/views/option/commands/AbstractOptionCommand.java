@@ -1,7 +1,7 @@
-package main.java.petrangola.views.option.commands;
+package petrangola.views.option.commands;
 
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.views.Command;
+import petrangola.controllers.option.OptionController;
+import petrangola.views.Command;
 
 import java.util.Objects;
 

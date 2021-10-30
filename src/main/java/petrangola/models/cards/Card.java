@@ -1,8 +1,8 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.utlis.Name;
-import main.java.petrangola.utlis.Suit;
+import petrangola.models.ObservableModel;
+import petrangola.utlis.Name;
+import petrangola.utlis.Suit;
 
 /**
  * The single Card model

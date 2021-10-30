@@ -1,18 +1,22 @@
-package main.java.petrangola.services;
+package petrangola.services;
 
+import java.io.File;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class ResourceServiceImpl implements ResourceService {
   private String resourceName;
   
   public ResourceServiceImpl() {}
-  
+
   public void setResourceName(String resourceName) {
     this.resourceName = resourceName;
   }
   
   public String getPath() {
-    return Objects.requireNonNull(getClass().getResource(this.resourceName)).toExternalForm();
+    return Pattern.compile("\\\\/")
+            .matcher(this.resourceName)
+            .replaceAll(fileSeparator -> File.separator);
   }
   
   @Override

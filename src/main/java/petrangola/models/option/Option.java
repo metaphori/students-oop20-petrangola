@@ -1,8 +1,8 @@
-package main.java.petrangola.models.option;
+package petrangola.models.option;
 
-import main.java.petrangola.dto.DTO;
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.dto.DTO;
+import petrangola.models.ObservableModel;
+import petrangola.utlis.DifficultyLevel;
 
 public interface Option extends ObservableModel, DTO {
   /**

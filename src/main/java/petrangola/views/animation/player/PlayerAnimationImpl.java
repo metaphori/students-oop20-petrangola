@@ -1,12 +1,12 @@
-package main.java.petrangola.views.animation.player;
+package petrangola.views.animation.player;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.views.animation.AbstractAnimation;
-import main.java.petrangola.views.events.Event;
-import main.java.petrangola.views.events.KnockEvent;
-import main.java.petrangola.views.events.NextRoundEvent;
-import main.java.petrangola.views.events.NextTurnEvent;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Player;
+import petrangola.views.animation.AbstractAnimation;
+import petrangola.views.events.Event;
+import petrangola.views.events.KnockEvent;
+import petrangola.views.events.NextRoundEvent;
+import petrangola.views.events.NextTurnEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;

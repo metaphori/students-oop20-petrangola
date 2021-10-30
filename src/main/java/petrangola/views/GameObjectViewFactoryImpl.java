@@ -1,13 +1,13 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
 import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.board.BoardView;
-import main.java.petrangola.views.board.BoardViewImpl;
-import main.java.petrangola.views.player.*;
+import petrangola.controllers.player.DealerController;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.game.Game;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.board.BoardView;
+import petrangola.views.board.BoardViewImpl;
+import petrangola.views.player.*;
 
 import java.util.Objects;
 

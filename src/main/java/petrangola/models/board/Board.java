@@ -1,6 +1,6 @@
-package main.java.petrangola.models.board;
+package petrangola.models.board;
 
-import main.java.petrangola.models.game.GameObject;
+import petrangola.models.game.GameObject;
 
 /**
  *

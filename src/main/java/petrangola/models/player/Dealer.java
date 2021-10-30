@@ -1,13 +1,13 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.cards.*;
-import main.java.petrangola.models.game.GameObject;
+import petrangola.models.board.Board;
+import petrangola.models.cards.*;
+import petrangola.models.game.GameObject;
 
 public interface Dealer extends Player {
   /**

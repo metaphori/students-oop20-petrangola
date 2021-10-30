@@ -1,6 +1,6 @@
-package main.java.petrangola.controllers.game;
+package petrangola.controllers.game;
 
-import main.java.petrangola.controllers.Controller;
+import petrangola.controllers.Controller;
 
 public interface RoundController extends Controller {
   /**

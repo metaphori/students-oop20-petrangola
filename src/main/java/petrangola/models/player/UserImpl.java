@@ -1,8 +1,8 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.cards.CardsImpl;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Cards;
+import petrangola.models.cards.CardsImpl;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;

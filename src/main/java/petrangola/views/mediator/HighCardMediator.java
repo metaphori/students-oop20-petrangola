@@ -1,8 +1,8 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.models.player.PlayerDetail;
+import petrangola.models.player.PlayerDetail;
 
 import java.util.List;
 

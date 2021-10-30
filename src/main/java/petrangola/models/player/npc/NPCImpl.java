@@ -1,10 +1,10 @@
-package main.java.petrangola.models.player.npc;
+package petrangola.models.player.npc;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.cards.CardsImpl;
-import main.java.petrangola.models.cards.Combination;
-import main.java.petrangola.utlis.Delimiter;
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.models.cards.Cards;
+import petrangola.models.cards.CardsImpl;
+import petrangola.models.cards.Combination;
+import petrangola.utlis.Delimiter;
+import petrangola.utlis.DifficultyLevel;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;

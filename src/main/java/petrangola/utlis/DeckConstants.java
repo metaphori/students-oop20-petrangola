@@ -1,4 +1,4 @@
-package main.java.petrangola.utlis;
+package petrangola.utlis;
 
 public enum DeckConstants {
   DECK_SIZE(3);

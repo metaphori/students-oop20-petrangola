@@ -1,6 +1,6 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
-import main.java.petrangola.views.components.text.TextViewFX;
+import petrangola.views.components.text.TextViewFX;
 
 public interface UsernameView extends TextViewFX {
 

@@ -1,10 +1,10 @@
-package main.java.petrangola.views.player.commands;
+package petrangola.views.player.commands;
 
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.views.Command;
-import main.java.petrangola.views.cards.CardsExchanged;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Player;
+import petrangola.views.Command;
+import petrangola.views.cards.CardsExchanged;
 
 import java.util.Objects;
 import java.util.Optional;

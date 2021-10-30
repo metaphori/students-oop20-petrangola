@@ -1,16 +1,17 @@
-package main.java.petrangola.utlis;
+package petrangola.utlis;
 
-import main.java.petrangola.services.ResourceService;
-import main.java.petrangola.services.ResourceServiceImpl;
+import petrangola.services.ResourceService;
+import petrangola.services.ResourceServiceImpl;
+
+import java.io.File;
 
 public enum Background {
-  MENU("/menu_image.png"), MENU_2("/auth_image_dark.png"), GAME("/game_image.png");
+  MENU("/petrangola/menu_image.png"), MENU_2("/petrangola/auth_image_dark.png"), GAME("/petrangola/game_image.png");
   
   private final ResourceService service = new ResourceServiceImpl();
   
   Background(String filename) {
     this.service.setResourceName(filename);
-    // this.service.setResourceName(File.separator.concat(filename)); TODO: check why this one doesn't work?
   }
   
   public String getPath() {

@@ -1,4 +1,4 @@
-package main.java.petrangola.models.board;
+package petrangola.models.board;
 
 public class BoardImpl implements Board {
   private static final String OBJECT_ID = "board";

@@ -1,4 +1,4 @@
-package main.java.petrangola.models.game;
+package petrangola.models.game;
 
 public interface GameObject {
 }

@@ -1,10 +1,10 @@
-package main.java.petrangola.views.option.buttons;
+package petrangola.views.option.buttons;
 
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.models.option.Option;
-import main.java.petrangola.utlis.UserAction;
-import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import petrangola.controllers.option.OptionController;
+import petrangola.models.option.Option;
+import petrangola.utlis.UserAction;
+import petrangola.utlis.ViewConstants;
+import petrangola.views.components.button.AbstractButtonFX;
 
 import java.util.Objects;
 

@@ -1,8 +1,8 @@
-package main.java.petrangola.views.option.commands;
+package petrangola.views.option.commands;
 
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.utlis.DifficultyLevel;
-import main.java.petrangola.views.components.slider.SimpleSlider;
+import petrangola.controllers.option.OptionController;
+import petrangola.utlis.DifficultyLevel;
+import petrangola.views.components.slider.SimpleSlider;
 
 import java.util.Objects;
 

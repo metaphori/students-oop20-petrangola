@@ -1,4 +1,4 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
 public interface Command {
   void execute();

@@ -1,7 +1,7 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.utlis.Name;
-import main.java.petrangola.utlis.Suit;
+import petrangola.utlis.Name;
+import petrangola.utlis.Suit;
 
 public class AceLow extends CardImpl {
   public AceLow(Name name, Suit suit) {

@@ -1,10 +1,10 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.cards.UpdatableCombination;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import petrangola.controllers.game.GameController;
+import petrangola.models.cards.Cards;
+import petrangola.views.cards.UpdatableCombination;
+import petrangola.views.components.button.AbstractButtonFX;
 
 public interface DealerView extends PlayerView, UpdatableCombination {
   /**

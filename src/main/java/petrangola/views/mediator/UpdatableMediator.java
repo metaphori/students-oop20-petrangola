@@ -1,4 +1,4 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
 public interface UpdatableMediator extends Mediator {
   /**

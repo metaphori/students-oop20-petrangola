@@ -1,7 +1,7 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.models.game.GameObject;
+import petrangola.models.ObservableModel;
+import petrangola.models.game.GameObject;
 
 public interface Player extends Exchanger, GameObject, ObservableModel {
   

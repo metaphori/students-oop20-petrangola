@@ -1,8 +1,8 @@
-package main.java.petrangola.controllers.option;
+package petrangola.controllers.option;
 
-import main.java.petrangola.controllers.MenuController;
-import main.java.petrangola.models.option.Option;
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.controllers.MenuController;
+import petrangola.models.option.Option;
+import petrangola.utlis.DifficultyLevel;
 
 public interface OptionController extends MenuController {
   /**

@@ -1,10 +1,10 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
 import java.beans.PropertyChangeListener;
 import java.util.Optional;
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.player.Player;
+import petrangola.models.ObservableModel;
+import petrangola.models.board.Board;
+import petrangola.models.player.Player;
 
 public interface Cards extends ObservableModel, PropertyChangeListener {
   /**

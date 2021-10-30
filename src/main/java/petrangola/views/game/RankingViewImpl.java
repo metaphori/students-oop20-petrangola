@@ -1,4 +1,4 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -6,12 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.Combination;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.services.CombinationChecker;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.components.table.TableImpl;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Combination;
+import petrangola.models.player.PlayerDetail;
+import petrangola.services.CombinationChecker;
+import petrangola.utlis.Pair;
+import petrangola.views.components.table.TableImpl;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,19 +1,20 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.services.ResourceService;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
+import petrangola.models.cards.Card;
+import petrangola.services.ResourceService;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
 
 import java.util.Objects;
 
 public class CardViewImpl implements CardView {
-  private static final String CARD_COVER = "/card_back";
+  private static final String BASE_PATH = "/petrangola";
+  private static final String CARD_COVER = BASE_PATH.concat("/card_back");
   private static final String EXTENSION = ".png";
   
   private final ResourceService service;
@@ -31,7 +32,7 @@ public class CardViewImpl implements CardView {
   }
   
   private void setPath(final Card card) {
-    this.service.setResourceName("/".concat(card.getFullName().concat(EXTENSION)));
+    this.service.setResourceName(BASE_PATH.concat("/").concat(card.getFullName().concat(EXTENSION)));
   }
   
   @Override

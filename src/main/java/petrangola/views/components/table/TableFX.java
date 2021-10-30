@@ -1,4 +1,4 @@
-package main.java.petrangola.views.components.table;
+package petrangola.views.components.table;
 
 import javafx.scene.control.TableView;
 

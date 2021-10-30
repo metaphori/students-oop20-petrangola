@@ -1,4 +1,4 @@
-package main.java.petrangola.views.option;
+package petrangola.views.option;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -6,19 +6,19 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.petrangola.controllers.Controller;
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.models.option.Option;
-import main.java.petrangola.models.option.OptionImpl;
-import main.java.petrangola.utlis.Background;
-import main.java.petrangola.views.AbstractViewFX;
-import main.java.petrangola.views.ViewFactory;
-import main.java.petrangola.views.components.AbstractComponentFX;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
-import main.java.petrangola.views.components.slider.DifficultySlider;
-import main.java.petrangola.views.components.slider.OpponentSizeSlider;
-import main.java.petrangola.views.components.textFieldView.UsernameTextFieldView;
-import main.java.petrangola.views.option.buttons.PlayButton;
+import petrangola.controllers.Controller;
+import petrangola.controllers.option.OptionController;
+import petrangola.models.option.Option;
+import petrangola.models.option.OptionImpl;
+import petrangola.utlis.Background;
+import petrangola.views.AbstractViewFX;
+import petrangola.views.ViewFactory;
+import petrangola.views.components.AbstractComponentFX;
+import petrangola.views.components.button.AbstractButtonFX;
+import petrangola.views.components.slider.DifficultySlider;
+import petrangola.views.components.slider.OpponentSizeSlider;
+import petrangola.views.components.textFieldView.UsernameTextFieldView;
+import petrangola.views.option.buttons.PlayButton;
 
 import java.beans.PropertyChangeEvent;
 

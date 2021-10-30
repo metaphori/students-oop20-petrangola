@@ -1,8 +1,8 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.utlis.Pair;
+import petrangola.models.ObservableModel;
+import petrangola.utlis.Pair;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;

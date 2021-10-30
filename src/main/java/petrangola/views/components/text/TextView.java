@@ -1,6 +1,6 @@
-package main.java.petrangola.views.components.text;
+package petrangola.views.components.text;
 
-import main.java.petrangola.views.components.ViewNode;
+import petrangola.views.components.ViewNode;
 
 public interface TextView<E> extends ViewNode<E> {
   /**

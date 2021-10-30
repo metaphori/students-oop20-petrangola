@@ -1,18 +1,18 @@
-package main.java.petrangola.views.animation.player;
+package petrangola.views.animation.player;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.animation.AbstractAnimation;
-import main.java.petrangola.views.game.DealerTextView;
-import main.java.petrangola.views.game.DealerTextViewImpl;
-import main.java.petrangola.views.game.GameStyleClass;
-import main.java.petrangola.views.mediator.HighCardMediator;
+import petrangola.controllers.player.DealerController;
+import petrangola.models.board.Board;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.ViewFX;
+import petrangola.views.animation.AbstractAnimation;
+import petrangola.views.game.DealerTextView;
+import petrangola.views.game.DealerTextViewImpl;
+import petrangola.views.game.GameStyleClass;
+import petrangola.views.mediator.HighCardMediator;
 
 import java.util.List;
 import java.util.Objects;

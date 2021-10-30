@@ -1,7 +1,7 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.components.ViewNode;
+import petrangola.models.cards.Cards;
+import petrangola.views.components.ViewNode;
 
 import java.util.List;
 

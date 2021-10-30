@@ -1,11 +1,11 @@
-package main.java.petrangola.views.player.buttons;
+package petrangola.views.player.buttons;
 
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.utlis.UserAction;
-import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.game.Game;
+import petrangola.models.player.Player;
+import petrangola.utlis.UserAction;
+import petrangola.utlis.ViewConstants;
+import petrangola.views.components.button.AbstractButtonFX;
 
 import java.util.Objects;
 

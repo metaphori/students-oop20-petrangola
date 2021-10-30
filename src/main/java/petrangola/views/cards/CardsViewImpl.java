@@ -1,15 +1,15 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.services.ResourceService;
-import main.java.petrangola.utlis.DeckConstants;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
-import main.java.petrangola.views.components.ViewNode;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.Cards;
+import petrangola.services.ResourceService;
+import petrangola.utlis.DeckConstants;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
+import petrangola.views.components.ViewNode;
 
 import java.util.List;
 import java.util.Objects;

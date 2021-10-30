@@ -1,7 +1,7 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.services.CombinationChecker;
-import main.java.petrangola.utlis.Pair;
+import petrangola.services.CombinationChecker;
+import petrangola.utlis.Pair;
 
 import java.util.List;
 

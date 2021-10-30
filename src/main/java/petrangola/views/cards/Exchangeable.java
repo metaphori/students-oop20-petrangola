@@ -1,6 +1,6 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
-import main.java.petrangola.models.cards.Cards;
+import petrangola.models.cards.Cards;
 
 public interface Exchangeable {
   /**

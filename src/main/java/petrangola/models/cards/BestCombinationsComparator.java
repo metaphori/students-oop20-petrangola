@@ -1,6 +1,6 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
-import main.java.petrangola.utlis.Pair;
+import petrangola.utlis.Pair;
 
 import java.util.Comparator;
 import java.util.List;

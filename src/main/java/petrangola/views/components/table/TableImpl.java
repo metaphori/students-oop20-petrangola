@@ -1,9 +1,9 @@
-package main.java.petrangola.views.components.table;
+package petrangola.views.components.table;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.components.AbstractComponentFX;
+import petrangola.utlis.Pair;
+import petrangola.views.components.AbstractComponentFX;
 
 import java.util.List;
 import java.util.Objects;

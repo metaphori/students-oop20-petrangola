@@ -1,7 +1,7 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
-import main.java.petrangola.models.player.npc.NPC;
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.models.player.npc.NPC;
+import petrangola.utlis.DifficultyLevel;
 
 import java.util.List;
 

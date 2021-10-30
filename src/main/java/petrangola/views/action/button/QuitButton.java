@@ -1,9 +1,9 @@
-package main.java.petrangola.views.action.button;
+package petrangola.views.action.button;
 
-import main.java.petrangola.controllers.action.ActionController;
-import main.java.petrangola.utlis.UserAction;
-import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import petrangola.controllers.action.ActionController;
+import petrangola.utlis.UserAction;
+import petrangola.utlis.ViewConstants;
+import petrangola.views.components.button.AbstractButtonFX;
 
 import java.util.Objects;
 

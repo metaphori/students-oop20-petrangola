@@ -1,12 +1,12 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.views.View;
-import main.java.petrangola.views.cards.CardsView;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
+import petrangola.models.cards.Cards;
+import petrangola.views.View;
+import petrangola.views.cards.CardsView;
+import petrangola.views.components.layout.LayoutBuilder;
 
 import java.util.List;
 import java.util.function.Predicate;

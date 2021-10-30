@@ -1,11 +1,11 @@
-package main.java.petrangola.models.game;
+package petrangola.models.game;
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.models.board.Board;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.Dealer;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
+import petrangola.models.ObservableModel;
+import petrangola.models.board.Board;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.Dealer;
+import petrangola.models.player.Player;
+import petrangola.models.player.PlayerDetail;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package main.java.petrangola.views.components;
+package petrangola.views.components;
 
 
 public interface ViewNode<E> extends Placeable {

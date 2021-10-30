@@ -1,4 +1,4 @@
-package main.java.petrangola.services;
+package petrangola.services;
 
 public interface ResourceService {
   /**

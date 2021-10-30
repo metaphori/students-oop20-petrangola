@@ -1,4 +1,4 @@
-package main.java.petrangola.models.cards;
+package petrangola.models.cards;
 
 import java.util.List;
 

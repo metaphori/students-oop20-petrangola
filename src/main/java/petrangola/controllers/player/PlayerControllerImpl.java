@@ -1,9 +1,9 @@
-package main.java.petrangola.controllers.player;
+package petrangola.controllers.player;
 
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Player;
-import main.java.petrangola.models.player.PlayerDetail;
+import petrangola.models.cards.Cards;
+import petrangola.models.game.Game;
+import petrangola.models.player.Player;
+import petrangola.models.player.PlayerDetail;
 
 public class PlayerControllerImpl implements PlayerController {
   

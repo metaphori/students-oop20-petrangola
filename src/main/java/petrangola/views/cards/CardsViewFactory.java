@@ -1,11 +1,11 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
 
 import javafx.scene.Group;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
+import petrangola.models.cards.Cards;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
 
 public interface CardsViewFactory {
   /**

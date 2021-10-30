@@ -1,4 +1,4 @@
-package main.java.petrangola.views.components.textFieldView;
+package petrangola.views.components.textFieldView;
 
 
 public interface SimpleTextFieldView<R> {

@@ -1,4 +1,4 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
 import javafx.scene.layout.Pane;
 

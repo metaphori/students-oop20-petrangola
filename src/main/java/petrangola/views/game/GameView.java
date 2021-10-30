@@ -1,11 +1,11 @@
-package main.java.petrangola.views.game;
+package petrangola.views.game;
 
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.option.Option;
-import main.java.petrangola.views.ControllableView;
-import main.java.petrangola.views.cards.CardsViewFactory;
-import main.java.petrangola.views.mediator.MediatorsFactory;
+import petrangola.controllers.player.DealerController;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.option.Option;
+import petrangola.views.ControllableView;
+import petrangola.views.cards.CardsViewFactory;
+import petrangola.views.mediator.MediatorsFactory;
 
 public interface GameView extends ControllableView {
   

@@ -1,7 +1,7 @@
-package main.java.petrangola.views.components.textFieldView;
+package petrangola.views.components.textFieldView;
 
 import javafx.scene.control.TextField;
-import main.java.petrangola.views.components.AbstractComponentFX;
+import petrangola.views.components.AbstractComponentFX;
 
 import java.util.Objects;
 

@@ -1,11 +1,11 @@
-package main.java.petrangola.views.components.button;
+package petrangola.views.components.button;
 
 import javafx.scene.control.Button;
-import main.java.petrangola.dto.DTO;
-import main.java.petrangola.utlis.UserAction;
-import main.java.petrangola.views.components.AbstractComponentFX;
-import main.java.petrangola.views.components.style.StyleBuilder;
-import main.java.petrangola.views.components.style.StyleBuilderImpl;
+import petrangola.dto.DTO;
+import petrangola.utlis.UserAction;
+import petrangola.views.components.AbstractComponentFX;
+import petrangola.views.components.style.StyleBuilder;
+import petrangola.views.components.style.StyleBuilderImpl;
 
 import java.util.Objects;
 

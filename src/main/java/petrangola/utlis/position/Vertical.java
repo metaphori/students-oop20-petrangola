@@ -1,4 +1,4 @@
-package main.java.petrangola.utlis.position;
+package petrangola.utlis.position;
 
 public enum Vertical implements Position {
   TOP,

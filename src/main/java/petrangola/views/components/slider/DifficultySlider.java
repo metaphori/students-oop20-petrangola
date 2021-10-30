@@ -1,9 +1,9 @@
-package main.java.petrangola.views.components.slider;
+package petrangola.views.components.slider;
 
 import javafx.util.StringConverter;
-import main.java.petrangola.controllers.option.OptionController;
-import main.java.petrangola.utlis.DifficultyLevel;
-import main.java.petrangola.views.option.commands.DifficultyCommand;
+import petrangola.controllers.option.OptionController;
+import petrangola.utlis.DifficultyLevel;
+import petrangola.views.option.commands.DifficultyCommand;
 
 import java.util.Objects;
 

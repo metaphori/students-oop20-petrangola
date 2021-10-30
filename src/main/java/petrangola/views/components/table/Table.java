@@ -1,6 +1,6 @@
-package main.java.petrangola.views.components.table;
+package petrangola.views.components.table;
 
-import main.java.petrangola.views.components.ViewNode;
+import petrangola.views.components.ViewNode;
 
 import java.util.List;
 

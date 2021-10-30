@@ -1,15 +1,15 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.services.ResourceService;
-import main.java.petrangola.services.ResourceServiceImpl;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.cards.CardView;
-import main.java.petrangola.views.cards.CardViewImpl;
-import main.java.petrangola.views.game.GameStyleClass;
+import petrangola.models.player.PlayerDetail;
+import petrangola.services.ResourceService;
+import petrangola.services.ResourceServiceImpl;
+import petrangola.utlis.Pair;
+import petrangola.views.ViewFX;
+import petrangola.views.cards.CardView;
+import petrangola.views.cards.CardViewImpl;
+import petrangola.views.game.GameStyleClass;
 
 import java.util.List;
 import java.util.Objects;

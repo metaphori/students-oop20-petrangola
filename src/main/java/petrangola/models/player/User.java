@@ -1,4 +1,4 @@
-package main.java.petrangola.models.player;
+package petrangola.models.player;
 
 public interface User extends Player {
 }

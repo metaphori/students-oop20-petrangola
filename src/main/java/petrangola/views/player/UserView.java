@@ -1,7 +1,7 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
-import main.java.petrangola.views.cards.UpdatableCombination;
-import main.java.petrangola.views.components.button.AbstractButtonFX;
+import petrangola.views.cards.UpdatableCombination;
+import petrangola.views.components.button.AbstractButtonFX;
 
 public interface UserView extends PlayerView, UpdatableCombination {
   /**

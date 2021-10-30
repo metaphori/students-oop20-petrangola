@@ -1,12 +1,12 @@
-package main.java.petrangola.views;
+package petrangola.views;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import main.java.petrangola.utlis.ViewConstants;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
-import main.java.petrangola.views.components.layout.LayoutBuilderImpl;
+import petrangola.utlis.ViewConstants;
+import petrangola.views.components.layout.LayoutBuilder;
+import petrangola.views.components.layout.LayoutBuilderImpl;
 
 import java.util.Objects;
 

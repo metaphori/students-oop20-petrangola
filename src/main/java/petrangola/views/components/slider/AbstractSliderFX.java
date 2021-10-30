@@ -1,9 +1,9 @@
-package main.java.petrangola.views.components.slider;
+package petrangola.views.components.slider;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-import main.java.petrangola.views.components.AbstractComponentFX;
+import petrangola.views.components.AbstractComponentFX;
 
 public abstract class AbstractSliderFX<T> extends AbstractComponentFX<Slider> implements SimpleSlider<T> {
   public AbstractSliderFX(double v, double v1, double v2) {

@@ -1,7 +1,7 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.Player;
+import petrangola.models.game.Game;
+import petrangola.models.player.Player;
 
 public interface GameMediator extends UpdatableMediator {
   /**

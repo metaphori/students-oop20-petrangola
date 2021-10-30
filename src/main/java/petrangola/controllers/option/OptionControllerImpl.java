@@ -1,9 +1,9 @@
-package main.java.petrangola.controllers.option;
+package petrangola.controllers.option;
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.models.option.Option;
-import main.java.petrangola.utlis.DifficultyLevel;
-import main.java.petrangola.views.ViewFactory;
+import petrangola.models.ObservableModel;
+import petrangola.models.option.Option;
+import petrangola.utlis.DifficultyLevel;
+import petrangola.views.ViewFactory;
 
 
 public class OptionControllerImpl implements OptionController {

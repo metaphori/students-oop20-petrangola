@@ -1,6 +1,6 @@
-package main.java.petrangola.controllers;
+package petrangola.controllers;
 
-import main.java.petrangola.models.ObservableModel;
+import petrangola.models.ObservableModel;
 
 public interface ViewableController extends Controller {
   void setModel(ObservableModel model);

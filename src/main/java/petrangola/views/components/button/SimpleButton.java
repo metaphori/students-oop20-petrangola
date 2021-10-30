@@ -1,7 +1,7 @@
-package main.java.petrangola.views.components.button;
+package petrangola.views.components.button;
 
-import main.java.petrangola.dto.DTO;
-import main.java.petrangola.views.components.ViewNode;
+import petrangola.dto.DTO;
+import petrangola.views.components.ViewNode;
 
 public interface SimpleButton<E> extends ViewNode<E> {
   /**

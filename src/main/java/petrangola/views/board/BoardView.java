@@ -1,8 +1,8 @@
-package main.java.petrangola.views.board;
+package petrangola.views.board;
 
-import main.java.petrangola.views.cards.UpdatableCombination;
-import main.java.petrangola.views.player.GameObjectView;
-import main.java.petrangola.views.player.buttons.ExchangeButton;
+import petrangola.views.cards.UpdatableCombination;
+import petrangola.views.player.GameObjectView;
+import petrangola.views.player.buttons.ExchangeButton;
 
 public interface BoardView extends GameObjectView, UpdatableCombination {
   /**

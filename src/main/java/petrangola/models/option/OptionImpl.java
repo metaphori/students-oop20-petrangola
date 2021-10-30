@@ -1,9 +1,9 @@
-package main.java.petrangola.models.option;
+package petrangola.models.option;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.utlis.DifficultyLevel;
 
 public class OptionImpl implements Option {
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);

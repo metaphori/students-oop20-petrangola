@@ -1,7 +1,7 @@
-package main.java.petrangola.views.cards;
+package petrangola.views.cards;
 
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.views.components.imageview.ImageViewFX;
+import petrangola.models.cards.Card;
+import petrangola.views.components.imageview.ImageViewFX;
 
 public interface CardView extends ImageViewFX {
   /**

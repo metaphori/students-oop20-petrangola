@@ -1,10 +1,10 @@
-package main.java.petrangola.views.animation;
+package petrangola.views.animation;
 
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
-import main.java.petrangola.views.events.Event;
+import petrangola.views.events.Event;
 
 public interface Animation {
   /**

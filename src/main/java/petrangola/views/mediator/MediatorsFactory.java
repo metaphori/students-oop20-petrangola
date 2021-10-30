@@ -1,12 +1,12 @@
-package main.java.petrangola.views.mediator;
+package petrangola.views.mediator;
 
-import main.java.petrangola.controllers.game.GameController;
-import main.java.petrangola.controllers.player.DealerController;
-import main.java.petrangola.models.cards.Cards;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.views.GameObjectViewFactory;
-import main.java.petrangola.views.cards.CardsViewFactory;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
+import petrangola.controllers.game.GameController;
+import petrangola.controllers.player.DealerController;
+import petrangola.models.cards.Cards;
+import petrangola.models.player.PlayerDetail;
+import petrangola.views.GameObjectViewFactory;
+import petrangola.views.cards.CardsViewFactory;
+import petrangola.views.components.layout.LayoutBuilder;
 
 import java.util.List;
 

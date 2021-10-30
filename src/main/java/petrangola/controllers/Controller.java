@@ -1,4 +1,4 @@
-package main.java.petrangola.controllers;
+package petrangola.controllers;
 
 public interface Controller {
 

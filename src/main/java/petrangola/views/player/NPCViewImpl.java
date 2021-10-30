@@ -1,16 +1,16 @@
-package main.java.petrangola.views.player;
+package petrangola.views.player;
 
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import main.java.petrangola.controllers.player.PlayerController;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.PlayerDetail;
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
-import main.java.petrangola.views.ViewFX;
-import main.java.petrangola.views.components.layout.LayoutBuilder;
-import main.java.petrangola.views.game.GameStyleClass;
+import petrangola.controllers.player.PlayerController;
+import petrangola.models.game.Game;
+import petrangola.models.player.PlayerDetail;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
+import petrangola.views.ViewFX;
+import petrangola.views.components.layout.LayoutBuilder;
+import petrangola.views.game.GameStyleClass;
 
 import java.util.List;
 import java.util.stream.Collectors;

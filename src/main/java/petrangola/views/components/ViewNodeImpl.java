@@ -1,8 +1,8 @@
-package main.java.petrangola.views.components;
+package petrangola.views.components;
 
-import main.java.petrangola.utlis.Pair;
-import main.java.petrangola.utlis.position.Horizontal;
-import main.java.petrangola.utlis.position.Vertical;
+import petrangola.utlis.Pair;
+import petrangola.utlis.position.Horizontal;
+import petrangola.utlis.position.Vertical;
 
 import java.util.Objects;
 

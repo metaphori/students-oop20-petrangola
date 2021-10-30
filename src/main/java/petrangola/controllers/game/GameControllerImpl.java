@@ -1,12 +1,12 @@
-package main.java.petrangola.controllers.game;
+package petrangola.controllers.game;
 
-import main.java.petrangola.models.ObservableModel;
-import main.java.petrangola.models.board.BoardImpl;
-import main.java.petrangola.models.cards.Card;
-import main.java.petrangola.models.cards.CardFactoryImpl;
-import main.java.petrangola.models.game.Game;
-import main.java.petrangola.models.player.*;
-import main.java.petrangola.utlis.DifficultyLevel;
+import petrangola.models.ObservableModel;
+import petrangola.models.board.BoardImpl;
+import petrangola.models.cards.Card;
+import petrangola.models.cards.CardFactoryImpl;
+import petrangola.models.game.Game;
+import petrangola.models.player.*;
+import petrangola.utlis.DifficultyLevel;
 
 import java.util.*;
 import java.util.stream.Collectors;

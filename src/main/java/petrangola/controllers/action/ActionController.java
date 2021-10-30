@@ -1,6 +1,6 @@
-package main.java.petrangola.controllers.action;
+package petrangola.controllers.action;
 
-import main.java.petrangola.controllers.MenuController;
+import petrangola.controllers.MenuController;
 
 public interface ActionController extends MenuController {
   /**
