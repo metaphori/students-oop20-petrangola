@@ -5,7 +5,7 @@ import main.java.petrangola.views.option.commands.OpponentsSizeCommand;
 
 import java.util.Objects;
 
-public class OpponentSizeSlider extends AbstractSliderFX implements SimpleSlider<Integer> {
+public class OpponentSizeSlider extends AbstractSliderFX<Integer> {
   private final OpponentsSizeCommand command;
   private int value = 1;
   

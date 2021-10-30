@@ -7,7 +7,7 @@ import main.java.petrangola.views.option.commands.DifficultyCommand;
 
 import java.util.Objects;
 
-public class DifficultySlider extends AbstractSliderFX implements SimpleSlider<DifficultyLevel> {
+public class DifficultySlider extends AbstractSliderFX<DifficultyLevel> implements SimpleSlider<DifficultyLevel> {
   private final DifficultyCommand command;
   private DifficultyLevel difficultyLevel = DifficultyLevel.EASY;
   

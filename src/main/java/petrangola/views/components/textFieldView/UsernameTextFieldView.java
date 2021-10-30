@@ -6,7 +6,7 @@ import main.java.petrangola.views.option.commands.UsernameCommand;
 
 import java.util.Objects;
 
-public class UsernameTextFieldView extends AbstractTextField implements SimpleTextFieldView<String> {
+public class UsernameTextFieldView extends AbstractTextField<String> {
   private final UsernameCommand command;
   
   public UsernameTextFieldView(final OptionController optionController) {

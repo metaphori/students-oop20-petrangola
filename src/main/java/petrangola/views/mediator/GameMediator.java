@@ -3,7 +3,7 @@ package main.java.petrangola.views.mediator;
 import main.java.petrangola.models.game.Game;
 import main.java.petrangola.models.player.Player;
 
-public interface GameMediator extends Mediator, UpdatableMediator {
+public interface GameMediator extends UpdatableMediator {
   /**
    * @param game
    */

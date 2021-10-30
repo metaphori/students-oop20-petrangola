@@ -5,18 +5,18 @@ import main.java.petrangola.views.components.AbstractComponentFX;
 
 import java.util.Objects;
 
-public abstract class AbstractTextField extends AbstractComponentFX<TextField> {
-  private String text;
+public abstract class AbstractTextField<T> extends AbstractComponentFX<TextField>  implements SimpleTextFieldView<T>  {
+  private T text;
   
   public AbstractTextField(TextField component) {
     super(component);
   }
   
-  public String getValue() {
+  public T getValue() {
     return this.text;
   }
   
-  public void setValue(String value) {
+  public void setValue(T value) {
     this.text = value;
   }
   
