@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+javafx {
+    version = "15.0.1"
+    modules = [ 'javafx.controls' ]
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.github.dpaukov:combinatoricslib3:3.3.2")
+    implementation("org.greenrobot:eventbus:3.2.0")
+}
+
+
+mainClassName = 'petrangola.Main'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'petrangola.Petrangola'
+    }
+    duplicatesStrategy(DuplicatesStrategy.WARN)
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
