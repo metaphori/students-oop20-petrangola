@@ -8,6 +8,7 @@ plugins {
     id("com.github.spotbugs")
     `build-dashboard`
     application
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 sourceSets {
@@ -40,7 +41,7 @@ repositories {
 
 application {
     // Define the main class for the application
-    mainClass.set("petrangola.Main")
+    mainClass.set("petrangola.Petrangola")
 }
 
 
@@ -49,12 +50,14 @@ val javaFXModules = listOf(
     "controls",
     "fxml",
     "swing",
-    "graphics"
+    "graphics",
+    "media",
+    "web"
 )
 
 val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
 
-val javaFxVersion = "15.0.1"
+val javaFxVersion = "17.0.1"
 
 val jUnitVersion = "5.7.1"
 
@@ -73,11 +76,11 @@ dependencies {
         ?.filter { it.extension == "jar" }
         ?.forEach { implementation(files("lib/${it.name}")) }
         // JavaFX: comment out if you do not need them
-        for (platform in supportedPlatforms) {
-            for (module in javaFXModules) {
-                implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
-            }
+    for (platform in supportedPlatforms) {
+        for (module in javaFXModules) {
+            implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
+    }
 }
 
 allprojects {
